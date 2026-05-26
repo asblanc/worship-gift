@@ -1,0 +1,25 @@
+name: add-page
+description: Créer et intégrer une nouvelle page Next.js dans le site Worship Gift.
+steps:
+  - name: Analyse de la page
+    prompt: >
+      Demande-moi le nom de la page, son URL (slug), son objectif,
+      et les sections souhaitées. Résume ensuite la structure proposée
+      avant de commencer à coder.
+
+  - name: Création du squelette
+    prompt: >
+      Crée le fichier de page dans l'App Router (par exemple app/slug/page.tsx),
+      avec une structure de base : titre, section d'introduction,
+      section principale et section d'appel à l'action (CTA).
+
+  - name: Design et contenu
+    prompt: >
+      Utilise les skills design-worship-gift et copywriting-worship-gift
+      pour styliser la page (Tailwind + Framer Motion) et rédiger un
+      texte adapté à l'univers Worship Gift.
+
+  - name: Intégration dans la navigation
+    prompt: >
+      Ajoute la nouvelle page dans la barre de navigation et, si pertinent,
+      dans le footer. Vérifie la cohérence responsive (mobile et desktop).
