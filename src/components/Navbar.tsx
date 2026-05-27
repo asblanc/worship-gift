@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/lib/supabase/auth-context";
 
 const navLinks = [
   { label: "Accueil", href: "/" },
@@ -16,6 +17,7 @@ const navLinks = [
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user, loading } = useAuth();
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
@@ -37,18 +39,42 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <ul className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => (
-            <li key={link.label}>
-              <Link
-                href={link.href}
-                className="relative text-sm font-medium text-gray-300 transition-colors hover:text-[#C9A84C]"
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className="hidden items-center gap-8 md:flex">
+          <ul className="flex items-center gap-8">
+            {navLinks.map((link) => (
+              <li key={link.label}>
+                <Link
+                  href={link.href}
+                  className="relative text-sm font-medium text-gray-300 transition-colors hover:text-[#C9A84C]"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          {/* Auth sur desktop */}
+          {!loading && (
+            <>
+              {user ? (
+                <Link
+                  href="/dashboard"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-[#C9A84C]/40 bg-[#C9A84C]/10 text-sm font-bold text-[#C9A84C] transition-colors hover:bg-[#C9A84C]/20"
+                  title="Mon espace"
+                >
+                  {(user.email?.charAt(0) || "?").toUpperCase()}
+                </Link>
+              ) : (
+                <Link
+                  href="/auth/login"
+                  className="rounded-md border border-white/20 px-4 py-2 text-sm font-medium text-gray-300 transition-colors hover:border-[#C9A84C]/50 hover:text-[#C9A84C]"
+                >
+                  Connexion
+                </Link>
+              )}
+            </>
+          )}
+        </div>
 
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -91,6 +117,33 @@ export default function Navbar() {
                   </Link>
                 </li>
               ))}
+              {/* Auth sur mobile */}
+              <li className="border-t border-white/10 pt-2 mt-2">
+                {!loading && (
+                  <>
+                    {user ? (
+                      <Link
+                        href="/dashboard"
+                        onClick={() => setMobileOpen(false)}
+                        className="flex items-center gap-3 rounded-md px-4 py-3 text-base font-medium text-[#C9A84C] transition-colors hover:bg-white/5"
+                      >
+                        <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#C9A84C]/40 bg-[#C9A84C]/10 text-sm font-bold">
+                          {(user.email?.charAt(0) || "?").toUpperCase()}
+                        </span>
+                        Mon espace
+                      </Link>
+                    ) : (
+                      <Link
+                        href="/auth/login"
+                        onClick={() => setMobileOpen(false)}
+                        className="block rounded-md border border-white/20 px-4 py-3 text-center text-base font-medium text-gray-300 transition-colors hover:border-[#C9A84C]/50 hover:text-[#C9A84C]"
+                      >
+                        Connexion
+                      </Link>
+                    )}
+                  </>
+                )}
+              </li>
             </ul>
           </motion.div>
         )}

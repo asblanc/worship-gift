@@ -15,17 +15,11 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Worship Gift | Mouvement Gospel",
-  description:
-    "Mouvement gospel dédié à la louange, l'adoration et l'unité à travers la musique.",
-  openGraph: {
-    title: "Worship Gift | Mouvement Gospel",
-    description:
-      "Mouvement gospel dédié à la louange, l'adoration et l'unité à travers la musique.",
-    type: "website",
-  },
-};
+import Footer from "@/components/Footer";
+import { AuthProvider } from "@/lib/supabase/auth-context";
+import { defaultMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = defaultMetadata;
 
 export default function RootLayout({
   children,
@@ -38,7 +32,12 @@ export default function RootLayout({
       className={`${inter.variable} ${cormorant.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col dark">{children}</body>
+      <body className="min-h-full flex flex-col dark">
+        <AuthProvider>
+          {children}
+          <Footer />
+        </AuthProvider>
+      </body>
     </html>
   );
 }
