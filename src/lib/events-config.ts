@@ -27,7 +27,7 @@ export const upcomingEvents = [
     date: "12 juillet 2026",
     time: "18h30",
     location: "Centre Évangélique, Lyon",
-    image: "/img_worship-gift/hero-2.png",
+    image: "/img_worship-gift/hero-2.jpg",
     description:
       "Un moment d'intimité et de prière à travers la musique et la louange.",
     price: "10 €",
@@ -38,7 +38,7 @@ export const upcomingEvents = [
     date: "8 août 2026",
     time: "20h00",
     location: "Parc des Expositions, Bordeaux",
-    image: "/img_worship-gift/hero-3.png",
+    image: "/img_worship-gift/hero-3.jpg",
     description:
       "Le grand rassemblement gospel de l'été avec plusieurs chorales invitées.",
     price: "20 €",

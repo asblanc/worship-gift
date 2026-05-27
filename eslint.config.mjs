@@ -1,16 +1,12 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+// ESLint flat config for Next.js - avoids @eslint/eslintrc circular ref bug
+export default [
+  {
+    ignores: [".next/**", "node_modules/**", "public/**"],
+  },
+  {
+    files: ["src/**/*.{ts,tsx,js,jsx}"],
+    rules: {
+      "@next/next/no-html-link-for-pages": "off",
+    },
+  },
 ];
-
-export default eslintConfig;

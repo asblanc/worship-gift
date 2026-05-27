@@ -1,54 +1,62 @@
-export const youtubeChannelUrl =
-  "https://youtube.com/@worshipgift?si=p_dA17hA9vSGRrI7";
+// ============================================================
+//  Worship Gift — Données YouTube & Réseaux Sociaux officiels
+// ============================================================
+
+export const youtubeChannelUrl = "https://www.youtube.com/@WorshipGift";
+export const facebookUrl =
+  "https://www.facebook.com/share/18vm7d1oo7/?mibextid=wwXIfr";
+export const tiktokUrl = "https://www.tiktok.com/@worship.gift";
+export const emailAddress = "worshipgiftofficiel@gmail.com";
+export const phoneNumber = "+212 698472691";
+
+// -----------------------------------------------------------
+//  VIDÉOTHÈQUE OFFICIELLE
+//  Pour ajouter une vidéo, duplique le bloc { id, title, description }
+//  et remplace l'ID par celui extrait de l'URL YouTube (v=XXXXX).
+// -----------------------------------------------------------
 
 export const youtubeVideos = [
   {
-    id: "dQw4w9WgXcQ",
-    title: "Worship Gift – Concert de Louange (Live)",
+    id: "fGDm96TtpOE",
+    title: "Worship Gift – Session de Louange Live",
     description:
-      "Un moment puissant de louange et d'adoration enregistré en direct lors de notre concert à Paris.",
+      "Une session puissante de louange et d'adoration enregistrée en direct. Laissez-vous porter par l'Esprit à travers chaque note.",
   },
   {
-    id: "dQw4w9WgXcQ",
-    title: "Session d'adoration – Soirée de prière",
+    id: "u0XvdqkpsUg",
+    title: "Worship Gift – Moment d'Adoration",
     description:
-      "Plonge dans une atmosphère d'intimité et de recueillement à travers cette session de louange.",
+      "Un moment d'intimité avec Dieu à travers la musique gospel. Des cœurs unis dans une même louange.",
   },
   {
-    id: "dQw4w9WgXcQ",
-    title: "Gospel Night – Rassemblement d'été",
+    id: "I6ALh2C0oiY",
+    title: "Worship Gift – Gospel & Communion",
     description:
-      "Revivez les meilleurs moments du grand rassemblement gospel de l'été avec plusieurs chorales invitées.",
+      "Revivez ce temps fort de communion et de gospel où chaque chant élève l'âme et fortifie la foi.",
   },
   {
-    id: "dQw4w9WgXcQ",
-    title: "Répétition – Préparation du concert",
+    id: "-PnijNoIB-8",
+    title: "Worship Gift – Louange Collective",
     description:
-      "Un aperçu des coulisses de notre préparation avant le grand concert de louange.",
-  },
-  {
-    id: "dQw4w9WgXcQ",
-    title: "Témoignage – La puissance de la louange",
-    description:
-      "Des témoignages inspirants sur comment la louange a transformé des vies.",
-  },
-  {
-    id: "dQw4w9WgXcQ",
-    title: "Clip officiel – Worship Gift",
-    description:
-      "Découvre notre clip officiel, un condensé de louange et d'adoration pour glorifier Dieu.",
+      "Une chorale passionnée, un public enflammé : la louange collective Worship Gift dans toute sa puissance.",
   },
 ];
 
+// -----------------------------------------------------------
+//  LIVE SESSIONS
+// -----------------------------------------------------------
+
 export const liveSessions = [
   {
-    id: "dQw4w9WgXcQ",
-    title: "Live – Louange Printemps 2026",
-    description: "Notre dernière session de louange en direct.",
+    id: "fGDm96TtpOE",
+    title: "Live – Soirée de Louange Printemps 2026",
+    description:
+      "Notre dernière session de louange en direct, pleine de vie et d'énergie.",
   },
   {
-    id: "dQw4w9WgXcQ",
-    title: "Live – Soirée d'adoration",
-    description: "Un moment d'adoration unique enregistré en live.",
+    id: "u0XvdqkpsUg",
+    title: "Live – Adoration & Prière",
+    description:
+      "Un moment d'adoration unique enregistré en direct devant des milliers de personnes.",
   },
 ];

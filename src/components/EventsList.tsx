@@ -21,7 +21,7 @@ const cardVariants = {
 
 export default function EventsList() {
   return (
-    <section className="px-6 py-16 md:py-20">
+    <section className="bg-[#F9F5EC] px-6 py-16 md:py-20">
       <div className="mx-auto max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -30,10 +30,10 @@ export default function EventsList() {
           transition={{ duration: 0.5 }}
           className="mb-12 text-center"
         >
-          <h2 className="font-heading text-3xl font-bold text-white md:text-4xl">
+          <h2 className="font-heading text-3xl font-bold text-gray-900 md:text-4xl">
             Événements à venir
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-gray-400">
+          <p className="mx-auto mt-4 max-w-xl text-gray-600">
             Reste connecté et réserve ta place pour les prochains rendez-vous
             du mouvement Worship Gift.
           </p>
@@ -50,7 +50,7 @@ export default function EventsList() {
             <motion.div
               key={event.title}
               variants={cardVariants}
-              className="group flex flex-col overflow-hidden rounded-lg border border-white/10 bg-black transition-all hover:border-[#C9A84C]/30 hover:shadow-lg hover:shadow-[#C9A84C]/5"
+              className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md active:scale-[0.98]"
             >
               <div className="relative aspect-[16/9] overflow-hidden">
                 <Image
@@ -60,14 +60,14 @@ export default function EventsList() {
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               </div>
 
               <div className="flex flex-1 flex-col gap-3 p-5">
-                <h3 className="font-heading text-lg font-semibold text-white">
+                <h3 className="font-heading text-lg font-semibold text-gray-900">
                   {event.title}
                 </h3>
-                <div className="flex flex-wrap gap-3 text-xs text-gray-400">
+                <div className="flex flex-wrap gap-3 text-xs text-gray-500">
                   <span>{event.date}</span>
                   <span>{event.time}</span>
                   <span>{event.location}</span>
@@ -78,7 +78,7 @@ export default function EventsList() {
                 <div className="mt-auto pt-2">
                   <Link
                     href="/billetterie"
-                    className="inline-flex h-10 items-center justify-center rounded-md border border-[#C9A84C]/40 px-5 text-xs font-medium text-[#C9A84C] transition-all hover:border-[#C9A84C] hover:bg-[#C9A84C]/10"
+                    className="inline-flex h-10 items-center justify-center rounded-md border border-[#C9A84C]/40 px-5 text-xs font-medium text-[#C9A84C] transition-all hover:border-[#C9A84C] hover:bg-[#C9A84C]/10 active:scale-[0.97]"
                   >
                     Voir les détails
                   </Link>

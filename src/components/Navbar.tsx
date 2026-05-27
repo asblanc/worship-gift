@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/lib/supabase/auth-context";
@@ -10,14 +11,17 @@ const navLinks = [
   { label: "Accueil", href: "/" },
   { label: "À propos", href: "/a-propos" },
   { label: "Galerie", href: "/galerie" },
-  { label: "YouTube", href: "/youtube" },
+  { label: "Médias", href: "/youtube" },
   { label: "Billetterie", href: "/billetterie" },
   { label: "Contact", href: "/contact" },
 ];
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
   const { user, loading } = useAuth();
+
+  const isActive = (href: string) => pathname === href;
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
@@ -45,9 +49,18 @@ export default function Navbar() {
               <li key={link.label}>
                 <Link
                   href={link.href}
-                  className="relative text-sm font-medium text-gray-300 transition-colors hover:text-[#C9A84C]"
+                  className={`relative text-sm font-medium transition-colors duration-300 ${
+                    isActive(link.href)
+                      ? "text-[#C9A84C]"
+                      : "text-gray-300 hover:text-[#C9A84C]"
+                  } group`}
                 >
                   {link.label}
+                  <span
+                    className={`absolute -bottom-1 left-0 h-[2px] bg-[#C9A84C] transition-all duration-300 ease-out group-hover:w-full ${
+                      isActive(link.href) ? "w-full" : "w-0"
+                    }`}
+                  />
                 </Link>
               </li>
             ))}
@@ -111,7 +124,11 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block rounded-md px-4 py-3 text-base font-medium text-gray-300 transition-colors hover:bg-white/5 hover:text-[#C9A84C]"
+                    className={`block rounded-md px-4 py-3 text-base font-medium transition-colors hover:bg-white/5 ${
+                      isActive(link.href)
+                        ? "text-[#C9A84C] bg-[#C9A84C]/10"
+                        : "text-gray-300 hover:text-[#C9A84C]"
+                    }`}
                   >
                     {link.label}
                   </Link>

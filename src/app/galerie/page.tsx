@@ -6,12 +6,21 @@ import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Lightbox from "@/components/Lightbox";
 
-const images = Array.from({ length: 12 }, (_, i) => ({
-  src: `/img_worship-gift/img_${i + 1}.jpg`,
-  alt: `Galerie Worship Gift – Photo ${i + 1}`,
-}));
+const images = [
+  { src: "/img_worship-gift/img_1.jpg", alt: "Galerie Worship Gift – Photo 1" },
+  { src: "/img_worship-gift/img_3.jpg", alt: "Galerie Worship Gift – Photo 2" },
+  { src: "/img_worship-gift/img_4.jpg", alt: "Galerie Worship Gift – Photo 3" },
+  { src: "/img_worship-gift/img_5.jpg", alt: "Galerie Worship Gift – Photo 4" },
+  { src: "/img_worship-gift/img_6.jpg", alt: "Galerie Worship Gift – Photo 5" },
+  { src: "/img_worship-gift/img_7.jpg", alt: "Galerie Worship Gift – Photo 6" },
+  { src: "/img_worship-gift/img_9.jpg", alt: "Galerie Worship Gift – Photo 7" },
+  { src: "/img_worship-gift/img_11.jpg", alt: "Galerie Worship Gift – Photo 8" },
+  { src: "/img_worship-gift/img_12.jpg", alt: "Galerie Worship Gift – Photo 9" },
+  { src: "/img_worship-gift/hero-2.jpg", alt: "Galerie Worship Gift – Photo 10" },
+  { src: "/img_worship-gift/hero-3.jpg", alt: "Galerie Worship Gift – Photo 11" },
+  { src: "/img_worship-gift/hero-4.jpg", alt: "Galerie Worship Gift – Photo 12" },
+];
 
-// Disposition masonry : on alterne des hauteurs pour créer l'effet irrégulier
 const heights = [
   "row-span-2", "row-span-1", "row-span-1",
   "row-span-1", "row-span-2", "row-span-1",
@@ -21,11 +30,7 @@ const heights = [
 
 const containerVariants = {
   hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.08,
-    },
-  },
+  visible: { transition: { staggerChildren: 0.08 } },
 };
 
 const itemVariants = {
@@ -38,26 +43,28 @@ export default function GaleriePage() {
 
   const openLightbox = (index: number) => setLightboxIndex(index);
   const closeLightbox = () => setLightboxIndex(null);
-
-  const prevImage = () => {
+  const prevImage = () =>
     setLightboxIndex((prev) =>
       prev !== null ? (prev - 1 + images.length) % images.length : null,
     );
-  };
-
-  const nextImage = () => {
+  const nextImage = () =>
     setLightboxIndex((prev) =>
       prev !== null ? (prev + 1) % images.length : null,
     );
-  };
 
   return (
     <>
       <Navbar />
       <main className="flex-1 pt-20">
-        {/* Héro de page */}
-        <section className="border-b border-white/10 px-6 py-20 md:py-28">
-          <div className="mx-auto max-w-4xl text-center">
+        {/* Héro — fond noir */}
+        <section className="relative border-b border-white/10 bg-black px-6 py-24 md:py-32">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#C9A84C]/5 to-transparent" />
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="relative z-10 mx-auto max-w-4xl text-center"
+          >
             <h1 className="font-heading text-5xl font-bold text-[#C9A84C] md:text-6xl">
               Galerie
             </h1>
@@ -66,11 +73,11 @@ export default function GaleriePage() {
               galerie d'images. Louange, adoration, communion&hellip;
               chaque photo raconte une histoire.
             </p>
-          </div>
+          </motion.div>
         </section>
 
-        {/* Grille masonry */}
-        <section className="px-4 py-16 md:px-8 md:py-20">
+        {/* Grille masonry fond clair */}
+        <section className="bg-[#F3EFE6] px-4 py-16 md:px-8 md:py-20">
           <div className="mx-auto max-w-7xl">
             <motion.div
               variants={containerVariants}
@@ -83,7 +90,7 @@ export default function GaleriePage() {
                 <motion.div
                   key={img.src}
                   variants={itemVariants}
-                  className={`group relative cursor-pointer overflow-hidden rounded-lg border border-white/10 ${heights[index % heights.length]}`}
+                  className={`group relative cursor-pointer overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm ${heights[index % heights.length]}`}
                   onClick={() => openLightbox(index)}
                 >
                   <Image
@@ -93,21 +100,9 @@ export default function GaleriePage() {
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                     sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   />
-
-                  {/* Overlay au survol */}
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-300 group-hover:bg-black/60">
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-300 group-hover:bg-black/50">
                     <span className="flex h-12 w-12 scale-50 items-center justify-center rounded-full border border-[#C9A84C] text-[#C9A84C] opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <circle cx="11" cy="11" r="8" />
                         <line x1="21" y1="21" x2="16.65" y2="16.65" />
                       </svg>
@@ -120,7 +115,6 @@ export default function GaleriePage() {
         </section>
       </main>
 
-      {/* Lightbox */}
       {lightboxIndex !== null && (
         <Lightbox
           images={images}

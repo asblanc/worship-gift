@@ -88,13 +88,14 @@ export default function AProposPage() {
     <>
       <Navbar />
       <main className="flex-1 pt-20">
-        {/* Héro */}
-        <section className="border-b border-white/10 px-6 py-20 md:py-28">
+        {/* Héro — fond noir */}
+        <section className="relative border-b border-white/10 bg-black px-6 py-24 md:py-32">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#C9A84C]/5 to-transparent" />
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="mx-auto max-w-4xl text-center"
+            className="relative z-10 mx-auto max-w-4xl text-center"
           >
             <h1 className="font-heading text-5xl font-bold text-[#C9A84C] md:text-6xl">
               À propos
@@ -107,8 +108,8 @@ export default function AProposPage() {
           </motion.div>
         </section>
 
-        {/* Vision & Mission */}
-        <section className="px-6 py-16 md:py-20">
+        {/* Vision & Mission — fond blanc cassé */}
+        <section className="bg-[#F9F5EC] px-6 py-16 md:py-20">
           <div className="mx-auto max-w-5xl">
             <div className="grid gap-12 md:grid-cols-2 md:items-center">
               <motion.div
@@ -116,7 +117,7 @@ export default function AProposPage() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                className="relative aspect-[4/3] overflow-hidden rounded-lg border border-white/10"
+                className="relative aspect-[4/3] overflow-hidden rounded-lg border border-gray-200 shadow-sm"
               >
                 <Image
                   src="/img_worship-gift/hero-1.png"
@@ -125,7 +126,7 @@ export default function AProposPage() {
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-tr from-black/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-black/40 to-transparent" />
               </motion.div>
 
               <motion.div
@@ -136,16 +137,16 @@ export default function AProposPage() {
                 className="space-y-10"
               >
                 <motion.div variants={fadeUp}>
-                  <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#C9A84C]/30 bg-[#C9A84C]/10 text-[#C9A84C]">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#C9A84C]/40 bg-[#C9A84C]/15 text-[#C9A84C]">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
                       <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                     </svg>
                   </span>
-                  <h2 className="mt-4 font-heading text-3xl font-semibold text-white">
+                  <h2 className="mt-4 font-heading text-3xl font-semibold text-gray-900">
                     Notre vision
                   </h2>
-                  <p className="mt-3 leading-relaxed text-gray-400">
+                  <p className="mt-3 leading-relaxed text-gray-600">
                     Voir une génération transformée par la puissance de la
                     louange, où chaque voix trouve sa place dans l'unité du
                     corps de Christ. Nous croyons que le gospel est un langage
@@ -154,17 +155,17 @@ export default function AProposPage() {
                 </motion.div>
 
                 <motion.div variants={fadeUp}>
-                  <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#C9A84C]/30 bg-[#C9A84C]/10 text-[#C9A84C]">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#C9A84C]/40 bg-[#C9A84C]/15 text-[#C9A84C]">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                       <circle cx="12" cy="12" r="10" />
                       <path d="M12 16v-4" />
                       <path d="M12 8h.01" />
                     </svg>
                   </span>
-                  <h2 className="mt-4 font-heading text-3xl font-semibold text-white">
+                  <h2 className="mt-4 font-heading text-3xl font-semibold text-gray-900">
                     Notre mission
                   </h2>
-                  <p className="mt-3 leading-relaxed text-gray-400">
+                  <p className="mt-3 leading-relaxed text-gray-600">
                     Rassembler, former et équiper des adorateurs passionnés
                     pour impacter notre génération par la musique gospel. À
                     travers des événements, des formations et des rencontres,
@@ -176,8 +177,8 @@ export default function AProposPage() {
           </div>
         </section>
 
-        {/* Histoire - Timeline */}
-        <section className="bg-white/[0.02] px-6 py-16 md:py-20">
+        {/* Timeline — fond blanc cassé alterné */}
+        <section className="bg-[#F3EFE6] px-6 py-16 md:py-20">
           <div className="mx-auto max-w-3xl">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
@@ -186,18 +187,17 @@ export default function AProposPage() {
               transition={{ duration: 0.5 }}
               className="mb-14 text-center"
             >
-              <h2 className="font-heading text-3xl font-bold text-white md:text-4xl">
+              <h2 className="font-heading text-3xl font-bold text-gray-900 md:text-4xl">
                 Notre histoire
               </h2>
-              <p className="mx-auto mt-4 max-w-xl text-gray-400">
+              <p className="mx-auto mt-4 max-w-xl text-gray-600">
                 De la vision à la réalité, voici les étapes qui ont marqué
                 le chemin de Worship Gift.
               </p>
             </motion.div>
 
             <div className="relative">
-              {/* Ligne verticale */}
-              <div className="absolute left-5 top-0 h-full w-px bg-[#C9A84C]/20 md:left-1/2 md:-translate-x-px" />
+              <div className="absolute left-5 top-0 h-full w-px bg-[#C9A84C]/40 md:left-1/2 md:-translate-x-px" />
 
               <motion.div
                 variants={staggerContainer}
@@ -214,27 +214,24 @@ export default function AProposPage() {
                       i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
                     }`}
                   >
-                    {/* Point sur la timeline */}
                     <div className="absolute left-5 top-1 z-10 flex h-2.5 w-2.5 -translate-x-1/2 items-center justify-center md:left-1/2">
                       <span className="h-full w-full rounded-full bg-[#C9A84C]" />
                     </div>
 
-                    {/* Année */}
                     <div className={`hidden md:block md:w-1/2 ${i % 2 === 0 ? "md:pr-12 md:text-right" : "md:pl-12"}`}>
-                      <span className="font-heading text-4xl font-bold text-[#C9A84C]/60">
+                      <span className="font-heading text-4xl font-bold text-[#C9A84C]/50">
                         {item.year}
                       </span>
                     </div>
 
-                    {/* Contenu */}
                     <div className="ml-12 md:ml-0 md:w-1/2">
                       <span className="font-heading text-2xl font-bold text-[#C9A84C] md:hidden">
                         {item.year}
                       </span>
-                      <h3 className="mt-1 font-heading text-lg font-semibold text-white">
+                      <h3 className="mt-1 font-heading text-lg font-semibold text-gray-900">
                         {item.title}
                       </h3>
-                      <p className="mt-2 text-sm leading-relaxed text-gray-400">
+                      <p className="mt-2 text-sm leading-relaxed text-gray-600">
                         {item.desc}
                       </p>
                     </div>
@@ -245,8 +242,8 @@ export default function AProposPage() {
           </div>
         </section>
 
-        {/* Valeurs */}
-        <section className="px-6 py-16 md:py-20">
+        {/* Valeurs — fond blanc cassé */}
+        <section className="bg-[#F9F5EC] px-6 py-16 md:py-20">
           <div className="mx-auto max-w-4xl">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
@@ -258,7 +255,7 @@ export default function AProposPage() {
               <h2 className="font-heading text-3xl font-bold text-[#C9A84C] md:text-4xl">
                 Nos valeurs
               </h2>
-              <p className="mx-auto mt-4 max-w-xl text-gray-400">
+              <p className="mx-auto mt-4 max-w-xl text-gray-600">
                 Trois piliers qui guident chaque note, chaque rencontre,
                 chaque action du mouvement.
               </p>
@@ -275,15 +272,15 @@ export default function AProposPage() {
                 <motion.div
                   key={v.title}
                   variants={fadeUp}
-                  className="group rounded-lg border border-white/10 bg-black p-6 transition-all hover:border-[#C9A84C]/30 hover:shadow-lg hover:shadow-[#C9A84C]/5"
+                  className="group rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md active:scale-[0.98]"
                 >
                   <span className="flex h-12 w-12 items-center justify-center rounded-lg border border-[#C9A84C]/30 bg-[#C9A84C]/10 text-[#C9A84C] transition-colors group-hover:bg-[#C9A84C]/20">
                     {v.icon}
                   </span>
-                  <h3 className="mt-5 font-heading text-xl font-semibold text-white">
+                  <h3 className="mt-5 font-heading text-xl font-semibold text-gray-900">
                     {v.title}
                   </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-gray-400">
+                  <p className="mt-3 text-sm leading-relaxed text-gray-600">
                     {v.desc}
                   </p>
                 </motion.div>
@@ -292,8 +289,8 @@ export default function AProposPage() {
           </div>
         </section>
 
-        {/* Équipe */}
-        <section className="bg-white/[0.02] px-6 py-16 md:py-20">
+        {/* Équipe — fond blanc cassé alterné */}
+        <section className="bg-[#F3EFE6] px-6 py-16 md:py-20">
           <div className="mx-auto max-w-4xl">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
@@ -302,10 +299,10 @@ export default function AProposPage() {
               transition={{ duration: 0.5 }}
               className="mb-12 text-center"
             >
-              <h2 className="font-heading text-3xl font-bold text-white md:text-4xl">
+              <h2 className="font-heading text-3xl font-bold text-gray-900 md:text-4xl">
                 L'équipe
               </h2>
-              <p className="mx-auto mt-4 max-w-xl text-gray-400">
+              <p className="mx-auto mt-4 max-w-xl text-gray-600">
                 Des cœurs passionnés, unis par la même vision : porter la
                 louange au plus haut niveau.
               </p>
@@ -322,12 +319,12 @@ export default function AProposPage() {
                 <motion.div
                   key={membre.nom + membre.role}
                   variants={fadeUp}
-                  className="flex flex-col items-center rounded-lg border border-white/10 bg-black p-8 text-center"
+                  className="flex flex-col items-center rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm"
                 >
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full border border-[#C9A84C]/20 bg-[#C9A84C]/5 text-2xl font-bold text-[#C9A84C]/60">
+                  <div className="flex h-20 w-20 items-center justify-center rounded-full border border-[#C9A84C]/30 bg-[#C9A84C]/10 text-2xl font-bold text-[#C9A84C]/60">
                     ?
                   </div>
-                  <h3 className="mt-5 font-heading text-lg font-semibold text-white">
+                  <h3 className="mt-5 font-heading text-lg font-semibold text-gray-900">
                     {membre.nom}
                   </h3>
                   <p className="mt-1 text-sm text-gray-500">{membre.role}</p>
@@ -337,8 +334,8 @@ export default function AProposPage() {
           </div>
         </section>
 
-        {/* CTA bas de page */}
-        <section className="border-t border-white/10 px-6 py-16 md:py-24">
+        {/* CTA bas de page — fond blanc cassé */}
+        <section className="border-t border-gray-200 bg-[#F9F5EC] px-6 py-16 md:py-24">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -346,10 +343,10 @@ export default function AProposPage() {
             transition={{ duration: 0.5 }}
             className="mx-auto max-w-2xl text-center"
           >
-            <h2 className="font-heading text-3xl font-semibold text-white">
+            <h2 className="font-heading text-3xl font-semibold text-gray-900">
               Tu veux faire partie du mouvement ?
             </h2>
-            <p className="mt-4 text-gray-400">
+            <p className="mt-4 text-gray-600">
               Rejoins-nous lors de nos prochains événements, abonne-toi à
               notre chaîne YouTube et suis-nous sur les réseaux pour vivre
               la louange avec nous.

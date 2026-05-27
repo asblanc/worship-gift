@@ -14,7 +14,11 @@ const containerVariants = {
 
 const cardVariants = {
   hidden: { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" as const },
+  },
 };
 
 export default function BilletteriePage() {
@@ -22,9 +26,15 @@ export default function BilletteriePage() {
     <>
       <Navbar />
       <main className="flex-1 pt-20">
-        {/* Héro */}
-        <section className="border-b border-white/10 px-6 py-20 md:py-28">
-          <div className="mx-auto max-w-4xl text-center">
+        {/* Héro — fond noir */}
+        <section className="relative border-b border-white/10 bg-black px-6 py-24 md:py-32">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#C9A84C]/5 to-transparent" />
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="relative z-10 mx-auto max-w-4xl text-center"
+          >
             <h1 className="font-heading text-5xl font-bold text-[#C9A84C] md:text-6xl">
               Billetterie
             </h1>
@@ -33,11 +43,11 @@ export default function BilletteriePage() {
               d'adoration au cœur du mouvement Worship Gift. Chaque
               rencontre est une invitation à la communion et à la joie.
             </p>
-          </div>
+          </motion.div>
         </section>
 
-        {/* Liste des événements */}
-        <section className="px-6 py-16 md:py-20">
+        {/* Liste des événements — fond blanc cassé */}
+        <section className="bg-[#F9F5EC] px-6 py-16 md:py-20">
           <div className="mx-auto max-w-4xl">
             <motion.div
               variants={containerVariants}
@@ -50,7 +60,7 @@ export default function BilletteriePage() {
                 <motion.div
                   key={event.title}
                   variants={cardVariants}
-                  className="group flex flex-col overflow-hidden rounded-lg border border-white/10 bg-black transition-all hover:border-[#C9A84C]/30 hover:shadow-lg hover:shadow-[#C9A84C]/5 md:flex-row"
+                  className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md md:flex-row"
                 >
                   {/* Image */}
                   <div className="relative aspect-[16/9] w-full overflow-hidden md:aspect-auto md:w-72">
@@ -66,11 +76,11 @@ export default function BilletteriePage() {
 
                   {/* Contenu */}
                   <div className="flex flex-1 flex-col gap-3 p-6">
-                    <h2 className="font-heading text-xl font-semibold text-white md:text-2xl">
+                    <h2 className="font-heading text-xl font-semibold text-gray-900 md:text-2xl">
                       {event.title}
                     </h2>
 
-                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-400">
+                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-500">
                       <span className="flex items-center gap-1.5">
                         <span className="h-1 w-1 rounded-full bg-[#C9A84C]" />
                         {event.date}
@@ -85,7 +95,7 @@ export default function BilletteriePage() {
                       </span>
                     </div>
 
-                    <p className="text-sm leading-relaxed text-gray-500">
+                    <p className="text-sm leading-relaxed text-gray-600">
                       {event.description}
                     </p>
 
@@ -98,7 +108,7 @@ export default function BilletteriePage() {
                         href={event.ticketLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex h-10 items-center justify-center rounded-md bg-[#C9A84C] px-6 text-sm font-semibold text-black transition-all hover:bg-[#F0CB6A] hover:shadow-md hover:shadow-[#C9A84C]/30"
+                        className="inline-flex h-10 items-center justify-center rounded-md bg-[#C9A84C] px-6 text-sm font-semibold text-black transition-all hover:bg-[#F0CB6A] hover:shadow-md hover:shadow-[#C9A84C]/30 active:scale-[0.97]"
                       >
                         Réserver
                       </a>
@@ -110,17 +120,23 @@ export default function BilletteriePage() {
           </div>
         </section>
 
-        {/* CTA bas de page */}
-        <section className="border-t border-white/10 px-6 py-16 md:py-20">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="font-heading text-3xl font-semibold text-white">
+        {/* CTA bas de page — fond légèrement différent */}
+        <section className="border-t border-gray-200 bg-[#F3EFE6] px-6 py-16 md:py-20">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.5 }}
+            className="mx-auto max-w-2xl text-center"
+          >
+            <h2 className="font-heading text-3xl font-semibold text-gray-900">
               Tu veux être informé des prochains événements ?
             </h2>
-            <p className="mt-4 text-gray-400">
+            <p className="mt-4 text-gray-600">
               Suis-nous sur nos réseaux pour ne rien manquer et recevoir les
               annonces en avant-première.
             </p>
-          </div>
+          </motion.div>
         </section>
       </main>
     </>

@@ -15,8 +15,7 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 
-import Footer from "@/components/Footer";
-import { AuthProvider } from "@/lib/supabase/auth-context";
+import ClientLayout from "@/components/ClientLayout";
 import { defaultMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = defaultMetadata;
@@ -32,11 +31,8 @@ export default function RootLayout({
       className={`${inter.variable} ${cormorant.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col dark">
-        <AuthProvider>
-          {children}
-          <Footer />
-        </AuthProvider>
+      <body className="min-h-full flex flex-col bg-[#000000]">
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );

@@ -35,16 +35,53 @@ const units = [
 ];
 
 export default function Countdown() {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>(
-    calcTimeLeft(nextEvent.date),
-  );
+  const [mounted, setMounted] = useState(false);
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
   useEffect(() => {
+    setMounted(true);
+    setTimeLeft(calcTimeLeft(nextEvent.date));
+
     const timer = setInterval(() => {
       setTimeLeft(calcTimeLeft(nextEvent.date));
     }, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  if (!mounted) {
+    return (
+      <section className="px-6 py-16 md:py-20">
+        <div className="mx-auto max-w-4xl text-center">
+          <p className="mb-8 text-sm font-medium uppercase tracking-[0.2em] text-gray-400">
+            {nextEvent.title}
+          </p>
+          <div className="flex items-center justify-center gap-2 md:gap-4">
+            {units.map((unit, i) => (
+              <div
+                key={unit.key}
+                className="flex flex-col items-center"
+                style={{ animationDelay: `${i * 0.1}s` }}
+              >
+                <div className="flex h-20 w-20 flex-col items-center justify-center rounded-lg border border-[#C9A84C]/20 bg-[#C9A84C]/5 backdrop-blur-sm md:h-28 md:w-28">
+                  <span className="font-heading text-3xl font-bold text-white md:text-5xl">
+                    --
+                  </span>
+                </div>
+                <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.15em] text-gray-500 md:text-xs">
+                  {unit.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="px-6 py-16 md:py-20">

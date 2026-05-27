@@ -4,7 +4,7 @@ Site web premium du mouvement gospel **Worship Gift** – un espace dédié à l
 
 ## Stack technique
 
-- **Framework :** Next.js 15 (App Router, TypeScript)
+- **Framework :** Next.js 16 (App Router, TypeScript, Turbopack)
 - **Styles :** Tailwind CSS v4 + Shadcn UI
 - **Animations :** Framer Motion
 - **Base de données / Auth :** Supabase
@@ -54,15 +54,15 @@ npm run build
 npm start
 ```
 
-## Pages prévues
+## Pages
 
-- [x] Accueil (Hero + présentation)
-- [ ] À propos
-- [ ] Galerie
-- [ ] YouTube / Live
-- [ ] Billetterie
-- [ ] Contact
-- [ ] Authentification (connexion, inscription, espace personnel)
+- [x] Accueil (Hero + présentation, marquee, countdown)
+- [x] À propos
+- [x] Galerie
+- [x] YouTube / Live
+- [x] Billetterie
+- [x] Contact
+- [x] Authentification (connexion, inscription, espace personnel /dashboard)
 
 ## Structure du projet
 

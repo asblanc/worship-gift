@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "YouTube",
+  title: "Médias",
   description:
-    "Retrouvez les lives, sessions de louange et vidéos exclusives de Worship Gift sur YouTube. Abonnez-vous à notre chaîne gospel.",
+    "Vidéothèque Worship Gift : retrouvez les lives, sessions de louange et vidéos exclusives. Abonnez-vous à notre chaîne YouTube.",
   openGraph: {
-    title: "YouTube | Worship Gift",
+    title: "Médias | Worship Gift",
     description:
-      "Retrouvez les lives, sessions de louange et vidéos exclusives de Worship Gift sur YouTube.",
+      "Vidéothèque Worship Gift : retrouvez les lives, sessions de louange et vidéos exclusives.",
   },
 };
 
