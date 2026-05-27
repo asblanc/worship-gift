@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import VideoLightbox from "@/components/VideoLightbox";
 import {
@@ -43,9 +44,16 @@ export default function MediasPage() {
     <>
       <Navbar />
       <main className="flex-1 pt-20">
-        {/* Héro — fond noir */}
-        <section className="relative border-b border-white/10 bg-black px-6 py-24 md:py-32">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#C9A84C]/5 to-transparent" />
+        {/* Héro — fond noir avec image d'illustration */}
+        <section className="relative border-b border-white/10 bg-black px-6 py-24 md:py-32 overflow-hidden">
+          <Image
+            src="/img_worship-gift/img_media.jpg"
+            alt="Médias Worship Gift"
+            fill
+            className="object-cover opacity-40"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black" />
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}

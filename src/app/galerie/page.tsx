@@ -6,6 +6,7 @@ import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Lightbox from "@/components/Lightbox";
 
+// Uniquement les images img_* présentes dans /public/img_worship-gift
 const images = [
   { src: "/img_worship-gift/img_1.jpg", alt: "Galerie Worship Gift – Photo 1" },
   { src: "/img_worship-gift/img_3.jpg", alt: "Galerie Worship Gift – Photo 2" },
@@ -16,16 +17,12 @@ const images = [
   { src: "/img_worship-gift/img_9.jpg", alt: "Galerie Worship Gift – Photo 7" },
   { src: "/img_worship-gift/img_11.jpg", alt: "Galerie Worship Gift – Photo 8" },
   { src: "/img_worship-gift/img_12.jpg", alt: "Galerie Worship Gift – Photo 9" },
-  { src: "/img_worship-gift/hero-2.jpg", alt: "Galerie Worship Gift – Photo 10" },
-  { src: "/img_worship-gift/hero-3.jpg", alt: "Galerie Worship Gift – Photo 11" },
-  { src: "/img_worship-gift/hero-4.jpg", alt: "Galerie Worship Gift – Photo 12" },
 ];
 
 const heights = [
   "row-span-2", "row-span-1", "row-span-1",
   "row-span-1", "row-span-2", "row-span-1",
   "row-span-1", "row-span-1", "row-span-2",
-  "row-span-2", "row-span-1", "row-span-1",
 ];
 
 const containerVariants = {
@@ -56,9 +53,16 @@ export default function GaleriePage() {
     <>
       <Navbar />
       <main className="flex-1 pt-20">
-        {/* Héro — fond noir */}
+        {/* Héro avec image d'illustration img_media.jpg (n'existe pas → fallback hero-1) */}
         <section className="relative border-b border-white/10 bg-black px-6 py-24 md:py-32">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#C9A84C]/5 to-transparent" />
+          <Image
+            src="/img_worship-gift/hero-1.jpg"
+            alt="Worship Gift Galerie"
+            fill
+            className="object-cover opacity-40"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black" />
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}

@@ -21,14 +21,85 @@ const cardVariants = {
   },
 };
 
+// Affiche CSS — format vertical pour billetterie
+function EventPosterVertical({
+  event,
+}: {
+  event: (typeof upcomingEvents)[0];
+}) {
+  return (
+    <div
+      className="relative flex aspect-[2/3] w-full shrink-0 flex-col items-center justify-center overflow-hidden md:w-56"
+      style={{
+        background: `linear-gradient(180deg, #000000 0%, #1a1a1a 50%, ${event.color}10 100%)`,
+      }}
+    >
+      {/* Motif de points subtil */}
+      <div
+        className="absolute inset-0 opacity-10"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle, #C9A84C 1px, transparent 1px)",
+          backgroundSize: "16px 16px",
+        }}
+      />
+
+      {/* Logo Worship Gift */}
+      <div className="absolute top-4 z-10">
+        <img
+          src="/img_worship-gift/logo-worship-gift.png"
+          alt="Worship Gift"
+          className="h-5 w-auto opacity-80"
+        />
+      </div>
+
+      {/* Badge PROCHAINEMENT */}
+      <div className="absolute top-14 z-10">
+        <span className="inline-block rounded-full border border-[#C9A84C]/40 bg-[#C9A84C]/10 px-3 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-[#C9A84C]">
+          Prochainement
+        </span>
+      </div>
+
+      {/* Titre */}
+      <div className="flex-1 flex flex-col items-center justify-center px-4 text-center">
+        <h3 className="font-heading text-base font-bold leading-tight text-[#C9A84C] md:text-lg">
+          {event.title}
+        </h3>
+        <div className="mt-3 space-y-1 text-[10px] text-gray-300">
+          <p>{event.date}</p>
+          <p>{event.time}</p>
+          <p>{event.location}</p>
+        </div>
+      </div>
+
+      {/* Bouton */}
+      <div className="mb-4">
+        <span className="inline-flex h-8 items-center justify-center rounded-md bg-[#C9A84C] px-4 text-[10px] font-semibold text-black">
+          Réserver
+        </span>
+      </div>
+
+      {/* Overlay dégradé */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+    </div>
+  );
+}
+
 export default function BilletteriePage() {
   return (
     <>
       <Navbar />
       <main className="flex-1 pt-20">
-        {/* Héro — fond noir */}
-        <section className="relative border-b border-white/10 bg-black px-6 py-24 md:py-32">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#C9A84C]/5 to-transparent" />
+        {/* Héro — fond noir avec image d'illustration */}
+        <section className="relative border-b border-white/10 bg-black px-6 py-24 md:py-32 overflow-hidden">
+          <Image
+            src="/img_worship-gift/img_billeterie.jpg"
+            alt="Billetterie Worship Gift"
+            fill
+            className="object-cover opacity-40"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black" />
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -46,7 +117,7 @@ export default function BilletteriePage() {
           </motion.div>
         </section>
 
-        {/* Liste des événements — fond blanc cassé */}
+        {/* Événements — fond blanc cassé */}
         <section className="bg-[#F9F5EC] px-6 py-16 md:py-20">
           <div className="mx-auto max-w-4xl">
             <motion.div
@@ -62,17 +133,8 @@ export default function BilletteriePage() {
                   variants={cardVariants}
                   className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md md:flex-row"
                 >
-                  {/* Image */}
-                  <div className="relative aspect-[16/9] w-full overflow-hidden md:aspect-auto md:w-72">
-                    <Image
-                      src={event.image}
-                      alt={event.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 768px) 100vw, 288px"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent md:bg-gradient-to-r" />
-                  </div>
+                  {/* Affiche CSS verticale */}
+                  <EventPosterVertical event={event} />
 
                   {/* Contenu */}
                   <div className="flex flex-1 flex-col gap-3 p-6">
@@ -99,7 +161,6 @@ export default function BilletteriePage() {
                       {event.description}
                     </p>
 
-                    {/* Prix + bouton */}
                     <div className="mt-auto flex items-center justify-between pt-4">
                       <span className="font-heading text-2xl font-bold text-[#C9A84C]">
                         {event.price}
@@ -120,7 +181,7 @@ export default function BilletteriePage() {
           </div>
         </section>
 
-        {/* CTA bas de page — fond légèrement différent */}
+        {/* CTA bas de page */}
         <section className="border-t border-gray-200 bg-[#F3EFE6] px-6 py-16 md:py-20">
           <motion.div
             initial={{ opacity: 0, y: 24 }}

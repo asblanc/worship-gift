@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { upcomingEvents } from "@/lib/events-config";
 
 const containerVariants = {
@@ -16,8 +15,67 @@ const containerVariants = {
 
 const cardVariants = {
   hidden: { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" as const },
+  },
 };
+
+// Affiche CSS — format horizontal pour l'accueil
+function EventPoster({ event }: { event: (typeof upcomingEvents)[0] }) {
+  return (
+    <div
+      className="relative aspect-[16/9] overflow-hidden"
+      style={{
+        background: `linear-gradient(135deg, #000000 0%, #1a1a1a 40%, ${event.color}08 100%)`,
+      }}
+    >
+      {/* Motif de points subtil */}
+      <div
+        className="absolute inset-0 opacity-10"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle, #C9A84C 1px, transparent 1px)",
+          backgroundSize: "20px 20px",
+        }}
+      />
+
+      {/* Logo Worship Gift */}
+      <div className="absolute top-3 left-3 z-10">
+        <img
+          src="/img_worship-gift/logo-worship-gift.png"
+          alt="Worship Gift"
+          className="h-6 w-auto opacity-80"
+        />
+      </div>
+
+      {/* Badge PROCHAINEMENT */}
+      <div className="absolute top-3 right-3 z-10">
+        <span className="inline-block rounded-full border border-[#C9A84C]/40 bg-[#C9A84C]/15 px-3 py-0.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#C9A84C]">
+          Bientôt
+        </span>
+      </div>
+
+      {/* Titre centré */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+        <h3 className="font-heading text-xl font-bold leading-tight text-[#C9A84C] md:text-2xl">
+          {event.title}
+        </h3>
+        <div className="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-gray-300">
+          <span>{event.date}</span>
+          <span className="text-[#C9A84C]">•</span>
+          <span>{event.time}</span>
+          <span className="text-[#C9A84C]">•</span>
+          <span>{event.location}</span>
+        </div>
+      </div>
+
+      {/* Overlay dégradé */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+    </div>
+  );
+}
 
 export default function EventsList() {
   return (
@@ -52,16 +110,7 @@ export default function EventsList() {
               variants={cardVariants}
               className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md active:scale-[0.98]"
             >
-              <div className="relative aspect-[16/9] overflow-hidden">
-                <Image
-                  src={event.image}
-                  alt={event.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-              </div>
+              <EventPoster event={event} />
 
               <div className="flex flex-1 flex-col gap-3 p-5">
                 <h3 className="font-heading text-lg font-semibold text-gray-900">

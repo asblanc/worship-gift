@@ -10,9 +10,8 @@ export const emailAddress = "worshipgiftofficiel@gmail.com";
 export const phoneNumber = "+212 698472691";
 
 // -----------------------------------------------------------
-//  VIDÉOTHÈQUE OFFICIELLE
-//  Pour ajouter une vidéo, duplique le bloc { id, title, description }
-//  et remplace l'ID par celui extrait de l'URL YouTube (v=XXXXX).
+//  VIDÉOTHÈQUE OFFICIELLE (8 vidéos)
+//  Pour ajouter une vidéo, duplique le bloc et remplace l'ID.
 // -----------------------------------------------------------
 
 export const youtubeVideos = [
@@ -39,6 +38,30 @@ export const youtubeVideos = [
     title: "Worship Gift – Louange Collective",
     description:
       "Une chorale passionnée, un public enflammé : la louange collective Worship Gift dans toute sa puissance.",
+  },
+  {
+    id: "bwddP8qKHeA",
+    title: "Worship Gift – Gloire & Majesté",
+    description:
+      "Un chant puissant qui célèbre la gloire et la majesté de Dieu à travers une louange vibrante et profonde.",
+  },
+  {
+    id: "iJtiQ43ic2k",
+    title: "Worship Gift – Chants d'Espérance",
+    description:
+      "Une compilation de chants qui apportent espoir et réconfort. La musique gospel comme source de paix intérieure.",
+  },
+  {
+    id: "_Ao35awzdN4",
+    title: "Worship Gift – Célébration de la Foi",
+    description:
+      "Une célébration joyeuse de la foi en musique. Des voix qui s'élèvent ensemble dans une même louange.",
+  },
+  {
+    id: "-Jhdb0oRn9E",
+    title: "Worship Gift – Moments de Grâce",
+    description:
+      "Des instants précieux de grâce capturés en live. L'émotion pure d'un peuple qui loue son Dieu.",
   },
 ];
 
