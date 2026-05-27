@@ -16,7 +16,7 @@ export const phoneNumber = "+212 698472691";
 
 export const youtubeVideos = [
   {
-    id: "fGDm96TtpOE",
+    id: "li7YDI6j3V8",
     title: "Worship Gift – Session de Louange Live",
     description:
       "Une session puissante de louange et d'adoration enregistrée en direct. Laissez-vous porter par l'Esprit à travers chaque note.",
@@ -71,7 +71,7 @@ export const youtubeVideos = [
 
 export const liveSessions = [
   {
-    id: "fGDm96TtpOE",
+    id: "TW0Zs8Fh5TI",
     title: "Live – Soirée de Louange Printemps 2026",
     description:
       "Notre dernière session de louange en direct, pleine de vie et d'énergie.",

@@ -31,11 +31,6 @@ const slides = [
     alt: "Worship Gift en concert",
     position: "center",
   },
-  {
-    src: "/img_worship-gift/hero-6.jpg",
-    alt: "Soirée de louange Worship Gift",
-    position: "center 30%",
-  },
 ];
 
 export default function HeroCarousel() {
@@ -53,10 +48,6 @@ export default function HeroCarousel() {
 
   const next = useCallback(() => {
     goTo((current + 1) % slides.length);
-  }, [current, goTo]);
-
-  const prev = useCallback(() => {
-    goTo((current - 1 + slides.length) % slides.length);
   }, [current, goTo]);
 
   // Auto-play
@@ -198,48 +189,6 @@ export default function HeroCarousel() {
           </Link>
         </motion.div>
       </div>
-
-      {/* Flèches de navigation */}
-      <button
-        onClick={prev}
-        className="absolute left-4 top-1/2 z-20 -translate-y-1/2 rounded-full border border-white/20 p-2 text-white/60 transition-colors hover:border-[#C9A84C] hover:text-[#C9A84C]"
-        aria-label="Image précédente"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={2}
-          stroke="currentColor"
-          className="h-5 w-5 md:h-6 md:w-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15.75 19.5L8.25 12l7.5-7.5"
-          />
-        </svg>
-      </button>
-      <button
-        onClick={next}
-        className="absolute right-4 top-1/2 z-20 -translate-y-1/2 rounded-full border border-white/20 p-2 text-white/60 transition-colors hover:border-[#C9A84C] hover:text-[#C9A84C]"
-        aria-label="Image suivante"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={2}
-          stroke="currentColor"
-          className="h-5 w-5 md:h-6 md:w-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M8.25 4.5l7.5 7.5-7.5 7.5"
-          />
-        </svg>
-      </button>
 
       {/* Indicateurs */}
       <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-2">

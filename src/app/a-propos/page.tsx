@@ -78,7 +78,7 @@ const valeurs = [
 ];
 
 const equipe = [
-  { nom: "À venir", role: "Direction artistique" },
+  { nom: "Directeur", role: "Direction artistique", photo: "/img_worship-gift/img_directeur.jpeg" },
   { nom: "À venir", role: "Coordination" },
   { nom: "À venir", role: "Technique & production" },
 ];
@@ -124,16 +124,16 @@ export default function AProposPage() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                className="relative aspect-[4/3] overflow-hidden rounded-lg border border-gray-200 shadow-sm"
+                className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-black shadow-sm"
               >
+                <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle, #C9A84C 1px, transparent 1px)", backgroundSize: "14px 14px" }} />
                 <Image
-                  src="/img_worship-gift/img_apropos.jpg"
+                  src="/img_worship-gift/logo-worship-gift.png"
                   alt="Worship Gift"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  width={160}
+                  height={160}
+                  className="relative z-10 h-auto w-32 opacity-90 md:w-40"
                 />
-                <div className="absolute inset-0 bg-gradient-to-tr from-black/40 to-transparent" />
               </motion.div>
 
               <motion.div
@@ -328,9 +328,21 @@ export default function AProposPage() {
                   variants={fadeUp}
                   className="flex flex-col items-center rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm"
                 >
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full border border-[#C9A84C]/30 bg-[#C9A84C]/10 text-2xl font-bold text-[#C9A84C]/60">
-                    ?
-                  </div>
+                  {"photo" in membre && membre.photo ? (
+                    <div className="relative h-20 w-20 overflow-hidden rounded-full border border-[#C9A84C]/30 ring-1 ring-[#C9A84C]/20">
+                      <Image
+                        src={membre.photo}
+                        alt={membre.nom}
+                        fill
+                        className="object-cover"
+                        sizes="80px"
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex h-20 w-20 items-center justify-center rounded-full border border-[#C9A84C]/30 bg-[#C9A84C]/10 text-2xl font-bold text-[#C9A84C]/60">
+                      ?
+                    </div>
+                  )}
                   <h3 className="mt-5 font-heading text-lg font-semibold text-gray-900">
                     {membre.nom}
                   </h3>

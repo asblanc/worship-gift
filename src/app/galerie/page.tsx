@@ -53,10 +53,10 @@ export default function GaleriePage() {
     <>
       <Navbar />
       <main className="flex-1 pt-20">
-        {/* Héro avec image d'illustration img_media.jpg (n'existe pas → fallback hero-1) */}
-        <section className="relative border-b border-white/10 bg-black px-6 py-24 md:py-32">
+        {/* Héro avec image d'illustration */}
+        <section className="relative border-b border-white/10 bg-black px-6 py-24 md:py-32 overflow-hidden">
           <Image
-            src="/img_worship-gift/hero-1.jpg"
+            src="/img_worship-gift/img_galerie.jpg"
             alt="Worship Gift Galerie"
             fill
             className="object-cover opacity-40"
