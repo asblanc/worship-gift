@@ -3,15 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
-
-/* ================================================================
-   Worship Gift — /admin/login
-   Page de connexion admin.
-   Vérifie que l'utilisateur a le rôle "admin" dans user_metadata.
-   
-   Pour créer un admin : dans le dashboard Supabase > Auth > Users,
-   ajouter {"role": "admin"} dans le champ user_metadata.
-   ================================================================ */
+import { motion } from "framer-motion";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -33,7 +25,6 @@ export default function AdminLoginPage() {
 
       if (authErr) throw authErr;
 
-      // Vérifier le rôle admin
       const isAdmin = data.user?.user_metadata?.role === "admin";
       if (!isAdmin) {
         await supabase.auth.signOut();
@@ -52,21 +43,29 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-black px-4">
-      <div className="w-full max-w-sm rounded-xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm">
-        <h1 className="font-heading text-2xl font-bold text-white text-center">
-          Administration
-        </h1>
-        <p className="mt-2 text-center text-sm text-gray-400">
-          Worship Gift
-        </p>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-[#0D0D0D] px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="w-full max-w-sm"
+      >
+        {/* Logo + titre */}
+        <div className="mb-10 text-center">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#C9A84C] to-[#F0CB6A] shadow-lg shadow-[#C9A84C]/20">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+          </div>
+          <h1 className="font-heading text-3xl font-bold text-[#C9A84C]">
+            Worship Gift
+          </h1>
+          <p className="mt-1 text-sm text-gray-400">Administration</p>
+        </div>
 
-        <form onSubmit={handleLogin} className="mt-8 space-y-4">
+        <form onSubmit={handleLogin} className="space-y-5">
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-300"
-            >
+            <label htmlFor="email" className="block text-xs font-medium uppercase tracking-wider text-gray-400">
               Email
             </label>
             <input
@@ -75,16 +74,13 @@ export default function AdminLoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              placeholder="admin@worshipgift.ma"
-              className="mt-1 block w-full rounded-md border border-gray-700 bg-black px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors focus:border-[#C9A84C] focus:ring-1 focus:ring-[#C9A84C]"
+              placeholder="admin@worship-gift.com"
+              className="mt-2 block w-full rounded-lg border border-white/10 bg-black/50 px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition-all focus:border-[#C9A84C]/50 focus:ring-2 focus:ring-[#C9A84C]/20"
             />
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-300"
-            >
+            <label htmlFor="password" className="block text-xs font-medium uppercase tracking-wider text-gray-400">
               Mot de passe
             </label>
             <input
@@ -94,33 +90,44 @@ export default function AdminLoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               placeholder="••••••••"
-              className="mt-1 block w-full rounded-md border border-gray-700 bg-black px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors focus:border-[#C9A84C] focus:ring-1 focus:ring-[#C9A84C]"
+              className="mt-2 block w-full rounded-lg border border-white/10 bg-black/50 px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition-all focus:border-[#C9A84C]/50 focus:ring-2 focus:ring-[#C9A84C]/20"
             />
           </div>
 
           {error && (
-            <p className="rounded-md bg-red-500/10 px-3 py-2 text-xs text-red-400">
+            <motion.p
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="rounded-lg bg-red-500/10 border border-red-500/20 px-4 py-3 text-xs text-red-400"
+            >
               {error}
-            </p>
+            </motion.p>
           )}
 
           <button
             type="submit"
             disabled={loading}
-            className={`flex w-full items-center justify-center gap-2 rounded-md px-4 py-3 text-sm font-semibold transition-all ${
+            className={`flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3.5 text-sm font-semibold transition-all duration-300 ${
               loading
-                ? "cursor-not-allowed bg-gray-700 text-gray-400"
-                : "bg-[#C9A84C] text-black hover:bg-[#F0CB6A]"
+                ? "cursor-not-allowed bg-gray-800 text-gray-500"
+                : "bg-[#C9A84C] text-black hover:bg-[#F0CB6A] hover:shadow-lg hover:shadow-[#C9A84C]/30 active:scale-[0.98]"
             }`}
           >
-            {loading ? "Connexion..." : "Se connecter"}
+            {loading ? (
+              <>
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" />
+                Connexion…
+              </>
+            ) : (
+              "Se connecter"
+            )}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-xs text-gray-600">
-          Réservé aux administrateurs
+        <p className="mt-8 text-center text-xs text-gray-700">
+          Accès réservé aux administrateurs
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 }
