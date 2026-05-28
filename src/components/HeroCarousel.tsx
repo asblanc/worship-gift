@@ -22,7 +22,7 @@ const slides = [
     position: "center 30%",
   },
   {
-    src: "/img_worship-gift/hero-3.jpg",
+    src: "/img_worship-gift/hero-3.jpeg",
     alt: "Mouvement gospel Worship Gift",
     position: "center 40%",
   },
