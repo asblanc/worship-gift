@@ -97,17 +97,17 @@ export default function AProposPage() {
             className="object-cover opacity-90 brightness-110 saturate-105"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/55 to-black/90" />
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="relative z-10 mx-auto max-w-4xl text-center"
           >
-            <h1 className="font-heading text-5xl font-bold text-[#C9A84C] md:text-6xl">
+            <h1 className="font-heading text-5xl font-bold text-[#C9A84C] md:text-6xl [text-shadow:0_2px_20px_rgba(0,0,0,0.95)]">
               À propos
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-gray-300">
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
               Worship Gift est un mouvement gospel né d'une passion commune
               pour la louange et l'adoration. Notre mission est de créer
               des espaces où la musique devient une rencontre avec Dieu.

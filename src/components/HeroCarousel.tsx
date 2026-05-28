@@ -27,7 +27,12 @@ const slides = [
     position: "center 40%",
   },
   {
-    src: "/img_worship-gift/heros-51.jpg",
+    src: "/img_worship-gift/hero-4.jpeg",
+    alt: "Worship Gift – Nuit de Gospel",
+    position: "center 25%",
+  },
+  {
+    src: "/img_worship-gift/hero-5.jpg",
     alt: "Worship Gift – Gospel en live",
     position: "center 20%",
   },
