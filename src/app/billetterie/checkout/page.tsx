@@ -26,6 +26,10 @@ import { updateOrderStatus } from "@/lib/orders-service";
    Voir src/app/api/payment/cmi/init/route.ts
    ================================================================ */
 
+// Force dynamic rendering car useSearchParams() nécessite Suspense
+// et cette page dépend entièrement des query params (order, event, quantity...)
+export const dynamic = "force-dynamic";
+
 export default function CheckoutPage() {
   const searchParams = useSearchParams();
   const router = useRouter();

@@ -106,8 +106,8 @@ export default function HeroCarousel() {
             key={s.src}
             src={s.src}
             alt=""
-            fill
-            sizes="1px"
+            width={1}
+            height={1}
             className="object-cover"
             priority={false}
           />
