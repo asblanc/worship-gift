@@ -31,11 +31,6 @@ const slides = [
     alt: "Worship Gift – Nuit de Gospel",
     position: "center 25%",
   },
-  {
-    src: "/img_worship-gift/hero-5.jpg",
-    alt: "Worship Gift – Gospel en live",
-    position: "center 50%",
-  },
 ];
 
 export default function HeroCarousel() {
