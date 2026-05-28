@@ -1,11 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
-import VideoLightbox from "@/components/VideoLightbox";
+
+// Dynamic import : la lightbox vidéo n'est chargée qu'au clic
+const VideoLightbox = dynamic(() => import("@/components/VideoLightbox"), {
+  ssr: false,
+});
 import {
   youtubeVideos,
   liveSessions,

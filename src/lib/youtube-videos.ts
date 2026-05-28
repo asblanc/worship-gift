@@ -22,7 +22,7 @@ export const youtubeVideos = [
       "Une session puissante de louange et d'adoration enregistrée en direct. Laissez-vous porter par l'Esprit à travers chaque note.",
   },
   {
-    id: "u0XvdqkpsUg",
+    id: "wKrsy5DdGO0",
     title: "Worship Gift – Moment d'Adoration",
     description:
       "Un moment d'intimité avec Dieu à travers la musique gospel. Des cœurs unis dans une même louange.",

@@ -1,10 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
-import Lightbox from "@/components/Lightbox";
+
+// Dynamic import : la lightbox n'est chargée qu'au clic
+const Lightbox = dynamic(() => import("@/components/Lightbox"), {
+  ssr: false,
+});
 
 // Uniquement les images img_* présentes dans /public/img_worship-gift
 const images = [

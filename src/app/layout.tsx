@@ -18,7 +18,13 @@ const cormorant = Cormorant_Garamond({
 import ClientLayout from "@/components/ClientLayout";
 import { defaultMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = defaultMetadata;
+export const metadata: Metadata = {
+  ...defaultMetadata,
+  icons: {
+    icon: "/img_worship-gift/logo-worship-gift.png",
+    apple: "/img_worship-gift/logo-worship-gift.png",
+  },
+};
 
 export default function RootLayout({
   children,
@@ -31,7 +37,7 @@ export default function RootLayout({
       className={`${inter.variable} ${cormorant.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-[#000000]">
+      <body className="min-h-full flex flex-col bg-[#000000] overflow-x-hidden">
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>

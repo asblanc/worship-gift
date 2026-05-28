@@ -124,15 +124,15 @@ export default function AProposPage() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-black shadow-sm"
+                className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl border border-[#C9A84C]/20 bg-gradient-to-br from-[#0A0A0A] to-[#1A1A1A] shadow-lg shadow-[#C9A84C]/5"
               >
                 <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle, #C9A84C 1px, transparent 1px)", backgroundSize: "14px 14px" }} />
                 <Image
                   src="/img_worship-gift/logo-worship-gift.png"
-                  alt="Worship Gift"
-                  width={160}
-                  height={160}
-                  className="relative z-10 h-auto w-32 opacity-90 md:w-40"
+                  alt="Logo Worship Gift"
+                  width={220}
+                  height={220}
+                  className="relative z-10 h-auto w-48 drop-shadow-[0_0_30px_rgba(201,168,76,0.15)] md:w-56"
                 />
               </motion.div>
 

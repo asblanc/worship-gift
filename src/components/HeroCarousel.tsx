@@ -26,16 +26,12 @@ const slides = [
     alt: "Groupe de louange Worship Gift",
     position: "center",
   },
-  {
-    src: "/img_worship-gift/hero-5.jpg",
-    alt: "Worship Gift en concert",
-    position: "center",
-  },
 ];
 
 export default function HeroCarousel() {
   const [current, setCurrent] = useState(0);
   const [prevSlide, setPrevSlide] = useState<number | null>(null);
+  const [hideIndicator, setHideIndicator] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const goTo = useCallback(
@@ -58,6 +54,32 @@ export default function HeroCarousel() {
     };
   }, [next]);
 
+  // Swipe mobile
+  const touchStart = useRef(0);
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStart.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const dx = e.changedTouches[0].clientX - touchStart.current;
+    if (Math.abs(dx) > 60) {
+      if (dx < 0) goTo((current + 1) % slides.length);
+      else goTo((current - 1 + slides.length) % slides.length);
+    }
+  };
+
+  // Cacher l'indicateur au scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 80 && !hideIndicator) {
+        setHideIndicator(true);
+      } else if (window.scrollY <= 80 && hideIndicator) {
+        setHideIndicator(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [hideIndicator]);
+
   // Reset prevSlide after transition
   useEffect(() => {
     if (prevSlide !== null) {
@@ -67,7 +89,11 @@ export default function HeroCarousel() {
   }, [prevSlide]);
 
   return (
-    <section className="relative h-dvh w-full overflow-hidden bg-black">
+    <section
+      className="relative h-dvh w-full overflow-hidden bg-black"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
       {/* Préchargement invisible de toutes les images */}
       <div className="hidden" aria-hidden="true">
         {slides.map((s) => (
@@ -190,8 +216,39 @@ export default function HeroCarousel() {
         </motion.div>
       </div>
 
-      {/* Indicateurs */}
-      <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-2">
+      {/* Indicateur de scroll */}
+      <motion.div
+        initial={{ opacity: 1 }}
+        animate={{ opacity: hideIndicator ? 0 : 1 }}
+        transition={{ duration: 0.5 }}
+        className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-2"
+      >
+        <button
+          onClick={() => {
+            const nextSection = document.querySelector("section:not(.h-dvh)");
+            if (!nextSection) {
+              window.scrollBy({ top: window.innerHeight, behavior: "smooth" });
+              return;
+            }
+            (nextSection as HTMLElement).scrollIntoView({ behavior: "smooth" });
+          }}
+          className="flex flex-col items-center gap-2 text-[#C9A84C] hover:text-[#F0CB6A] transition-colors"
+          aria-label="Découvrir le contenu"
+        >
+          <motion.span
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+          </motion.span>
+          <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-[#C9A84C]/80">
+            Découvrir
+          </span>
+        </button>
+      </motion.div>
+
+      {/* Indicateurs dots */}
+      <div className="absolute bottom-8 right-8 z-20 flex gap-2">
         {slides.map((_, i) => (
           <button
             key={i}

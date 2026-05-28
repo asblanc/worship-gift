@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
@@ -19,6 +19,9 @@ export default function Lightbox({
   onPrev,
   onNext,
 }: LightboxProps) {
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       switch (e.key) {
@@ -35,6 +38,21 @@ export default function Lightbox({
     },
     [onClose, onPrev, onNext],
   );
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    const dy = e.changedTouches[0].clientY - touchStartY.current;
+    // Only horizontal swipes (horizontal > vertical)
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 60) {
+      if (dx < 0) onNext();
+      else onPrev();
+    }
+  };
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
@@ -56,6 +74,8 @@ export default function Lightbox({
         transition={{ duration: 0.2 }}
         className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4 backdrop-blur-sm"
         onClick={onClose}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         {/* Bouton fermer */}
         <button
