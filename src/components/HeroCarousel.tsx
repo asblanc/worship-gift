@@ -95,7 +95,7 @@ export default function HeroCarousel() {
 
   return (
     <section
-      className="relative h-dvh w-full overflow-hidden bg-black"
+      className="relative min-h-dvh w-full overflow-hidden bg-black"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >

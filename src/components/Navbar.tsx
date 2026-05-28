@@ -70,13 +70,24 @@ export default function Navbar() {
           {!loading && (
             <>
               {user ? (
-                <Link
-                  href="/dashboard"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-[#C9A84C]/40 bg-[#C9A84C]/10 text-sm font-bold text-[#C9A84C] transition-colors hover:bg-[#C9A84C]/20"
-                  title="Mon espace"
-                >
-                  {(user.email?.charAt(0) || "?").toUpperCase()}
-                </Link>
+                <div className="flex items-center gap-2">
+                  <Link
+                    href="/account"
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-[#C9A84C]/40 bg-[#C9A84C]/10 text-sm font-bold text-[#C9A84C] transition-colors hover:bg-[#C9A84C]/20"
+                    title="Mon espace"
+                  >
+                    {(user.email?.charAt(0) || "?").toUpperCase()}
+                  </Link>
+                  {user.user_metadata?.role === "admin" && (
+                    <Link
+                      href="/admin"
+                      className="rounded-md border border-[#C9A84C]/30 px-3 py-1.5 text-[10px] font-semibold text-[#C9A84C] transition-colors hover:bg-[#C9A84C]/10"
+                      title="Administration"
+                    >
+                      ADMIN
+                    </Link>
+                  )}
+                </div>
               ) : (
                 <Link
                   href="/auth/login"

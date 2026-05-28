@@ -15,37 +15,62 @@ export const nextEvent = {
   coverImage: "/img_worship-gift/hero-1.jpg",
 };
 
-export const upcomingEvents = [
+export interface EventData {
+  id: string;
+  title: string;
+  slug: string;
+  date: string;
+  time: string;
+  location: string;
+  description: string;
+  /** Prix unitaire en centimes (MAD). 0 = gratuit. Ex: 5000 = 50 MAD */
+  priceValue: number;
+  /** Libellé affiché (ex: "Gratuit", "50 MAD", "VIP 150 MAD") */
+  price: string;
+  ticketLink: string;
+  color: string;
+}
+
+export const upcomingEvents: EventData[] = [
   {
+    id: "evt-001",
     title: "Worship Gift – Concert de Louange",
+    slug: "worship-gift-concert-louange",
     date: "15 août 2026",
     time: "19h00",
     location: "Casablanca, Maroc",
     description:
       "Une soirée de louange et d'adoration pour célébrer ensemble la puissance du gospel.",
+    priceValue: 0, // Gratuit
     price: "Gratuit",
     ticketLink: "#",
     color: "#C9A84C",
   },
   {
+    id: "evt-002",
     title: "Soirée d'adoration – Session Spéciale",
+    slug: "soiree-adoration-speciale",
     date: "20 septembre 2026",
     time: "18h30",
     location: "Rabat, Maroc",
     description:
       "Un moment d'intimité et de prière à travers la musique et la louange.",
-    price: "Gratuit",
+    priceValue: 5000, // 50 MAD
+    price: "50 MAD",
     ticketLink: "#",
     color: "#F0CB6A",
   },
   {
+    id: "evt-003",
     title: "Gospel Night – Rassemblement d'été",
+    slug: "gospel-night-rassemblement-ete",
     date: "10 octobre 2026",
     time: "20h00",
     location: "Marrakech, Maroc",
     description:
       "Le grand rassemblement gospel de l'été avec plusieurs chorales invitées.",
-    price: "Gratuit",
+    priceValue: 7500, // 75 MAD
+    price: "75 MAD",
     ticketLink: "#",
     color: "#C9A84C",
   },

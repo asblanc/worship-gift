@@ -29,11 +29,42 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Protéger les routes /dashboard
-  if (!user && request.nextUrl.pathname.startsWith("/dashboard")) {
+  const pathname = request.nextUrl.pathname;
+
+  // Redirection si connecté : /auth/login → /account
+  if (user && pathname.startsWith("/auth/login")) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/account";
+    return NextResponse.redirect(url);
+  }
+
+  // Protéger /dashboard (ancien) et /account (nouveau)
+  if (
+    !user &&
+    (pathname.startsWith("/dashboard") || pathname.startsWith("/account"))
+  ) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";
     return NextResponse.redirect(url);
+  }
+
+  // Protéger /admin — vérifie le rôle admin
+  // Le rôle est stocké dans user_metadata.role = "admin"
+  // Configurer via le dashboard Supabase > Authentication > Users > Edit > Metadata : { "role": "admin" }
+  if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
+    if (!user) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/admin/login";
+      return NextResponse.redirect(url);
+    }
+
+    const isAdmin = user.user_metadata?.role === "admin";
+    if (!isAdmin) {
+      // Utilisateur connecté mais non admin → rediriger vers /account
+      const url = request.nextUrl.clone();
+      url.pathname = "/account";
+      return NextResponse.redirect(url);
+    }
   }
 
   return supabaseResponse;
