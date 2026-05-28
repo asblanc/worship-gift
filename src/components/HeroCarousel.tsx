@@ -7,6 +7,11 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const slides = [
   {
+    src: "/img_worship-gift/hero-0.jpg",
+    alt: "Worship Gift – Louange et adoration",
+    position: "center",
+  },
+  {
     src: "/img_worship-gift/hero-1.jpg",
     alt: "Concert gospel Worship Gift",
     position: "center",
