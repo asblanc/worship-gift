@@ -62,7 +62,7 @@ export default function AdminLayout({
       } = await supabase.auth.getUser();
 
       if (!user || user.user_metadata?.role !== "admin") {
-        router.push("/admin/login");
+        router.push("/auth/login");
         return;
       }
       setUserEmail(user.email || "");
@@ -73,7 +73,7 @@ export default function AdminLayout({
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    router.push("/admin/login");
+    router.push("/auth/login");
     router.refresh();
   };
 
@@ -110,11 +110,11 @@ export default function AdminLayout({
             </button>
 
             <Link href="/admin" className="flex items-center gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#C9A84C] to-[#F0CB6A]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                </svg>
-              </div>
+              <img
+                src="/img_worship-gift/logo-worship-gift.png"
+                alt="Worship Gift"
+                className="h-8 w-8 rounded-full object-cover ring-1 ring-[#C9A84C]/40"
+              />
               <span className="font-heading text-lg font-bold tracking-wider text-[#C9A84C]">
                 Worship Gift
               </span>

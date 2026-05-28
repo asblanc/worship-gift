@@ -31,10 +31,11 @@ export async function updateSession(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
 
-  // Redirection si connecté : /auth/login → /account
+  // Redirection après login : admin → /admin, utilisateur normal → /account
   if (user && pathname.startsWith("/auth/login")) {
     const url = request.nextUrl.clone();
-    url.pathname = "/account";
+    const isAdmin = user.user_metadata?.role === "admin";
+    url.pathname = isAdmin ? "/admin" : "/account";
     return NextResponse.redirect(url);
   }
 
@@ -48,19 +49,16 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Protéger /admin — vérifie le rôle admin
-  // Le rôle est stocké dans user_metadata.role = "admin"
-  // Configurer via le dashboard Supabase > Authentication > Users > Edit > Metadata : { "role": "admin" }
-  if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
+  // Protéger /admin — rediriger vers /auth/login si non connecté ou non admin
+  if (pathname.startsWith("/admin")) {
     if (!user) {
       const url = request.nextUrl.clone();
-      url.pathname = "/admin/login";
+      url.pathname = "/auth/login";
       return NextResponse.redirect(url);
     }
 
     const isAdmin = user.user_metadata?.role === "admin";
     if (!isAdmin) {
-      // Utilisateur connecté mais non admin → rediriger vers /account
       const url = request.nextUrl.clone();
       url.pathname = "/account";
       return NextResponse.redirect(url);
