@@ -39,11 +39,15 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Protéger /dashboard (ancien) et /account (nouveau)
-  if (
-    !user &&
-    (pathname.startsWith("/dashboard") || pathname.startsWith("/account"))
-  ) {
+  // /dashboard (ancien) → /account (nouveau) si connecté
+  if (pathname.startsWith("/dashboard")) {
+    const url = request.nextUrl.clone();
+    url.pathname = user ? "/account" : "/auth/login";
+    return NextResponse.redirect(url);
+  }
+
+  // Protéger /account
+  if (!user && pathname.startsWith("/account")) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";
     return NextResponse.redirect(url);

@@ -81,9 +81,9 @@ export default function LoginPage() {
       return;
     }
 
-    // Redirection forcée (full reload) pour que le middleware serveur
-    // détermine la destination (/admin ou /account) selon le rôle
-    window.location.href = "/auth/login";
+    // Redirection directe : le middleware (proxy.ts) vérifiera le rôle
+    // et redirigera vers /account si l'utilisateur n'est pas admin
+    window.location.href = "/admin";
   };
 
   const handleOAuth = async (provider: "google" | "facebook" | "azure") => {
