@@ -92,11 +92,11 @@ export default function GaleriePage() {
             src="/img_worship-gift/img_galerie.jpg"
             alt="Worship Gift Galerie"
             fill
-            className="object-cover opacity-40"
+            className="object-cover opacity-65"
             sizes="100vw"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/65 to-black" />
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}

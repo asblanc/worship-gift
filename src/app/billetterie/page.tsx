@@ -96,10 +96,10 @@ export default function BilletteriePage() {
             src="/img_worship-gift/img_billeterie.jpg"
             alt="Billetterie Worship Gift"
             fill
-            className="object-cover opacity-40"
+            className="object-cover opacity-65"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/65 to-black" />
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
