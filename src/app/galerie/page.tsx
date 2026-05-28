@@ -128,7 +128,7 @@ export default function GaleriePage() {
                 <motion.div
                   key={img.src}
                   variants={itemVariants}
-                  className="group relative mb-3 cursor-pointer overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm md:mb-4"
+                  className="group relative mb-3 cursor-pointer overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm md:mb-4 break-inside-avoid"
                   onClick={() => openLightbox(index)}
                 >
                   {/* Conteneur avec aspect-ratio pour next/image fill */}

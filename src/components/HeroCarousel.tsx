@@ -34,7 +34,7 @@ const slides = [
   {
     src: "/img_worship-gift/hero-5.jpg",
     alt: "Worship Gift – Gospel en live",
-    position: "center 20%",
+    position: "center 50%",
   },
 ];
 
