@@ -26,11 +26,6 @@ const slides = [
     alt: "Mouvement gospel Worship Gift",
     position: "center 40%",
   },
-  {
-    src: "/img_worship-gift/hero-4.jpeg",
-    alt: "Groupe de louange Worship Gift",
-    position: "center",
-  },
 ];
 
 export default function HeroCarousel() {
