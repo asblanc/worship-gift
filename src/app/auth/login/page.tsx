@@ -81,8 +81,9 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/dashboard");
-    router.refresh();
+    // Redirection forcée (full reload) pour que le middleware serveur
+    // détermine la destination (/admin ou /account) selon le rôle
+    window.location.href = "/auth/login";
   };
 
   const handleOAuth = async (provider: "google" | "facebook" | "azure") => {

@@ -27,7 +27,8 @@ export default function AuthCallbackPage() {
       }
 
       if (session) {
-        router.push("/dashboard");
+        const isAdmin = session.user?.user_metadata?.role === "admin";
+        router.push(isAdmin ? "/admin" : "/account");
         router.refresh();
       } else {
         setError(
