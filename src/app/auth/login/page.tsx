@@ -74,16 +74,18 @@ export default function LoginPage() {
       password,
     });
 
-    setLoading(false);
-
     if (err) {
       setError(err.message);
+      setLoading(false);
       return;
     }
 
-    // Redirection directe : le middleware (proxy.ts) vérifiera le rôle
-    // et redirigera vers /account si l'utilisateur n'est pas admin
-    window.location.href = "/admin";
+    // Vérifier la session avant de rediriger (évite race condition cookie)
+    const { data: { session } } = await supabase.auth.getSession();
+    const isAdmin = session?.user?.user_metadata?.role === "admin";
+    setLoading(false);
+    router.push(isAdmin ? "/admin" : "/account");
+    router.refresh();
   };
 
   const handleOAuth = async (provider: "google" | "facebook" | "azure") => {

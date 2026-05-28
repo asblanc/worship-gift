@@ -21,10 +21,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const refreshUser = async () => {
-    const {
-      data: { user: u },
-    } = await supabase.auth.getUser();
-    setUser(u || null);
+    try {
+      const {
+        data: { user: u },
+      } = await supabase.auth.getUser();
+      setUser(u || null);
+    } catch {
+      // Token invalide, réseau down, etc. → forcer déconnecté
+      setUser(null);
+    }
   };
 
   useEffect(() => {
