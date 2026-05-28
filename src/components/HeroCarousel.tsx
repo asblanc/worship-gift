@@ -95,7 +95,7 @@ export default function HeroCarousel() {
 
   return (
     <section
-      className="relative min-h-dvh w-full overflow-hidden bg-black"
+      className="relative h-[80vh] min-h-[500px] w-full overflow-hidden bg-black"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
@@ -175,16 +175,16 @@ export default function HeroCarousel() {
       </div>
 
       {/* Overlay dégradé */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/85 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/35 to-black/90 pointer-events-none" />
 
       {/* Contenu centré */}
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
+      <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 pt-16 text-center md:pt-20">
         <motion.h1
           key={`title-${current}`}
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="font-heading text-5xl font-bold tracking-wide text-[#C9A84C] md:text-7xl lg:text-8xl"
+          className="font-heading text-4xl font-bold tracking-wide text-[#C9A84C] md:text-6xl lg:text-7xl"
         >
           Worship Gift
         </motion.h1>
