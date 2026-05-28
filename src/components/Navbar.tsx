@@ -80,7 +80,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   href="/auth/login"
-                  className="rounded-md border border-white/20 px-4 py-2 text-sm font-medium text-gray-300 transition-colors hover:border-[#C9A84C]/50 hover:text-[#C9A84C]"
+                  className="rounded-md border border-[#C9A84C] bg-[#C9A84C]/10 px-4 py-2 text-sm font-semibold text-[#C9A84C] shadow-sm shadow-[#C9A84C]/20 transition-all hover:bg-[#C9A84C] hover:text-black hover:shadow-[#C9A84C]/40"
                 >
                   Connexion
                 </Link>
@@ -153,7 +153,7 @@ export default function Navbar() {
                       <Link
                         href="/auth/login"
                         onClick={() => setMobileOpen(false)}
-                        className="block rounded-md border border-white/20 px-4 py-3 text-center text-base font-medium text-gray-300 transition-colors hover:border-[#C9A84C]/50 hover:text-[#C9A84C]"
+                        className="block rounded-md border border-[#C9A84C] bg-[#C9A84C]/10 px-4 py-3 text-center text-base font-semibold text-[#C9A84C] transition-all hover:bg-[#C9A84C] hover:text-black"
                       >
                         Connexion
                       </Link>

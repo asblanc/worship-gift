@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { upcomingEvents } from "@/lib/events-config";
 
@@ -21,66 +22,36 @@ const cardVariants = {
   },
 };
 
-// Affiche CSS — format vertical pour billetterie
+// Affiche réelle — affiche l'image du concert
 function EventPosterVertical({
   event,
 }: {
   event: (typeof upcomingEvents)[0];
 }) {
   return (
-    <div
-      className="relative flex aspect-[2/3] w-full shrink-0 flex-col items-center justify-center overflow-hidden md:w-56"
-      style={{
-        background: `linear-gradient(180deg, #000000 0%, #1a1a1a 50%, ${event.color}10 100%)`,
-      }}
-    >
-      {/* Motif de points subtil */}
-      <div
-        className="absolute inset-0 opacity-10"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, #C9A84C 1px, transparent 1px)",
-          backgroundSize: "16px 16px",
-        }}
+    <div className="relative flex aspect-[2/3] w-full shrink-0 overflow-hidden rounded-l-lg md:w-56">
+      {/* Image de l'affiche */}
+      <Image
+        src={event.coverImage}
+        alt={event.title}
+        fill
+        className="object-cover"
+        sizes="(max-width: 768px) 100vw, 224px"
       />
-
-      {/* Logo Worship Gift */}
-      <div className="absolute top-4 z-10">
-        <img
-          src="/img_worship-gift/logo-worship-gift.png"
-          alt="Worship Gift"
-          className="h-5 w-auto opacity-80"
-        />
-      </div>
-
-      {/* Badge PROCHAINEMENT */}
-      <div className="absolute top-14 z-10">
-        <span className="inline-block rounded-full border border-[#C9A84C]/40 bg-[#C9A84C]/10 px-3 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-[#C9A84C]">
+      {/* Overlay dégradé */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+      {/* Badge */}
+      <div className="absolute top-3 left-3 z-10">
+        <span className="inline-block rounded-full border border-[#C9A84C]/60 bg-black/60 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-[#C9A84C]">
           Prochainement
         </span>
       </div>
-
-      {/* Titre */}
-      <div className="flex-1 flex flex-col items-center justify-center px-4 text-center">
-        <h3 className="font-heading text-base font-bold leading-tight text-[#C9A84C] md:text-lg">
-          {event.title}
-        </h3>
-        <div className="mt-3 space-y-1 text-[10px] text-gray-300">
-          <p>{event.date}</p>
-          <p>{event.time}</p>
-          <p>{event.location}</p>
-        </div>
-      </div>
-
-      {/* Bouton */}
-      <div className="mb-4">
-        <span className="inline-flex h-8 items-center justify-center rounded-md bg-[#C9A84C] px-4 text-[10px] font-semibold text-black">
-          Réserver
+      {/* Prix en bas */}
+      <div className="absolute bottom-3 left-0 right-0 z-10 text-center">
+        <span className="inline-block rounded-md bg-[#C9A84C] px-3 py-1 text-xs font-bold text-black">
+          {event.price}
         </span>
       </div>
-
-      {/* Overlay dégradé */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
     </div>
   );
 }
@@ -96,10 +67,10 @@ export default function BilletteriePage() {
             src="/img_worship-gift/img_billeterie.jpg"
             alt="Billetterie Worship Gift"
             fill
-            className="object-cover opacity-65"
+            className="object-cover opacity-90 brightness-110 saturate-105"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/65 to-black" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -110,9 +81,9 @@ export default function BilletteriePage() {
               Billetterie
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-gray-300">
-              Réserve ta place pour vivre un moment unique de louange et
-              d'adoration au cœur du mouvement Worship Gift. Chaque
-              rencontre est une invitation à la communion et à la joie.
+              Réserve ta place pour vivre un moment unique de Gospel au
+              cœur du mouvement Worship Gift. Chaque rencontre est une
+              invitation à la communion et à la joie.
             </p>
           </motion.div>
         </section>
@@ -129,11 +100,11 @@ export default function BilletteriePage() {
             >
               {upcomingEvents.map((event) => (
                 <motion.div
-                  key={event.title}
+                  key={event.id}
                   variants={cardVariants}
                   className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md md:flex-row"
                 >
-                  {/* Affiche CSS verticale */}
+                  {/* Affiche réelle */}
                   <EventPosterVertical event={event} />
 
                   {/* Contenu */}
@@ -165,14 +136,13 @@ export default function BilletteriePage() {
                       <span className="font-heading text-2xl font-bold text-[#C9A84C]">
                         {event.price}
                       </span>
-                      <a
-                        href={event.ticketLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      {/* ✅ Redirige vers la page de réservation du concert */}
+                      <Link
+                        href={`/billetterie/${event.slug}/reserver`}
                         className="inline-flex h-10 items-center justify-center rounded-md bg-[#C9A84C] px-6 text-sm font-semibold text-black transition-all hover:bg-[#F0CB6A] hover:shadow-md hover:shadow-[#C9A84C]/30 active:scale-[0.97]"
                       >
                         Réserver
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </motion.div>

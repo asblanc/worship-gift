@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
@@ -49,11 +49,11 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
   const pathname = usePathname();
   const [userEmail, setUserEmail] = useState("");
   const [mobileMenu, setMobileMenu] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -61,20 +61,26 @@ export default function AdminLayout({
         data: { user },
       } = await supabase.auth.getUser();
 
-      if (!user || user.user_metadata?.role !== "admin") {
-        router.push("/auth/login");
+      if (!user) {
+        window.location.href = "/auth/login";
         return;
       }
+
+      if (user.user_metadata?.role !== "admin") {
+        window.location.href = "/account";
+        return;
+      }
+
       setUserEmail(user.email || "");
-      setLoading(false);
+      setIsAuthorized(true);
+      setAuthChecked(true);
     };
     checkAuth();
-  }, [router]);
+  }, []);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    router.push("/auth/login");
-    router.refresh();
+    window.location.href = "/";
   };
 
   const isActive = (href: string) => {
@@ -82,7 +88,8 @@ export default function AdminLayout({
     return pathname.startsWith(href);
   };
 
-  if (loading) {
+  // Afficher spinner tant que l'auth n'est pas vérifiée
+  if (!authChecked || !isAuthorized) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#0D0D0D]">
         <div className="flex flex-col items-center gap-4">
@@ -150,7 +157,7 @@ export default function AdminLayout({
                 <polyline points="16 17 21 12 16 7" />
                 <line x1="21" y1="12" x2="9" y2="12" />
               </svg>
-              <span className="hidden sm:inline">Quitter</span>
+              <span className="hidden sm:inline">Déconnexion</span>
             </button>
           </div>
         </div>

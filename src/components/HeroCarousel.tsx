@@ -7,24 +7,29 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const slides = [
   {
-    src: "/img_worship-gift/hero-0.jpg",
-    alt: "Worship Gift – Louange et adoration",
+    src: "/img_worship-gift/hero-0.jpeg",
+    alt: "Worship Gift – Gospel Expérience",
     position: "center",
   },
   {
     src: "/img_worship-gift/hero-1.jpg",
-    alt: "Concert gospel Worship Gift",
+    alt: "Concert Gospel Worship Gift",
     position: "center",
   },
   {
     src: "/img_worship-gift/hero-2.jpeg",
-    alt: "Louange et adoration Worship Gift",
+    alt: "Gospel Worship Gift",
     position: "center 30%",
   },
   {
     src: "/img_worship-gift/hero-3.jpeg",
-    alt: "Mouvement gospel Worship Gift",
+    alt: "Mouvement Gospel Worship Gift",
     position: "center 40%",
+  },
+  {
+    src: "/img_worship-gift/heros-51.jpg",
+    alt: "Worship Gift – Gospel en live",
+    position: "center 20%",
   },
 ];
 
@@ -94,21 +99,6 @@ export default function HeroCarousel() {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Préchargement invisible de toutes les images */}
-      <div className="hidden" aria-hidden="true">
-        {slides.map((s) => (
-          <Image
-            key={s.src}
-            src={s.src}
-            alt=""
-            width={1}
-            height={1}
-            className="object-cover"
-            priority={false}
-          />
-        ))}
-      </div>
-
       {/* Couche d'images en crossfade */}
       <div className="absolute inset-0">
         {/* Image précédente — disparaît */}
@@ -140,7 +130,7 @@ export default function HeroCarousel() {
         <AnimatePresence>
           <motion.div
             key={`current-${current}`}
-            initial={{ opacity: 0 }}
+            initial={{ opacity: prevSlide === null ? 1 : 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1.2, ease: "easeInOut" }}
@@ -152,7 +142,7 @@ export default function HeroCarousel() {
               fill
               className="object-cover"
               style={{ objectPosition: slides[current].position }}
-              sizes="100vw"
+              sizes="(max-width: 768px) 100vw, 100vw"
               priority={current === 0}
               quality={85}
             />
@@ -191,7 +181,7 @@ export default function HeroCarousel() {
           transition={{ duration: 0.7, delay: 0.35 }}
           className="mt-6 max-w-2xl text-base leading-relaxed text-gray-200 md:text-lg"
         >
-          Une expérience unique de louange et d'adoration. Laissez la musique
+          Une expérience unique de Gospel. Laissez la musique
           gospel vous transporter dans la présence de Dieu.
         </motion.p>
 

@@ -17,63 +17,29 @@ export default function EventCard() {
       <div className="mx-auto max-w-5xl">
         <div className="relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-md">
           <div className="flex flex-col gap-8 p-8 md:flex-row md:items-center md:p-12">
-            {/* Affiche CSS — format vertical */}
-            <div className="relative flex aspect-[2/3] w-full shrink-0 flex-col items-center justify-center overflow-hidden rounded-lg md:w-56"
-              style={{
-                background: `linear-gradient(180deg, #0A0A0A 0%, #1A1A1A 60%, #C9A84C08 100%)`,
-              }}
-            >
-              {/* Motif de points subtil */}
-              <div
-                className="absolute inset-0 opacity-10"
-                style={{
-                  backgroundImage:
-                    "radial-gradient(circle, #C9A84C 1px, transparent 1px)",
-                  backgroundSize: "16px 16px",
-                }}
+            {/* Affiche réelle — même image que la page billetterie */}
+            <div className="relative flex aspect-[2/3] w-full shrink-0 overflow-hidden rounded-lg md:w-56">
+              <Image
+                src={nextEvent.coverImage}
+                alt={nextEvent.title}
+                fill
+                className="object-cover brightness-105 saturate-105"
+                sizes="(max-width: 768px) 100vw, 224px"
               />
-
-              {/* Logo Worship Gift */}
-              <div className="absolute top-4 z-10">
-                <Image
-                  src="/img_worship-gift/logo-worship-gift.png"
-                  alt="Worship Gift"
-                  width={48}
-                  height={48}
-                  className="h-10 w-auto opacity-80"
-                />
-              </div>
-
-              {/* Badge PROCHAINEMENT */}
-              <div className="absolute top-16 z-10">
-                <span className="inline-block rounded-full border border-[#C9A84C]/40 bg-[#C9A84C]/10 px-3 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-[#C9A84C]">
+              {/* Overlay dégradé bas */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+              {/* Badge */}
+              <div className="absolute top-3 left-3 z-10">
+                <span className="inline-block rounded-full border border-[#C9A84C]/60 bg-black/60 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-[#C9A84C]">
                   Prochainement
                 </span>
               </div>
-
-              {/* Titre */}
-              <div className="flex-1 flex flex-col items-center justify-center px-4 text-center">
-                <h3 className="font-heading text-base font-bold leading-tight text-[#C9A84C] md:text-lg">
-                  {nextEvent.title}
-                </h3>
-                <p className="mt-2 text-xs text-gray-300">
-                  Une nuit de louange et d'adoration
-                </p>
-                <div className="mt-3 space-y-1 text-[10px] text-gray-400">
-                  <p>{nextEvent.dateLabel} · {nextEvent.time}</p>
-                  <p className="text-[#C9A84C]">{nextEvent.location}</p>
-                </div>
-              </div>
-
-              {/* Bouton */}
-              <div className="mb-4">
-                <span className="inline-flex h-8 items-center justify-center rounded-md bg-[#C9A84C] px-4 text-[10px] font-semibold text-black">
+              {/* Bouton en bas */}
+              <div className="absolute bottom-3 left-0 right-0 z-10 text-center">
+                <span className="inline-block rounded-md bg-[#C9A84C] px-3 py-1 text-xs font-bold text-black shadow-md">
                   Réserver ma place
                 </span>
               </div>
-
-              {/* Overlay dégradé */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
             </div>
 
             {/* Texte */}
