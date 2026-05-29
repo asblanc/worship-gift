@@ -82,22 +82,17 @@ export default function AccountLayout({
         </div>
       </header>
 
-      <div className="mx-auto flex max-w-6xl gap-8 px-4 py-8">
-        {/* Sidebar */}
-        <aside className="hidden w-56 shrink-0 md:block">
-          <div className="sticky top-24 space-y-6">
-            <div className="rounded-lg border border-white/10 bg-white/5 p-4">
+      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 md:flex-row md:gap-8 md:px-4 md:py-8">
+        {/* Sidebar (desktop fixe) */}
+        <aside className="w-full shrink-0 md:w-56">
+          <div className="space-y-4 md:sticky md:top-24 md:space-y-6">
+            <div className="rounded-lg border border-white/10 bg-white/5 p-3 md:p-4">
               <p className="text-sm font-medium text-white">👋 {userName}</p>
               <p className="mt-1 text-xs text-gray-500">Mon espace</p>
             </div>
             <AccountSidebar />
           </div>
         </aside>
-
-        {/* Mobile tabs */}
-        <div className="mb-4 w-full md:hidden">
-          <AccountSidebar />
-        </div>
 
         {/* Contenu principal */}
         <main className="min-w-0 flex-1">{children}</main>
