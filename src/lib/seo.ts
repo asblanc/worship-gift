@@ -9,10 +9,10 @@ export const defaultMetadata: Metadata = {
     template: "%s | Worship Gift",
   },
   description:
-    "Mouvement gospel dédié à la louange, l'adoration et l'unité à travers la musique. Concerts, événements et sessions de louange.",
+    "Mouvement gospel dédié au gospel, à l'adoration et à l'unité à travers la musique. Concerts, événements et sessions gospel.",
   keywords: [
     "gospel",
-    "louange",
+    "musique gospel",
     "adoration",
     "Worship Gift",
     "concert gospel",
@@ -25,7 +25,7 @@ export const defaultMetadata: Metadata = {
     siteName: "Worship Gift",
     title: "Worship Gift | Mouvement Gospel",
     description:
-      "Mouvement gospel dédié à la louange, l'adoration et l'unité à travers la musique.",
+      "Mouvement gospel dédié au gospel, à l'adoration et à l'unité à travers la musique.",
     url: siteUrl,
     images: [
       {
@@ -40,7 +40,7 @@ export const defaultMetadata: Metadata = {
     card: "summary_large_image",
     title: "Worship Gift | Mouvement Gospel",
     description:
-      "Mouvement gospel dédié à la louange, l'adoration et l'unité à travers la musique.",
+      "Mouvement gospel dédié au gospel, à l'adoration et à l'unité à travers la musique.",
     images: ["/img_worship-gift/logo-worship-gift2.jpeg"],
   },
   robots: {

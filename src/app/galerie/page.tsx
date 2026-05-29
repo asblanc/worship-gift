@@ -62,14 +62,14 @@ const sections = [
     id: "morijah",
     title: "Concert Gospel avec la chantre Morijah",
     subtitle:
-      "Revivez les moments forts de cette soirée de louange avec Morijah, une voix qui touche l'âme.",
+      "Revivez les moments forts de cette soirée Gospel avec Morijah, une voix qui touche l'âme.",
     images: morijahImages,
   },
   {
     id: "derek",
     title: "Concert Gospel avec le chantre Derek Jones",
     subtitle:
-      "Une soirée inoubliable sous la direction du chantre Derek Jones. Louange, adoration et communion.",
+      "Une soirée inoubliable sous la direction du chantre Derek Jones. Gospel et communion au cœur du mouvement.",
     images: derekImages,
   },
 ];
@@ -184,9 +184,7 @@ export default function GaleriePage() {
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
               Revivez les meilleurs moments de nos concerts Gospel à travers une
               sélection de photos. Chaque cliché raconte l&rsquo;émotion, la
-              louange et la communion vécues lors de nos événements avec la
-              chantre <strong>Morijah</strong> et le chantre{" "}
-              <strong>Derek Jones</strong>.
+              louange et la communion vécues lors de nos événements.
             </p>
           </motion.div>
         </section>

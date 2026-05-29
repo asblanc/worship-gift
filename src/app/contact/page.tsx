@@ -76,7 +76,7 @@ export default function ContactPage() {
                   <p className="mt-4 leading-relaxed text-gray-600">
                     N'hésite pas à nous joindre directement par téléphone ou à
                     nous suivre sur nos réseaux sociaux pour rester connecté à
-                    la louange.
+                    la communauté.
                   </p>
                 </motion.div>
 

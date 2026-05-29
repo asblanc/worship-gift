@@ -18,12 +18,12 @@ const timeline = [
   {
     year: "2020",
     title: "La naissance du mouvement",
-    desc: "Worship Gift voit le jour d'une passion commune pour la louange et l'adoration. Quelques musiciens se rassemblent pour partager leur amour du gospel.",
+    desc: "Worship Gift voit le jour d'une passion commune pour le gospel et l'adoration. Quelques musiciens se rassemblent pour partager leur amour de la musique gospel.",
   },
   {
     year: "2021",
     title: "Premier concert",
-    desc: "Le premier concert de louange rassemble plus de 200 personnes. L'émotion est palpable, l'unité se construit autour de la musique.",
+    desc: "Le premier concert gospel rassemble plus de 200 personnes. L'émotion est palpable, l'unité se construit autour de la musique.",
   },
   {
     year: "2023",
@@ -33,7 +33,7 @@ const timeline = [
   {
     year: "2025",
     title: "Lancement de la chaîne YouTube",
-    desc: "Worship Gift investit le numérique pour partager la louange au-delà des frontières, avec des lives et des vidéos accessibles à tous.",
+    desc: "Worship Gift investit le numérique pour partager le gospel au-delà des frontières, avec des lives et des vidéos accessibles à tous.",
   },
   {
     year: "2026",
@@ -44,7 +44,7 @@ const timeline = [
 
 const valeurs = [
   {
-    title: "Louange",
+    title: "Gospel",
     desc: "Au centre de tout ce que nous faisons. La musique comme offrande et rencontre avec Dieu. Chaque note est une prière, chaque chant une déclaration.",
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -56,7 +56,7 @@ const valeurs = [
   },
   {
     title: "Unité",
-    desc: "Au-delà des différences, nous formons un seul corps pour une même adoration. Ensemble, nous sommes plus forts et notre louange porte plus loin.",
+    desc: "Au-delà des différences, nous formons un seul corps pour une même adoration. Ensemble, nous sommes plus forts et notre gospel porte plus loin.",
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -109,7 +109,7 @@ export default function AProposPage() {
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
               Worship Gift est un mouvement gospel né d'une passion commune
-              pour la louange et l'adoration. Notre mission est de créer
+              pour le gospel et l'adoration. Notre mission est de créer
               des espaces où la musique devient une rencontre avec Dieu.
             </p>
           </motion.div>
@@ -154,8 +154,8 @@ export default function AProposPage() {
                     Notre vision
                   </h2>
                   <p className="mt-3 leading-relaxed text-gray-600">
-                    Voir une génération transformée par la puissance de la
-                    louange, où chaque voix trouve sa place dans l'unité du
+                    Voir une génération transformée par la puissance du
+                    gospel, où chaque voix trouve sa place dans l'unité du
                     corps de Christ. Nous croyons que le gospel est un langage
                     universel qui parle au cœur de l'homme.
                   </p>
@@ -310,8 +310,8 @@ export default function AProposPage() {
                 L'équipe
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-gray-600">
-                Des cœurs passionnés, unis par la même vision : porter la
-                louange au plus haut niveau.
+                Des cœurs passionnés, unis par la même vision : porter le
+                gospel au plus haut niveau.
               </p>
             </motion.div>
 
@@ -368,7 +368,7 @@ export default function AProposPage() {
             <p className="mt-4 text-gray-600">
               Rejoins-nous lors de nos prochains événements, abonne-toi à
               notre chaîne YouTube et suis-nous sur les réseaux pour vivre
-              la louange avec nous.
+              le gospel avec nous.
             </p>
           </motion.div>
         </section>

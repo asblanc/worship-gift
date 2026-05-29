@@ -18,15 +18,15 @@ export const phoneNumber = "+212 698472691";
 export const youtubeVideos = [
   {
     id: "li7YDI6j3V8",
-    title: "Worship Gift – Session de Louange Live",
+    title: "Worship Gift – Session Gospel Live",
     description:
-      "Une session puissante de louange et d'adoration enregistrée en direct. Laissez-vous porter par l'Esprit à travers chaque note.",
+      "Une session puissante de gospel et d'adoration enregistrée en direct. Laissez-vous porter par l'Esprit à travers chaque note.",
   },
   {
     id: "wKrsy5DdGO0",
     title: "Worship Gift – Moment d'Adoration",
     description:
-      "Un moment d'intimité avec Dieu à travers la musique gospel. Des cœurs unis dans une même louange.",
+      "Un moment d'intimité avec Dieu à travers la musique gospel. Des cœurs unis dans une même foi.",
   },
   {
     id: "I6ALh2C0oiY",
@@ -36,15 +36,15 @@ export const youtubeVideos = [
   },
   {
     id: "-PnijNoIB-8",
-    title: "Worship Gift – Louange Collective",
+    title: "Worship Gift – Gospel Collectif",
     description:
-      "Une chorale passionnée, un public enflammé : la louange collective Worship Gift dans toute sa puissance.",
+      "Une chorale passionnée, un public enflammé : le gospel collectif Worship Gift dans toute sa puissance.",
   },
   {
     id: "bwddP8qKHeA",
     title: "Worship Gift – Gloire & Majesté",
     description:
-      "Un chant puissant qui célèbre la gloire et la majesté de Dieu à travers une louange vibrante et profonde.",
+      "Un chant puissant qui célèbre la gloire et la majesté de Dieu à travers un gospel vibrant et profond.",
   },
   {
     id: "iJtiQ43ic2k",
@@ -56,7 +56,7 @@ export const youtubeVideos = [
     id: "_Ao35awzdN4",
     title: "Worship Gift – Célébration de la Foi",
     description:
-      "Une célébration joyeuse de la foi en musique. Des voix qui s'élèvent ensemble dans une même louange.",
+      "Une célébration joyeuse de la foi en musique. Des voix qui s'élèvent ensemble dans une même foi.",
   },
   {
     id: "-Jhdb0oRn9E",
@@ -73,9 +73,9 @@ export const youtubeVideos = [
 export const liveSessions = [
   {
     id: "TW0Zs8Fh5TI",
-    title: "Live – Soirée de Louange Printemps 2026",
+    title: "Live – Soirée Gospel Printemps 2026",
     description:
-      "Notre dernière session de louange en direct, pleine de vie et d'énergie.",
+      "Notre dernière session gospel en direct, pleine de vie et d'énergie.",
   },
   {
     id: "u0XvdqkpsUg",

@@ -17,7 +17,7 @@ export const nextEvent = {
   description:
     "Viens vivre un moment unique de Gospel au cœur du mouvement Worship Gift. Une soirée placée sous le signe de l'unité, de la joie et de la puissance du gospel.",
   // 🖼️ Affiche du prochain concert — changer ici pour mettre à jour la home
-  coverImage: "/img_worship-gift/img_56.jpg",
+  coverImage: "/img_worship-gift/img_m15.jpg",
 };
 
 export interface EventData {
@@ -54,7 +54,7 @@ export const upcomingEvents: EventData[] = [
     ticketLink: "#",
     color: "#C9A84C",
     // 🖼️ Affiche événement 1 — modifier ici
-    coverImage: "/img_worship-gift/img_56.jpg",
+    coverImage: "/img_worship-gift/img_m16.jpg",
   },
   {
     id: "evt-002",
@@ -71,7 +71,7 @@ export const upcomingEvents: EventData[] = [
     ticketLink: "#",
     color: "#C9A84C",
     // 🖼️ Affiche événement 2 — modifier ici
-    coverImage: "/img_worship-gift/img_57.jpg",
+    coverImage: "/img_worship-gift/img_m18.jpg",
   },
   {
     id: "evt-003",
@@ -88,7 +88,7 @@ export const upcomingEvents: EventData[] = [
     ticketLink: "#",
     color: "#F0CB6A",
     // 🖼️ Affiche événement 3 — modifier ici
-    coverImage: "/img_worship-gift/img_59.jpg",
+    coverImage: "/img_worship-gift/img_m14.jpg",
   },
   {
     id: "evt-004",
@@ -105,7 +105,7 @@ export const upcomingEvents: EventData[] = [
     ticketLink: "#",
     color: "#C9A84C",
     // 🖼️ Affiche événement 4 — modifier ici
-    coverImage: "/img_worship-gift/img_48.jpg",
+    coverImage: "/img_worship-gift/img_d17.jpg",
   },
 ];
 

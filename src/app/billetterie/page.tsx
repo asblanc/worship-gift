@@ -29,7 +29,7 @@ function EventPosterVertical({
   event: (typeof upcomingEvents)[0];
 }) {
   return (
-    <div className="relative flex aspect-[2/3] w-full shrink-0 overflow-hidden rounded-l-lg md:w-56">
+    <div className="relative flex aspect-[2/3] w-full shrink-0 overflow-hidden rounded-l-lg md:w-44">
       {/* Image de l'affiche */}
       <Image
         src={event.coverImage}

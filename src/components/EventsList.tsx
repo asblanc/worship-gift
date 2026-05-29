@@ -26,7 +26,7 @@ const cardVariants = {
 // Affiche réelle — utilise la photo de l'événement
 function EventPoster({ event }: { event: (typeof upcomingEvents)[0] }) {
   return (
-    <div className="relative aspect-[16/9] overflow-hidden">
+    <div className="relative aspect-[2/3] overflow-hidden">
       <Image
         src={event.coverImage}
         alt={event.title}

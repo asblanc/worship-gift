@@ -70,7 +70,7 @@ export default function MediasPage() {
               Médias
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
-              Plonge dans l'univers de la louange Worship Gift. Retrouve
+              Plonge dans l'univers Gospel Worship Gift. Retrouve
               nos vidéos, nos sessions live et tous nos moments
               d'adoration en intégralité.
             </p>
@@ -96,7 +96,7 @@ export default function MediasPage() {
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-gray-600">
                 Abonne-toi pour ne rien manquer de nos prochaines
-                publications : louanges en direct, répétitions, sessions
+                publications : gospel en direct, répétitions, sessions
                 d'adoration et contenus exclusifs.
               </p>
               <Link
@@ -126,7 +126,7 @@ export default function MediasPage() {
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-gray-600">
                 Rejoignez notre communauté sur les réseaux sociaux pour vivre
-                chaque moment de louange et d'adoration avec Worship Gift.
+                chaque moment de gospel et d'adoration avec Worship Gift.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-4">
                 <a
@@ -183,7 +183,7 @@ export default function MediasPage() {
                 Live sessions
               </h2>
               <p className="mt-3 max-w-2xl leading-relaxed text-gray-600">
-                Chaque rencontre est un moment unique de louange et
+                Chaque rencontre est un moment unique de gospel et
                 d'adoration. Revis ou découvre les temps forts de nos
                 rassemblements en direct. Toute la puissance du gospel, en
                 live ou en replay.
