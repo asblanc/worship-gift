@@ -6,6 +6,7 @@ export const youtubeChannelUrl = "https://www.youtube.com/@WorshipGift";
 export const facebookUrl =
   "https://www.facebook.com/share/18vm7d1oo7/?mibextid=wwXIfr";
 export const tiktokUrl = "https://www.tiktok.com/@worship.gift";
+export const instagramUrl = "https://www.instagram.com/worship_gift_officiel/";
 export const emailAddress = "worshipgiftofficiel@gmail.com";
 export const phoneNumber = "+212 698472691";
 

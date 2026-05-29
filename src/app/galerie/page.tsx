@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -11,57 +11,96 @@ const Lightbox = dynamic(() => import("@/components/Lightbox"), {
 });
 
 /* ================================================================
-   IMPORTANT : Toutes les images img_*.jpg dans /public/img_worship-gift/
-   sont automatiquement incluses. Si tu ajoutes de nouvelles images
-   img_XXX.jpg dans ce dossier, elles apparaîtront automatiquement
-   dans la galerie (pas besoin de modifier ce fichier).
+   CONFIGURATION IMAGES
+   ================================================================
    
-   Fix mobile : Chaque tuile utilise un aspect-ratio explicite avec
-   position relative, ce qui garantit que next/image fill fonctionne
-   correctement sur tous les appareils (iOS Safari inclus).
+   ═══════════════════════════════════════════════════════════════
+   1️⃣ Ajouter un nouvel événement (section)
+   ═══════════════════════════════════════════════════════════════
+   - Copier-coller un bloc eventData existant (ex. derek ci-dessous)
+   - Remplacer les IDs par ceux de vos nouvelles images (ex. img_x1, img_x2...)
+   - L'ordre des sections dans le tableau `sections` détermine 
+     l'ordre d'affichage sur la page (du haut vers le bas).
+   
+   ═══════════════════════════════════════════════════════════════
+   2️⃣ Ajouter des images à une section existante
+   ═══════════════════════════════════════════════════════════════
+   - Il suffit d'ajouter le numéro de l'image dans le tableau `ids`
+     du bloc concerné (morijahIds ou derekIds).
+   - Exemple : si vous ajoutez img_m50.jpg, ajoutez 50 dans morijahIds.
    ================================================================ */
 
-// Liste générée automatiquement — basée sur les fichiers dans public/img_worship-gift/
-// Pattern : img_ suivi d'un nombre, extension .jpg
-const IMAGE_IDS = [
-  1, 3, 4, 5, 6, 7, 9, 11, 12, 21, 23, 28, 30, 33, 34, 36, 37, 38, 39, 40,
-  41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 59, 60,
-  61, 62, 63, 64, 66, 67, 69, 70, 71, 72, 73, 75, 76, 77, 78, 79, 80, 81, 82,
-  84, 85, 86, 87, 88, 89, 90, 91, 92, 95, 96, 100, 101, 103, 105, 106, 107,
-  108, 109, 110, 20,
+// ─── Images Morijah (préfixe img_m*) ──────────────────────────────
+const morijahIds = [
+  1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+  21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37,
+  38, 39, 40, 41, 42, 43, 44, 45, 46,
 ];
 
-const images = IMAGE_IDS.map((id) => ({
-  src: `/img_worship-gift/img_${id}.jpg`,
-  alt: `Galerie Worship Gift – Photo ${id}`,
+const morijahImages = morijahIds.map((id) => ({
+  src: `/img_worship-gift/img_m${id}.jpg`,
+  alt: `Concert Morijah Worship Gift – Photo ${id}`,
 }));
 
+// ─── Images Derek Jones (préfixe img_d*) ──────────────────────────
+const derekIds = [
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20,
+  21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 34, 35, 36,
+];
+
+const derekImages = derekIds.map((id) => ({
+  src: `/img_worship-gift/img_d${id}.jpg`,
+  alt: `Concert Derek Jones Worship Gift – Photo ${id}`,
+}));
+
+// ─── Configuration des sections ────────────────────────────────────
+// L'ordre du tableau détermine l'ordre d'affichage sur la page.
+// Pour ajouter une 3e section, ajouter un objet ici :
+//   { id: "nouvel-event", title: "...", subtitle: "...", images: [...] }
+const sections = [
+  {
+    id: "morijah",
+    title: "Concert Gospel avec la chantre Morijah",
+    subtitle:
+      "Revivez les moments forts de cette soirée de louange avec Morijah, une voix qui touche l'âme.",
+    images: morijahImages,
+  },
+  {
+    id: "derek",
+    title: "Concert Gospel avec le chantre Derek Jones",
+    subtitle:
+      "Une soirée inoubliable sous la direction du chantre Derek Jones. Louange, adoration et communion.",
+    images: derekImages,
+  },
+];
+
+// ─── Animations ────────────────────────────────────────────────────
 const containerVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.06 } },
+  visible: { transition: { staggerChildren: 0.04 } },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, scale: 0.92 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
-    scale: 1,
+    y: 0,
     transition: { duration: 0.5, ease: "easeOut" as const },
   },
 };
 
 /**
- * Mélange déterministe : alterne les ratios pour un effet masonry visuel
- * sans dépendre de row-span CSS qui casse next/image fill sur mobile.
+ * Alterne les ratios pour un effet visuel dynamique
+ * sans utiliser de row-span CSS (meilleur support mobile).
  */
 function getAspectClass(index: number): string {
   const patterns = [
-    "aspect-[3/4]",   // portrait
-    "aspect-square",   // carré
-    "aspect-[4/3]",   // paysage
     "aspect-[3/4]",
     "aspect-square",
-    "aspect-[4/5]",   // portrait allongé
+    "aspect-[4/3]",
+    "aspect-[3/4]",
+    "aspect-square",
+    "aspect-[4/5]",
     "aspect-[3/4]",
     "aspect-square",
   ];
@@ -69,24 +108,60 @@ function getAspectClass(index: number): string {
 }
 
 export default function GaleriePage() {
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  // État de la lightbox : on stocke la section active ET l'index dans cette section
+  const [lightboxState, setLightboxState] = useState<{
+    sectionId: string;
+    index: number;
+  } | null>(null);
 
-  const openLightbox = (index: number) => setLightboxIndex(index);
-  const closeLightbox = () => setLightboxIndex(null);
-  const prevImage = () =>
-    setLightboxIndex((prev) =>
-      prev !== null ? (prev - 1 + images.length) % images.length : null
-    );
-  const nextImage = () =>
-    setLightboxIndex((prev) =>
-      prev !== null ? (prev + 1) % images.length : null
-    );
+  const openLightbox = useCallback(
+    (sectionId: string, index: number) =>
+      setLightboxState({ sectionId, index }),
+    [],
+  );
+
+  const closeLightbox = useCallback(() => setLightboxState(null), []);
+
+  const activeSection = lightboxState
+    ? sections.find((s) => s.id === lightboxState.sectionId)
+    : null;
+
+  const activeImages = activeSection?.images ?? [];
+
+  const prevImage = useCallback(() => {
+    setLightboxState((prev) => {
+      if (!prev) return null;
+      const total = activeImages.length;
+      return {
+        ...prev,
+        index: (prev.index - 1 + total) % total,
+      };
+    });
+  }, [activeImages.length]);
+
+  const nextImage = useCallback(() => {
+    setLightboxState((prev) => {
+      if (!prev) return null;
+      const total = activeImages.length;
+      return {
+        ...prev,
+        index: (prev.index + 1) % total,
+      };
+    });
+  }, [activeImages.length]);
+
+  const totalPhotos = sections.reduce(
+    (sum, section) => sum + section.images.length,
+    0,
+  );
 
   return (
     <>
       <Navbar />
       <main className="flex-1 pt-20">
-        {/* Héro */}
+        {/* ═══════════════════════════════════════════════════════════
+            HERO
+           ═══════════════════════════════════════════════════════════ */}
         <section className="relative overflow-hidden border-b border-white/10 bg-black px-6 py-24 md:py-32">
           <Image
             src="/img_worship-gift/img_galerie.jpg"
@@ -107,79 +182,100 @@ export default function GaleriePage() {
               Galerie
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
-              Revivez les meilleurs moments de nos rencontres à travers notre
-              galerie d'images. Louange, adoration, communion&hellip;
-              chaque photo raconte une histoire.
+              Revivez les meilleurs moments de nos concerts Gospel à travers une
+              sélection de photos. Chaque cliché raconte l&rsquo;émotion, la
+              louange et la communion vécues lors de nos événements avec la
+              chantre <strong>Morijah</strong> et le chantre{" "}
+              <strong>Derek Jones</strong>.
             </p>
           </motion.div>
         </section>
 
-        {/* Grille masonry avec aspect-ratio */}
-        <section className="bg-[#F3EFE6] px-3 py-12 md:px-6 md:py-20">
-          <div className="mx-auto max-w-7xl">
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-80px" }}
-              className="columns-2 gap-3 md:columns-3 md:gap-4 lg:columns-4"
-            >
-              {images.map((img, index) => (
-                <motion.div
-                  key={img.src}
-                  variants={itemVariants}
-                  className="group relative mb-3 cursor-pointer overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm md:mb-4 break-inside-avoid"
-                  onClick={() => openLightbox(index)}
-                >
-                  {/* Conteneur avec aspect-ratio pour next/image fill */}
-                  <div
-                    className={`relative w-full ${getAspectClass(index)}`}
-                  >
-                    <Image
-                      src={img.src}
-                      alt={img.alt}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
-                      priority={index < 8}
-                      quality={75}
-                    />
-                  </div>
-                  {/* Overlay au survol */}
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-300 group-hover:bg-black/50">
-                    <span className="flex h-10 w-10 scale-50 items-center justify-center rounded-full border-2 border-[#C9A84C] text-[#C9A84C] opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <circle cx="11" cy="11" r="8" />
-                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                      </svg>
-                    </span>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
+        {/* ═══════════════════════════════════════════════════════════
+            SECTIONS CONCERTS
+           ═══════════════════════════════════════════════════════════ */}
+        <section className="bg-[#F3EFE6] px-4 py-16 md:px-8 md:py-24">
+          <div className="mx-auto max-w-7xl space-y-20">
+            {sections.map((section) => (
+              <motion.div
+                key={section.id}
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-80px" }}
+              >
+                {/* En-tête de section */}
+                <div className="mb-10 text-center">
+                  <h2 className="font-heading text-3xl font-bold text-[#1a1a1a] md:text-4xl">
+                    {section.title}
+                  </h2>
+                  <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-gray-600">
+                    {section.subtitle}
+                  </p>
+                </div>
 
-            {/* Compteur */}
-            <p className="mt-8 text-center text-xs text-gray-400">
-              {images.length} photos dans la galerie
+                {/* Grille responsive 3 cols → 2 cols → 1 col */}
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {section.images.map((img, index) => (
+                    <motion.div
+                      key={img.src}
+                      variants={itemVariants}
+                      className="group relative cursor-pointer overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm"
+                      onClick={() => openLightbox(section.id, index)}
+                    >
+                      <div
+                        className={`relative w-full ${getAspectClass(index)}`}
+                      >
+                        <Image
+                          src={img.src}
+                          alt={img.alt}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-110"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          priority={index < 6}
+                          quality={80}
+                        />
+                      </div>
+                      {/* Overlay au survol */}
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-300 group-hover:bg-black/50">
+                        <span className="flex h-10 w-10 scale-50 items-center justify-center rounded-full border-2 border-[#C9A84C] text-[#C9A84C] opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                          </svg>
+                        </span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+
+            {/* Compteur global */}
+            <p className="text-center text-xs text-gray-400">
+              {totalPhotos} photos dans la galerie
             </p>
           </div>
         </section>
       </main>
 
-      {lightboxIndex !== null && (
+      {/* ═══════════════════════════════════════════════════════════════
+          LIGHTBOX
+         ═══════════════════════════════════════════════════════════════ */}
+      {lightboxState !== null && activeImages.length > 0 && (
         <Lightbox
-          images={images}
-          currentIndex={lightboxIndex}
+          images={activeImages}
+          currentIndex={lightboxState.index}
           onClose={closeLightbox}
           onPrev={prevImage}
           onNext={nextImage}
