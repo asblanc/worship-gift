@@ -90,21 +90,12 @@ const itemVariants = {
 };
 
 /**
- * Alterne les ratios pour un effet visuel dynamique
- * sans utiliser de row-span CSS (meilleur support mobile).
+ * Ratio uniforme portrait pour toutes les photos de concert.
+ * Chaque image est couvrante (object-cover) et n'affiche aucun blanc.
+ * Le fond noir garantit qu'il n'y a pas d'espace vide visible.
  */
-function getAspectClass(index: number): string {
-  const patterns = [
-    "aspect-[3/4]",
-    "aspect-square",
-    "aspect-[4/3]",
-    "aspect-[3/4]",
-    "aspect-square",
-    "aspect-[4/5]",
-    "aspect-[3/4]",
-    "aspect-square",
-  ];
-  return patterns[index % patterns.length];
+function getAspectClass(_index: number): string {
+  return "aspect-[3/4]";
 }
 
 export default function GaleriePage() {
