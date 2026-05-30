@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
 import Link from "next/link";
 import Image from "next/image";
@@ -30,28 +29,6 @@ function GoogleIcon() {
   );
 }
 
-function FacebookIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-      <path
-        fill="#1877F2"
-        d="M18 9a9 9 0 1 0-10.406 8.89v-6.288H5.309V9h2.285V7.017c0-2.255 1.343-3.501 3.4-3.501.984 0 2.014.175 2.014.175v2.215h-1.135c-1.118 0-1.467.694-1.467 1.406V9h2.496l-.399 2.602h-2.097v6.289C14.71 17.216 18 13.492 18 9z"
-      />
-    </svg>
-  );
-}
-
-function MicrosoftIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 21 21" aria-hidden="true">
-      <rect x="1" y="1" width="9" height="9" fill="#F25022" />
-      <rect x="11" y="1" width="9" height="9" fill="#7FBA00" />
-      <rect x="1" y="11" width="9" height="9" fill="#00A4EF" />
-      <rect x="11" y="11" width="9" height="9" fill="#FFB900" />
-    </svg>
-  );
-}
-
 export default function RegisterPage() {
   const [nom, setNom] = useState("");
   const [email, setEmail] = useState("");
@@ -59,9 +36,7 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [socialLoading, setSocialLoading] = useState<string | null>(null);
-  const router = useRouter();
-
-  const handleOAuth = async (provider: "google" | "facebook" | "azure") => {
+  const handleOAuth = async (provider: "google") => {
     setSocialLoading(provider);
     setError("");
 
@@ -105,8 +80,7 @@ export default function RegisterPage() {
       );
     }
 
-    router.push("/dashboard");
-    router.refresh();
+    window.location.href = "/account";
   };
 
   return (
@@ -151,32 +125,6 @@ export default function RegisterPage() {
                 <GoogleIcon />
               )}
               Continuer avec Google
-            </button>
-            <button
-              type="button"
-              onClick={() => handleOAuth("facebook")}
-              disabled={socialLoading !== null}
-              className="flex h-11 w-full items-center justify-center gap-3 rounded-md border border-white/20 bg-white px-4 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 disabled:opacity-50"
-            >
-              {socialLoading === "facebook" ? (
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-gray-400 border-t-transparent" />
-              ) : (
-                <FacebookIcon />
-              )}
-              Continuer avec Facebook
-            </button>
-            <button
-              type="button"
-              onClick={() => handleOAuth("azure")}
-              disabled={socialLoading !== null}
-              className="flex h-11 w-full items-center justify-center gap-3 rounded-md border border-white/20 bg-white px-4 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 disabled:opacity-50"
-            >
-              {socialLoading === "microsoft" ? (
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-gray-400 border-t-transparent" />
-              ) : (
-                <MicrosoftIcon />
-              )}
-              Continuer avec Microsoft
             </button>
           </div>
 
