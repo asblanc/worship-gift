@@ -12,16 +12,19 @@ const Lightbox = dynamic(() => import("@/components/Lightbox"), { ssr: false });
    CONFIGURATION DES PHOTOS
    ================================================================
 
-   ── Ajouter des photos à Morijah ──────────────────────────────
-   Ajoutez l'ID dans le tableau morijahIds (ex: 47 pour img_m47.jpg)
+   ── Ajouter une photo à Morijah ───────────────────────────────
+   Ajoutez l'ID dans morijahIds, ex: 47 pour img_m47.jpg
 
-   ── Ajouter des photos à Derek Jones ─────────────────────────
-   Ajoutez l'ID dans le tableau derekIds (ex: 37 pour img_d37.jpg)
+   ── Ajouter une photo à Derek Jones ──────────────────────────
+   Ajoutez l'ID dans derekIds, ex: 37 pour img_d37.jpg
 
-   ── Ajouter un 3e événement (ex. Worship Gift 3) ─────────────
-   1. Créez un tableau d'IDs : const wg3Ids = [1, 2, 3, ...]
-   2. Mappez-les : const wg3Images = wg3Ids.map(...)
-   3. Ajoutez un objet dans le tableau `folders` ci-dessous.
+   ── Ajouter un 3e événement (ex. Worship Gift 3 – Nom) ───────
+   1. const wg3Ids = [1, 2, 3, ...]
+   2. const wg3Images = wg3Ids.map(id => ({
+        src: `/img_worship-gift/img_x${id}.jpg`,   ← changer le préfixe
+        alt: `Concert Worship Gift 3 – Photo ${id}`,
+      }))
+   3. Ajouter un objet dans le tableau `folders` ci-dessous.
    ================================================================ */
 
 // ─── Images Morijah (préfixe img_m*) ──────────────────────────
@@ -48,6 +51,7 @@ const derekImages = derekIds.map((id) => ({
 }));
 
 // ─── Dossiers / collections ────────────────────────────────────
+// Pour ajouter un 3e événement : copier un bloc et l'ajouter au tableau.
 const folders = [
   {
     id: "morijah",
@@ -69,23 +73,7 @@ const folders = [
   },
 ];
 
-// ─── Animations ────────────────────────────────────────────────
-const gridVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.035 } },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 18 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.45, ease: "easeOut" as const },
-  },
-};
-
 export default function GaleriePage() {
-  // Dossier sélectionné par défaut : Morijah (événement le plus récent)
   const [activeId, setActiveId] = useState<string>("morijah");
   const [lightboxState, setLightboxState] = useState<{ index: number } | null>(
     null,
@@ -206,28 +194,16 @@ export default function GaleriePage() {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-black/20 to-transparent" />
 
-                      {/* Badge état actif */}
                       {isActive && (
                         <span className="absolute top-3 right-3 rounded-full bg-[#C9A84C] px-3 py-1 text-xs font-bold text-black">
                           Sélectionné
                         </span>
                       )}
 
-                      {/* Icône loupe centrée quand inactif */}
                       {!isActive && (
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                           <span className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-[#C9A84C] text-[#C9A84C]">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="22"
-                              height="22"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                               <polyline points="15 3 21 3 21 9" />
                               <polyline points="9 21 3 21 3 15" />
                               <line x1="21" y1="3" x2="14" y2="10" />
@@ -240,12 +216,7 @@ export default function GaleriePage() {
 
                     {/* Infos texte */}
                     <div className="p-5">
-                      <p
-                        className={[
-                          "text-xs font-semibold uppercase tracking-widest transition-colors",
-                          isActive ? "text-[#C9A84C]" : "text-gray-500 group-hover:text-[#C9A84C]/70",
-                        ].join(" ")}
-                      >
+                      <p className={["text-xs font-semibold uppercase tracking-widest transition-colors", isActive ? "text-[#C9A84C]" : "text-gray-500 group-hover:text-[#C9A84C]/70"].join(" ")}>
                         {folder.label}
                       </p>
                       <h3 className="mt-1.5 font-heading text-lg font-bold text-white">
@@ -254,12 +225,7 @@ export default function GaleriePage() {
                       <p className="mt-1.5 text-sm leading-relaxed text-gray-400">
                         {folder.subtitle}
                       </p>
-                      <p
-                        className={[
-                          "mt-3 text-xs transition-colors",
-                          isActive ? "text-[#C9A84C]/70" : "text-gray-600",
-                        ].join(" ")}
-                      >
+                      <p className={["mt-3 text-xs transition-colors", isActive ? "text-[#C9A84C]/70" : "text-gray-600"].join(" ")}>
                         {folder.images.length} photos
                       </p>
                     </div>
@@ -271,12 +237,15 @@ export default function GaleriePage() {
         </section>
 
         {/* ══════════════════════════════════════════════════════
-            GRILLE DE PHOTOS
+            MASONRY
+            Technique : CSS columns + break-inside:avoid
+            → chaque photo garde son ratio naturel, les colonnes
+              s'emboîtent automatiquement en cascade.
            ══════════════════════════════════════════════════════ */}
         <section className="min-h-screen bg-[#0a0a0a] px-4 py-14 md:px-8 md:py-20">
           <div className="mx-auto max-w-7xl">
 
-            {/* En-tête dynamique du dossier actif */}
+            {/* En-tête dynamique */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeId + "-header"}
@@ -299,34 +268,55 @@ export default function GaleriePage() {
               </motion.div>
             </AnimatePresence>
 
-            {/* Grille photos */}
+            {/* ── Masonry ─────────────────────────────────────── */}
             <AnimatePresence mode="wait">
               <motion.div
-                key={activeId + "-grid"}
-                variants={gridVariants}
-                initial="hidden"
-                animate="visible"
-                exit={{ opacity: 0, transition: { duration: 0.15 } }}
-                className="grid grid-cols-2 gap-2.5 sm:grid-cols-2 md:gap-3 lg:grid-cols-3 xl:grid-cols-4"
+                key={activeId + "-masonry"}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                /*
+                 * columns-2 → mobile : 2 colonnes
+                 * md:columns-3       → tablette : 3 colonnes
+                 * xl:columns-4       → desktop large : 4 colonnes
+                 * gap-3              → espace entre colonnes
+                 */
+                className="columns-2 gap-3 md:columns-3 xl:columns-4"
               >
                 {activeFolder.images.map((img, index) => (
                   <motion.div
                     key={img.src}
-                    variants={itemVariants}
-                    className="group relative cursor-pointer overflow-hidden rounded-lg bg-[#1a1a1a] shadow-md"
+                    /*
+                     * break-inside-avoid : empêche une photo d'être
+                     * coupée entre deux colonnes.
+                     * mb-3 : espacement vertical entre les photos.
+                     */
+                    className="break-inside-avoid mb-3 cursor-pointer group relative overflow-hidden rounded-lg bg-[#1a1a1a]"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{
+                      duration: 0.4,
+                      delay: Math.min(index * 0.03, 0.9),
+                    }}
                     onClick={() => openLightbox(index)}
                   >
-                    <div className="relative aspect-[3/4] w-full">
-                      <Image
-                        src={img.src}
-                        alt={img.alt}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-110"
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                        priority={index < 8}
-                        quality={80}
-                      />
-                    </div>
+                    {/*
+                     * On utilise <img> natif (pas next/image) pour que
+                     * chaque photo s'affiche à sa hauteur naturelle —
+                     * c'est ce qui crée l'effet cascade / masonry.
+                     * next/image nécessite des dimensions fixes qui
+                     * uniformiseraient les hauteurs.
+                     */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={img.src}
+                      alt={img.alt}
+                      className="block w-full h-auto transition-transform duration-500 group-hover:scale-[1.04]"
+                      loading={index < 8 ? "eager" : "lazy"}
+                      decoding="async"
+                    />
+
                     {/* Overlay loupe au survol */}
                     <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-300 group-hover:bg-black/50">
                       <span className="flex h-10 w-10 scale-50 items-center justify-center rounded-full border-2 border-[#C9A84C] text-[#C9A84C] opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
