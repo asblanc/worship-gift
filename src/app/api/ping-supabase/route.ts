@@ -43,6 +43,17 @@ async function wakeSupabase() {
 }
 
 export async function GET() {
+  // Safety: only perform the wake ping in Production environment to avoid
+  // consuming quotas for Preview/Development deployments.
+  // Vercel sets `VERCEL_ENV` to 'production' | 'preview' | 'development'.
+  const vercelEnv = process.env.VERCEL_ENV || process.env.NODE_ENV || "";
+  if (vercelEnv && vercelEnv !== "production") {
+    return new Response(JSON.stringify({ status: "skipped", reason: `env=${vercelEnv}` }), {
+      status: 204,
+      headers: { "content-type": "application/json" },
+    });
+  }
+
   try {
     const result = await wakeSupabase();
     return new Response(JSON.stringify({ status: "ok", ...result }), {
