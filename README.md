@@ -75,3 +75,52 @@ worship_gift/
 │   └── hooks/        # Hooks personnalisés
 ├── public/           # Assets statiques
 └── .clinerules/      # Règles Cline (ne pas toucher)
+
+## Wake / ping Supabase (éviter les cold starts)
+
+Une route API serveur a été ajoutée pour "réveiller" la base Supabase :
+
+- Route: `GET /api/ping-supabase`
+- Fichier: `src/app/api/ping-supabase/route.ts`
+
+But : exécuter une requête très légère côté serveur (lecture d'un `id` limité à 1)
+pour empêcher Supabase de mettre le projet en pause. La route utilise la clé
+service (server) Supabase — ne pas exposer cette clé côté client.
+
+Variables d'environnement à définir (Vercel ou local) :
+
+- `SUPABASE_URL` — URL du projet Supabase (ex: https://xyz.supabase.co)
+- `SUPABASE_SERVICE_ROLE_KEY` — clé service/role (NE PAS exposer côté client)
+
+Recommandation de fréquence pour le ping :
+
+- toutes les 15 minutes : réduit bien les cold starts
+- toutes les 30 minutes : plus conservateur pour les quotas
+- éviter <10 minutes pour ne pas abuser du service
+
+Options pour appeler la route régulièrement :
+
+- Cron Jobs Vercel : ajouter un cron qui appelle `https://votre-domaine.com/api/ping-supabase`
+	avec l'expression cron `*/15 * * * *` (15 min) ou `*/30 * * * *` (30 min).
+- Services externes (UptimeRobot, cron-job.org, EasyCron) : créer un monitor HTTP
+	qui fait un GET toutes les 15–30 minutes.
+
+Test local :
+
+1. Créez un fichier `.env.local` à la racine et remplissez les variables (voir `.env.local.example`).
+2. Lancez Next en dev :
+
+```bash
+npm run dev
+```
+
+3. Ping la route :
+
+```bash
+curl -sS http://localhost:3000/api/ping-supabase | jq .
+```
+
+Si votre projet n'a pas la table `orders`, éditez `src/app/api/ping-supabase/route.ts` et
+remplacez `orders` par une petite table existante ou adaptez la requête en conséquence.
+
+Pour désactiver facilement : supprimer le cron externe ou retirer/renommer la route `ping-supabase`.
