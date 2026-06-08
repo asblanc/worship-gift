@@ -26,12 +26,21 @@ export async function POST(request: NextRequest) {
     const limited = rateLimit(request, "cmi-init", 15, 60_000);
     if (limited) return limited;
 
-    const body = await request.json();
+    // Accepte JSON (fetch) ou form-urlencoded (POST plein-page depuis
+    // le checkout, qui permet la redirection navigateur vers CMI).
+    const contentType = request.headers.get("content-type") || "";
+    let rawOrderId = "";
+    if (contentType.includes("application/json")) {
+      const body = await request.json();
+      rawOrderId = typeof body.orderId === "string" ? body.orderId : "";
+    } else {
+      const form = await request.formData();
+      rawOrderId = String(form.get("orderId") || "");
+    }
 
-    // Seul l'orderId vient du client. Tout le reste (montant, email,
-    // montant a payer) est relu en base : on ne fait JAMAIS confiance au
-    // montant fourni par le client.
-    const orderId = typeof body.orderId === "string" ? body.orderId.trim() : "";
+    // Seul l'orderId vient du client. Le montant est relu en base :
+    // on ne fait JAMAIS confiance au montant fourni par le client.
+    const orderId = rawOrderId.trim();
     if (!orderId) {
       return NextResponse.json(
         { error: "Champ requis manquant : orderId" },
