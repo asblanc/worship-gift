@@ -148,11 +148,22 @@ export default function AdminLayout({
               </svg>
               Voir le site
             </Link>
+            <Link
+              href="/account"
+              className="hidden text-xs text-gray-500 transition-colors hover:text-gray-300 sm:inline-flex sm:items-center sm:gap-1"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              Mon compte
+            </Link>
             <span className="hidden text-xs text-gray-600 md:inline">
               {userEmail}
             </span>
             <button
               onClick={handleLogout}
+              aria-label="Déconnexion"
               className="flex items-center gap-1.5 rounded-lg border border-white/[0.06] px-3 py-1.5 text-xs text-gray-500 transition-all hover:border-red-500/20 hover:bg-red-500/5 hover:text-red-400"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

@@ -30,7 +30,8 @@ export default function SuccessPage() {
     { ticket_code: string; event_title: string; ticket_type: string }[]
   >([]);
 
-  // Verifier la commande dans Supabase
+  // Verifier la commande via la route serveur (fonctionne aussi pour
+  // un invité non connecté, contrairement à une lecture directe sous RLS).
   useEffect(() => {
     const checkOrder = async () => {
       if (!orderId) {
@@ -39,31 +40,14 @@ export default function SuccessPage() {
       }
 
       try {
-        const { supabase } = await import("@/lib/supabase/client");
-
-        // Verifier la commande
-        const { data: order } = await supabase
-          .from("orders")
-          .select("status")
-          .eq("id", orderId)
-          .single();
-
-        if (order) {
-          setOrderStatus(order.status);
-        }
-
-        // Verifier les billets generes
-        const { data: ticketList } = await supabase
-          .from("tickets")
-          .select("ticket_code, event_title, ticket_type")
-          .eq("order_id", orderId);
-
-        if (ticketList) {
-          setTickets(ticketList);
+        const res = await fetch(`/api/orders/${encodeURIComponent(orderId)}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.order?.status) setOrderStatus(data.order.status);
+          if (Array.isArray(data.tickets)) setTickets(data.tickets);
         }
       } catch {
-        // Table pas encore creee ou erreur reseau — on affiche juste la confirmation
-        setOrderStatus("paid");
+        // Erreur réseau — on affiche quand même la confirmation
       } finally {
         setLoading(false);
       }

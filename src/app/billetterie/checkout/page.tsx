@@ -36,6 +36,7 @@ export default function CheckoutPage() {
 
   const [confirming, setConfirming] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
+  const [paying, setPaying] = useState(false);
   const [error, setError] = useState("");
 
   // Lire les paramètres de l'URL
@@ -78,6 +79,32 @@ export default function CheckoutPage() {
     } finally {
       setConfirming(false);
     }
+  };
+
+  // Paiement par carte (CMI) : on soumet un POST plein-page vers
+  // /api/payment/cmi/init, qui renvoie le formulaire de redirection CMI
+  // (auto-submit). Le montant n'est PAS envoyé : il est relu en base
+  // côté serveur à partir de l'orderId.
+  const handlePayCmi = () => {
+    if (!orderId) {
+      setError("Référence de commande manquante. Recommence ta réservation.");
+      return;
+    }
+    setPaying(true);
+    setError("");
+
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "/api/payment/cmi/init";
+
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "orderId";
+    input.value = orderId;
+    form.appendChild(input);
+
+    document.body.appendChild(form);
+    form.submit();
   };
 
   // Formater le prix
@@ -224,81 +251,61 @@ export default function CheckoutPage() {
 
                   {/* Section action */}
                   <div className="mt-8 space-y-4">
-                    {/* Bouton confirmer (mode sans paiement) */}
-                    <button
-                      onClick={handleConfirm}
-                      disabled={confirming}
-                      className={`flex w-full items-center justify-center gap-2 rounded-lg p-4 text-sm font-semibold transition-all ${
-                        confirming
-                          ? "cursor-not-allowed bg-gray-700 text-gray-400"
-                          : "bg-[#C9A84C] text-black hover:bg-[#F0CB6A] hover:shadow-md hover:shadow-[#C9A84C]/30 active:scale-[0.98]"
-                      }`}
-                    >
-                      {confirming ? (
-                        <>
-                          <span className="h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" />
-                          Confirmation…
-                        </>
-                      ) : (
-                        "Confirmer la réservation"
-                      )}
-                    </button>
-
-                    {/* 
-                      TODO: BRANCHER CMI ICI
-                      Remplacer le bouton ci-dessus par celui-ci quand le paiement est actif :
-                      
-                      <button onClick={handleCmiPayment}
-                        className="flex w-full items-center justify-between rounded-lg border border-[#C9A84C]/40 bg-[#C9A84C]/5 p-4 transition-all hover:border-[#C9A84C] hover:bg-[#C9A84C]/10">
-                        <div className="flex items-center gap-3">
-                          <CreditCardIcon />
-                          <div className="text-left">
-                            <p className="font-semibold text-white">Payer par carte bancaire (CMI)</p>
-                            <p className="text-xs text-gray-400">Paiement sécurisé 3D Secure</p>
-                          </div>
-                        </div>
-                        <span className="text-[#C9A84C]">Payer →</span>
+                    {isFree ? (
+                      /* Événement gratuit : confirmation directe (pending → reserved) */
+                      <button
+                        onClick={handleConfirm}
+                        disabled={confirming}
+                        className={`flex w-full items-center justify-center gap-2 rounded-lg p-4 text-sm font-semibold transition-all ${
+                          confirming
+                            ? "cursor-not-allowed bg-gray-700 text-gray-400"
+                            : "bg-[#C9A84C] text-black hover:bg-[#F0CB6A] hover:shadow-md hover:shadow-[#C9A84C]/30 active:scale-[0.98]"
+                        }`}
+                      >
+                        {confirming ? (
+                          <>
+                            <span className="h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" />
+                            Confirmation…
+                          </>
+                        ) : (
+                          "Confirmer la réservation"
+                        )}
                       </button>
-                      
-                      Et appeler :
-                      const form = document.createElement("form");
-                      form.method = "POST";
-                      form.action = "/api/payment/cmi/init";
-                      // ... ajouter les champs cachés (orderId, amount, etc.)
-                      form.submit();
-                    */}
+                    ) : (
+                      /* Événement payant : redirection vers le paiement carte CMI */
+                      <button
+                        onClick={handlePayCmi}
+                        disabled={paying}
+                        className={`flex w-full items-center justify-center gap-2 rounded-lg p-4 text-sm font-semibold transition-all ${
+                          paying
+                            ? "cursor-not-allowed bg-gray-700 text-gray-400"
+                            : "bg-[#C9A84C] text-black hover:bg-[#F0CB6A] hover:shadow-md hover:shadow-[#C9A84C]/30 active:scale-[0.98]"
+                        }`}
+                      >
+                        {paying ? (
+                          <>
+                            <span className="h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" />
+                            Redirection vers le paiement…
+                          </>
+                        ) : (
+                          <>
+                            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+                            </svg>
+                            Payer par carte bancaire (CMI)
+                          </>
+                        )}
+                      </button>
+                    )}
 
-                    {/* Placeholder paiement (désactivé visuellement) */}
-                    <div className="flex items-center justify-between rounded-lg border border-gray-700/50 bg-gray-900/20 p-4 opacity-60">
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800">
-                          <svg
-                            className="h-5 w-5 text-gray-500"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={1.5}
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"
-                            />
-                          </svg>
-                        </div>
-                        <div className="text-left">
-                          <p className="text-sm text-gray-500">
-                            Paiement en ligne (CMI)
-                          </p>
-                          <p className="text-xs text-gray-600">
-                            Bientôt disponible — Cartes marocaines
-                          </p>
-                        </div>
-                      </div>
-                      <span className="rounded-full bg-gray-800 px-3 py-1 text-xs text-gray-500">
-                        Bientôt
-                      </span>
-                    </div>
+                    {!isFree && (
+                      <p className="flex items-center justify-center gap-1.5 text-center text-xs text-gray-500">
+                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        Paiement sécurisé 3D Secure via CMI
+                      </p>
+                    )}
                   </div>
 
                   {/* Retour */}
@@ -317,7 +324,7 @@ export default function CheckoutPage() {
             <p className="mt-6 text-center text-xs text-gray-600">
               {isFree
                 ? "Cet événement est gratuit. Votre réservation sera confirmée immédiatement."
-                : "Le paiement en ligne sera disponible prochainement. En attendant, votre réservation est enregistrée."}
+                : "Vous allez être redirigé vers la plateforme de paiement sécurisée CMI pour régler par carte bancaire."}
             </p>
           </div>
         </div>

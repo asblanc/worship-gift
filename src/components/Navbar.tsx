@@ -74,6 +74,7 @@ export default function Navbar() {
                   href="/account"
                   className="flex h-9 w-9 items-center justify-center rounded-full border border-[#C9A84C]/40 bg-[#C9A84C]/10 text-sm font-bold text-[#C9A84C] transition-colors hover:bg-[#C9A84C]/20"
                   title="Mon espace"
+                  aria-label="Mon espace"
                 >
                   {(user.email?.charAt(0) || "?").toUpperCase()}
                 </Link>

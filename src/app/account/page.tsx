@@ -43,14 +43,18 @@ export default function AccountPage() {
           .order("created_at", { ascending: false })
           .limit(20);
 
+        // Comptage RÉEL des billets valides (table tickets), pas une
+        // approximation à partir du nombre de commandes.
+        const { count: ticketCount } = await supabase
+          .from("tickets")
+          .select("id", { count: "exact", head: true })
+          .eq("customer_email", user.email)
+          .eq("status", "valid");
+
         if (data) {
           setOrders(data);
-          const paid = data.filter((o) => o.status === "paid" || o.status === "reserved");
-          // Chaque commande = 1 billet minimum (estimation conservatrice)
-          // La quantité exacte est dans tickets, mais on utilise orders comme proxy
-          const ticketCount = paid.length;
           setStats({
-            ticketCount,
+            ticketCount: ticketCount ?? 0,
             paidCount: data.filter((o) => o.status === "paid").length,
           });
         }
