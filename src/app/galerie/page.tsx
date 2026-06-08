@@ -1,121 +1,23 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import dynamic from "next/dynamic";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
-
-const Lightbox = dynamic(() => import("@/components/Lightbox"), { ssr: false });
+import { albums } from "@/lib/gallery-config";
 
 /* ================================================================
-   CONFIGURATION DES PHOTOS
-   ================================================================
-
-   ── Ajouter une photo à Morijah ───────────────────────────────
-   Ajoutez l'ID dans morijahIds, ex: 47 pour img_m47.jpg
-
-   ── Ajouter une photo à Derek Jones ──────────────────────────
-   Ajoutez l'ID dans derekIds, ex: 37 pour img_d37.jpg
-
-   ── Ajouter un 3e événement (ex. Worship Gift 3 – Nom) ───────
-   1. const wg3Ids = [1, 2, 3, ...]
-   2. const wg3Images = wg3Ids.map(id => ({
-        src: `/img_worship-gift/img_x${id}.jpg`,   ← changer le préfixe
-        alt: `Concert Worship Gift 3 – Photo ${id}`,
-      }))
-   3. Ajouter un objet dans le tableau `folders` ci-dessous.
+   Worship Gift — Galerie (index)
+   Affiche les albums sous forme de dossiers. Chaque dossier ouvre
+   sa propre page : /galerie/[slug].
    ================================================================ */
 
-// ─── Images Morijah (préfixe img_m*) ──────────────────────────
-const morijahIds = [
-  1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-  21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37,
-  38, 39, 40, 41, 42, 43, 44, 45, 46,
-];
-
-const morijahImages = morijahIds.map((id) => ({
-  src: `/img_worship-gift/img_m${id}.jpg`,
-  alt: `Concert Morijah Worship Gift – Photo ${id}`,
-}));
-
-// ─── Images Derek Jones (préfixe img_d*) ──────────────────────
-const derekIds = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20,
-  21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 34, 35, 36,
-];
-
-const derekImages = derekIds.map((id) => ({
-  src: `/img_worship-gift/img_d${id}.jpg`,
-  alt: `Concert Derek Jones Worship Gift – Photo ${id}`,
-}));
-
-// ─── Dossiers / collections ────────────────────────────────────
-// Pour ajouter un 3e événement : copier un bloc et l'ajouter au tableau.
-const folders = [
-  {
-    id: "morijah",
-    label: "Worship Gift 2",
-    title: "Worship Gift 2 – Morijah",
-    subtitle:
-      "Soirée de louange et d'adoration avec la chantre Morijah. Une voix qui touche les cœurs.",
-    cover: "/img_worship-gift/img_m8.jpg",
-    images: morijahImages,
-  },
-  {
-    id: "derek",
-    label: "Worship Gift 1",
-    title: "Worship Gift 1 – Derek Jones",
-    subtitle:
-      "Une nuit de Gospel et de communion inoubliable avec le chantre Derek Jones.",
-    cover: "/img_worship-gift/img_d8.jpg",
-    images: derekImages,
-  },
-];
-
 export default function GaleriePage() {
-  const [activeId, setActiveId] = useState<string>("morijah");
-  const [lightboxState, setLightboxState] = useState<{ index: number } | null>(
-    null,
-  );
-
-  const activeFolder = folders.find((f) => f.id === activeId)!;
-
-  const handleSelectFolder = useCallback((id: string) => {
-    setActiveId(id);
-    setLightboxState(null);
-  }, []);
-
-  const openLightbox = useCallback(
-    (index: number) => setLightboxState({ index }),
-    [],
-  );
-  const closeLightbox = useCallback(() => setLightboxState(null), []);
-
-  const prevImage = useCallback(() => {
-    setLightboxState((prev) => {
-      if (!prev) return null;
-      const total = activeFolder.images.length;
-      return { index: (prev.index - 1 + total) % total };
-    });
-  }, [activeFolder.images.length]);
-
-  const nextImage = useCallback(() => {
-    setLightboxState((prev) => {
-      if (!prev) return null;
-      const total = activeFolder.images.length;
-      return { index: (prev.index + 1) % total };
-    });
-  }, [activeFolder.images.length]);
-
   return (
     <>
       <Navbar />
       <main className="flex-1 pt-20">
-
-        {/* ══════════════════════════════════════════════════════
-            HERO
-           ══════════════════════════════════════════════════════ */}
+        {/* HERO */}
         <section className="relative overflow-hidden border-b border-white/10 bg-black px-6 py-24 md:py-32">
           <Image
             src="/img_worship-gift/img_galerie.jpg"
@@ -136,16 +38,14 @@ export default function GaleriePage() {
               Galerie
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
-              Revivez les meilleurs moments de nos concerts Gospel. Sélectionnez
-              un événement pour explorer ses photos.
+              Revivez les meilleurs moments de nos concerts Gospel. Choisissez un
+              album pour découvrir ses photos.
             </p>
           </motion.div>
         </section>
 
-        {/* ══════════════════════════════════════════════════════
-            SÉLECTEUR DE DOSSIERS
-           ══════════════════════════════════════════════════════ */}
-        <section className="border-b border-white/10 bg-black px-4 py-14 md:px-8 md:py-20">
+        {/* DOSSIERS / ALBUMS */}
+        <section className="min-h-screen bg-black px-4 py-14 md:px-8 md:py-20">
           <div className="mx-auto max-w-5xl">
             <motion.h2
               initial={{ opacity: 0, y: 16 }}
@@ -157,208 +57,75 @@ export default function GaleriePage() {
               Nos événements en images
             </motion.h2>
 
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-              {folders.map((folder, i) => {
-                const isActive = folder.id === activeId;
-                return (
-                  <motion.button
-                    key={folder.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                    onClick={() => handleSelectFolder(folder.id)}
-                    aria-label={`Voir les photos : ${folder.title}`}
-                    aria-pressed={isActive}
-                    className={[
-                      "group relative overflow-hidden rounded-xl text-left transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]",
-                      "border bg-[#111]",
-                      isActive
-                        ? "border-[#C9A84C] shadow-[0_0_32px_rgba(201,168,76,0.22)]"
-                        : "border-white/10 hover:border-[#C9A84C]/50 hover:shadow-[0_0_18px_rgba(201,168,76,0.1)]",
-                    ].join(" ")}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              {albums.map((album, i) => (
+                <motion.div
+                  key={album.slug}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                >
+                  <Link
+                    href={`/galerie/${album.slug}`}
+                    aria-label={`Ouvrir l'album : ${album.title}`}
+                    className="group relative block overflow-hidden rounded-xl border border-white/10 bg-[#111] transition-all duration-300 hover:border-[#C9A84C]/60 hover:shadow-[0_0_24px_rgba(201,168,76,0.18)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]"
                   >
-                    {/* Vignette de couverture */}
-                    <div className="relative h-48 w-full overflow-hidden sm:h-56">
+                    {/* Couverture */}
+                    <div className="relative h-56 w-full overflow-hidden sm:h-64">
                       <Image
-                        src={folder.cover}
-                        alt={`Couverture ${folder.title}`}
+                        src={album.cover}
+                        alt={`Couverture ${album.title}`}
                         fill
-                        className={[
-                          "object-cover transition-all duration-500",
-                          isActive
-                            ? "scale-105 brightness-75"
-                            : "brightness-60 group-hover:scale-105 group-hover:brightness-75",
-                        ].join(" ")}
+                        className="object-cover brightness-[0.65] transition-all duration-500 group-hover:scale-105 group-hover:brightness-75"
                         sizes="(max-width: 640px) 100vw, 50vw"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-black/20 to-transparent" />
 
-                      {isActive && (
-                        <span className="absolute top-3 right-3 rounded-full bg-[#C9A84C] px-3 py-1 text-xs font-bold text-black">
-                          Sélectionné
-                        </span>
-                      )}
+                      {/* Badge dossier */}
+                      <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1 text-xs font-semibold text-[#C9A84C] backdrop-blur-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z" />
+                        </svg>
+                        {album.images.length} photos
+                      </span>
 
-                      {!isActive && (
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                          <span className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-[#C9A84C] text-[#C9A84C]">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <polyline points="15 3 21 3 21 9" />
-                              <polyline points="9 21 3 21 3 15" />
-                              <line x1="21" y1="3" x2="14" y2="10" />
-                              <line x1="3" y1="21" x2="10" y2="14" />
-                            </svg>
-                          </span>
-                        </div>
-                      )}
+                      {/* Icône ouvrir au survol */}
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                        <span className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-[#C9A84C] bg-black/30 text-[#C9A84C]">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="9 18 15 12 9 6" />
+                          </svg>
+                        </span>
+                      </div>
                     </div>
 
-                    {/* Infos texte */}
+                    {/* Infos */}
                     <div className="p-5">
-                      <p className={["text-xs font-semibold uppercase tracking-widest transition-colors", isActive ? "text-[#C9A84C]" : "text-gray-500 group-hover:text-[#C9A84C]/70"].join(" ")}>
-                        {folder.label}
+                      <p className="text-xs font-semibold uppercase tracking-widest text-[#C9A84C]">
+                        {album.label}
                       </p>
                       <h3 className="mt-1.5 font-heading text-lg font-bold text-white">
-                        {folder.title}
+                        {album.title}
                       </h3>
                       <p className="mt-1.5 text-sm leading-relaxed text-gray-400">
-                        {folder.subtitle}
+                        {album.subtitle}
                       </p>
-                      <p className={["mt-3 text-xs transition-colors", isActive ? "text-[#C9A84C]/70" : "text-gray-600"].join(" ")}>
-                        {folder.images.length} photos
-                      </p>
-                    </div>
-                  </motion.button>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ══════════════════════════════════════════════════════
-            MASONRY
-            Technique : CSS columns + break-inside:avoid
-            → chaque photo garde son ratio naturel, les colonnes
-              s'emboîtent automatiquement en cascade.
-           ══════════════════════════════════════════════════════ */}
-        <section className="min-h-screen bg-[#0a0a0a] px-4 py-14 md:px-8 md:py-20">
-          <div className="mx-auto max-w-7xl">
-
-            {/* En-tête dynamique */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeId + "-header"}
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-                className="mb-12 text-center"
-              >
-                <p className="text-xs font-semibold uppercase tracking-widest text-[#C9A84C]">
-                  {activeFolder.label}
-                </p>
-                <h2 className="mt-2 font-heading text-3xl font-bold text-white md:text-4xl">
-                  {activeFolder.title}
-                </h2>
-                <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-gray-400">
-                  {activeFolder.subtitle}
-                </p>
-                <div className="mx-auto mt-5 h-px w-16 bg-[#C9A84C]/40" />
-              </motion.div>
-            </AnimatePresence>
-
-            {/* ── Masonry ─────────────────────────────────────── */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeId + "-masonry"}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.25 }}
-                /*
-                 * columns-2 → mobile : 2 colonnes
-                 * md:columns-3       → tablette : 3 colonnes
-                 * xl:columns-4       → desktop large : 4 colonnes
-                 * gap-3              → espace entre colonnes
-                 */
-                className="columns-2 gap-3 md:columns-3 xl:columns-4"
-              >
-                {activeFolder.images.map((img, index) => (
-                  <motion.div
-                    key={img.src}
-                    /*
-                     * break-inside-avoid : empêche une photo d'être
-                     * coupée entre deux colonnes.
-                     * mb-3 : espacement vertical entre les photos.
-                     */
-                    className="break-inside-avoid mb-3 cursor-pointer group relative overflow-hidden rounded-lg bg-[#1a1a1a]"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{
-                      duration: 0.4,
-                      delay: Math.min(index * 0.03, 0.9),
-                    }}
-                    onClick={() => openLightbox(index)}
-                  >
-                    {/*
-                     * On utilise <img> natif (pas next/image) pour que
-                     * chaque photo s'affiche à sa hauteur naturelle —
-                     * c'est ce qui crée l'effet cascade / masonry.
-                     * next/image nécessite des dimensions fixes qui
-                     * uniformiseraient les hauteurs.
-                     */}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={img.src}
-                      alt={img.alt}
-                      className="block w-full h-auto transition-transform duration-500 group-hover:scale-[1.04]"
-                      loading={index < 8 ? "eager" : "lazy"}
-                      decoding="async"
-                    />
-
-                    {/* Overlay loupe au survol */}
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-all duration-300 group-hover:bg-black/50">
-                      <span className="flex h-10 w-10 scale-50 items-center justify-center rounded-full border-2 border-[#C9A84C] text-[#C9A84C] opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="18"
-                          height="18"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <circle cx="11" cy="11" r="8" />
-                          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                      <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#C9A84C]">
+                        Voir l&rsquo;album
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-300 group-hover:translate-x-1">
+                          <line x1="5" y1="12" x2="19" y2="12" />
+                          <polyline points="12 5 19 12 12 19" />
                         </svg>
                       </span>
                     </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Compteur */}
-            <p className="mt-12 text-center text-xs text-gray-600">
-              {activeFolder.images.length} photos · {activeFolder.title}
-            </p>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
       </main>
-
-      {/* LIGHTBOX */}
-      {lightboxState !== null && (
-        <Lightbox
-          images={activeFolder.images}
-          currentIndex={lightboxState.index}
-          onClose={closeLightbox}
-          onPrev={prevImage}
-          onNext={nextImage}
-        />
-      )}
     </>
   );
 }

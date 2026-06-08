@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { upcomingEvents } from "@/lib/events-config";
+import { albums } from "@/lib/gallery-config";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL || "https://www.worship-gift.com";
@@ -25,5 +26,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...eventPages];
+  // Albums de la galerie
+  const albumPages: MetadataRoute.Sitemap = albums.map((a) => ({
+    url: `${siteUrl}/galerie/${a.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
+  return [...staticPages, ...eventPages, ...albumPages];
 }
