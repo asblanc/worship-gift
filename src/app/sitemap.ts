@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { upcomingEvents } from "@/lib/events-config";
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://worship-gift.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://www.worship-gift.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
