@@ -65,6 +65,8 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
   };
 
   // ── Option 2 : Carte bancaire ──────────────────────────────
+  // Crée la commande côté serveur (montant calculé serveur) puis
+  // redirige vers le récapitulatif/paiement CMI.
   const handleCardPayment = async () => {
     if (!name.trim() || !email.trim()) {
       alert("Merci de saisir votre nom et votre email.");
@@ -72,31 +74,37 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
     }
     setLoading(true);
     try {
-      // TODO: intégrer CMI / passerelle de paiement ici
-      // Remplacer ce bloc par l'appel réel à /api/payment/cmi/init
-      const res = await fetch("/api/payment/cmi/init", {
+      const res = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           eventId: event.id,
-          eventTitle: event.title,
           quantity: qty,
-          unitPriceMAD: event.priceValue / 100,
-          totalMAD,
+          ticketType: "Entrée libre",
           customerName: name,
           customerEmail: email,
         }),
       });
       const data = await res.json();
-      // Rediriger vers la page de paiement CMI si l'URL est fournie
-      if (data?.paymentUrl) {
-        window.location.href = data.paymentUrl;
-      } else {
-        alert("Paiement en ligne bientôt disponible. Utilise WhatsApp pour l'instant.");
+
+      if (!res.ok || !data.success) {
+        alert(data.error || "Erreur lors de la création de la commande.");
+        setLoading(false);
+        return;
       }
+
+      const idx = upcomingEvents.findIndex((e) => e.id === event.id);
+      const params = new URLSearchParams({
+        order: data.orderId,
+        event: String(idx >= 0 ? idx : 0),
+        quantity: String(qty),
+        amount: String(data.amount),
+        ticketType: "Entrée libre",
+      });
+      // Redirection vers le récap (qui propose le paiement CMI sécurisé)
+      window.location.href = `/billetterie/checkout?${params.toString()}`;
     } catch {
       alert("Erreur lors de l'initialisation du paiement. Réessaie plus tard.");
-    } finally {
       setLoading(false);
     }
   };

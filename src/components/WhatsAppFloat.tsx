@@ -2,13 +2,13 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { WHATSAPP_NUMBER } from "@/lib/events-config";
 
 /* ═══════════════════════════════════════════════════════════
-   CONFIGURATION — modifiez ces valeurs selon vos besoins
+   CONFIGURATION — le numéro WhatsApp est centralisé dans
+   src/lib/events-config.ts (WHATSAPP_NUMBER), configurable via
+   la variable d'env NEXT_PUBLIC_WHATSAPP_NUMBER.
    ═══════════════════════════════════════════════════════════ */
-
-/** Numéro WhatsApp au format international SANS le "+" */
-const WHATSAPP_NUMBER = "212698472691";
 
 /** Messages préremplis par option */
 const MESSAGES = {
