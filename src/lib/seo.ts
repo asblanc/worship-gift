@@ -1,6 +1,55 @@
 import type { Metadata } from "next";
+import { nextEvent } from "@/lib/events-config";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://worship-gift.vercel.app";
+
+/* ------------------------------------------------------------------
+   Donnees structurees JSON-LD (rich results Google)
+   - Organization : identite du mouvement
+   - WebSite : nom du site
+   - MusicEvent : prochain concert (date ISO depuis nextEvent.date)
+   ------------------------------------------------------------------ */
+export function buildJsonLd() {
+  const organization = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Worship Gift",
+    url: siteUrl,
+    logo: `${siteUrl}/img_worship-gift/logo-worship-gift.png`,
+    description:
+      "Mouvement gospel dédié au gospel, à l'adoration et à l'unité à travers la musique.",
+  };
+
+  const website = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Worship Gift",
+    url: siteUrl,
+  };
+
+  const musicEvent = {
+    "@context": "https://schema.org",
+    "@type": "MusicEvent",
+    name: nextEvent.title,
+    description: nextEvent.description,
+    startDate: nextEvent.date.toISOString(),
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    image: `${siteUrl}${nextEvent.coverImage}`,
+    location: {
+      "@type": "Place",
+      name: nextEvent.location,
+      address: nextEvent.location,
+    },
+    organizer: {
+      "@type": "Organization",
+      name: "Worship Gift",
+      url: siteUrl,
+    },
+  };
+
+  return [organization, website, musicEvent];
+}
 
 export const defaultMetadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -27,21 +76,14 @@ export const defaultMetadata: Metadata = {
     description:
       "Mouvement gospel dédié au gospel, à l'adoration et à l'unité à travers la musique.",
     url: siteUrl,
-    images: [
-      {
-        url: "/img_worship-gift/logo-worship-gift2.jpeg",
-        width: 1200,
-        height: 1200,
-        alt: "Worship Gift – Mouvement Gospel",
-      },
-    ],
+    // L'image OG est fournie par app/opengraph-image.tsx (1200x630)
   },
   twitter: {
     card: "summary_large_image",
     title: "Worship Gift | Mouvement Gospel",
     description:
       "Mouvement gospel dédié au gospel, à l'adoration et à l'unité à travers la musique.",
-    images: ["/img_worship-gift/logo-worship-gift2.jpeg"],
+    // L'image Twitter est fournie par app/opengraph-image.tsx
   },
   robots: {
     index: true,

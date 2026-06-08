@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { supabase } from "@/lib/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -66,7 +67,7 @@ export default function AdminLayout({
         return;
       }
 
-      if (user.user_metadata?.role !== "admin") {
+      if (user.app_metadata?.role !== "admin") {
         window.location.href = "/account";
         return;
       }
@@ -117,9 +118,11 @@ export default function AdminLayout({
             </button>
 
             <Link href="/admin" className="flex items-center gap-3">
-              <img
+              <Image
                 src="/img_worship-gift/logo-worship-gift.png"
                 alt="Worship Gift"
+                width={32}
+                height={32}
                 className="h-8 w-8 rounded-full object-cover ring-1 ring-[#C9A84C]/40"
               />
               <span className="font-heading text-lg font-bold tracking-wider text-[#C9A84C]">

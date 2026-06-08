@@ -17,16 +17,38 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { CmiProvider } from "@/lib/payment/cmi-provider";
+import { getOrderForPayment } from "@/lib/orders-service.server";
+import { rateLimit } from "@/lib/rate-limit";
 import type { PaymentInitRequest } from "@/lib/payment/types";
 
 export async function POST(request: NextRequest) {
   try {
+    const limited = rateLimit(request, "cmi-init", 15, 60_000);
+    if (limited) return limited;
+
     const body = await request.json();
 
-    // Validation minimale
-    if (!body.orderId || !body.amount || !body.customerEmail) {
+    // Seul l'orderId vient du client. Tout le reste (montant, email,
+    // montant a payer) est relu en base : on ne fait JAMAIS confiance au
+    // montant fourni par le client.
+    const orderId = typeof body.orderId === "string" ? body.orderId.trim() : "";
+    if (!orderId) {
       return NextResponse.json(
-        { error: "Champs requis manquants : orderId, amount, customerEmail" },
+        { error: "Champ requis manquant : orderId" },
+        { status: 400 }
+      );
+    }
+
+    const order = await getOrderForPayment(orderId);
+    if (!order) {
+      return NextResponse.json({ error: "Commande introuvable" }, { status: 404 });
+    }
+    if (order.status === "paid") {
+      return NextResponse.json({ error: "Commande deja payee" }, { status: 409 });
+    }
+    if (!order.amount || order.amount <= 0) {
+      return NextResponse.json(
+        { error: "Cette commande est gratuite, aucun paiement requis" },
         { status: 400 }
       );
     }
@@ -36,15 +58,14 @@ export async function POST(request: NextRequest) {
     const origin = request.headers.get("origin") || "http://localhost:3000";
 
     const initRequest: PaymentInitRequest = {
-      orderId: body.orderId,
-      amount: body.amount,
-      currency: body.currency || "MAD",
-      customerEmail: body.customerEmail,
-      customerName: body.customerName || "Client",
-      description: body.description || "Paiement Worship Gift",
-      okUrl: `${origin}/billetterie/success?order=${body.orderId}`,
-      failUrl: `${origin}/billetterie/checkout?error=1&order=${body.orderId}`,
-      metadata: body.metadata,
+      orderId: order.id,
+      amount: order.amount, // montant serveur (centimes)
+      currency: (order.currency as PaymentInitRequest["currency"]) || "MAD",
+      customerEmail: order.customer_email,
+      customerName: order.customer_name || "Client",
+      description: order.description || "Paiement Worship Gift",
+      okUrl: `${origin}/billetterie/success?order=${order.id}`,
+      failUrl: `${origin}/billetterie/checkout?error=1&order=${order.id}`,
     };
 
     const provider = new CmiProvider();

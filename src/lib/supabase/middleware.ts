@@ -34,7 +34,7 @@ export async function updateSession(request: NextRequest) {
   // Redirection après login : admin → /admin, utilisateur normal → /account
   if (user && pathname.startsWith("/auth/login")) {
     const url = request.nextUrl.clone();
-    const isAdmin = user.user_metadata?.role === "admin";
+    const isAdmin = user.app_metadata?.role === "admin";
     url.pathname = isAdmin ? "/admin" : "/account";
     return NextResponse.redirect(url);
   }
@@ -61,7 +61,7 @@ export async function updateSession(request: NextRequest) {
       return NextResponse.redirect(url);
     }
 
-    const isAdmin = user.user_metadata?.role === "admin";
+    const isAdmin = user.app_metadata?.role === "admin";
     if (!isAdmin) {
       const url = request.nextUrl.clone();
       url.pathname = "/account";

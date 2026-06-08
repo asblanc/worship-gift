@@ -4,6 +4,11 @@
 --  Liees a la table reservations existante
 -- ============================================================
 
+-- Reset : supprime les anciennes tables (ancien schema incompatible)
+-- tickets d'abord car il reference orders via FK
+DROP TABLE IF EXISTS public.tickets CASCADE;
+DROP TABLE IF EXISTS public.orders CASCADE;
+
 -- Table des commandes (paiements)
 CREATE TABLE IF NOT EXISTS public.orders (
   id TEXT PRIMARY KEY,                                -- ex: "WG-20260528-001"
@@ -45,17 +50,53 @@ CREATE TABLE IF NOT EXISTS public.tickets (
 ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.tickets ENABLE ROW LEVEL SECURITY;
 
--- Policies orders
+-- ============================================================
+--  Policies RLS
+--  Lecture seule cote client (anon/authenticated).
+--  Les INSERT/UPDATE passent UNIQUEMENT par le serveur via la
+--  cle service_role (qui contourne RLS) — aucune policy d'ecriture
+--  n'est exposee aux clients.
+--  Le role admin est lu depuis le claim JWT app_metadata.role
+--  (non modifiable par l'utilisateur), jamais user_metadata.
+-- ============================================================
+
+-- Fonction helper : true si le JWT courant a app_metadata.role = 'admin'
+CREATE OR REPLACE FUNCTION public.is_admin()
+RETURNS boolean
+LANGUAGE sql
+STABLE
+AS $$
+  SELECT coalesce(
+    (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin',
+    false
+  );
+$$;
+
+-- Policies orders : l'utilisateur voit ses commandes, l'admin voit tout
+DROP POLICY IF EXISTS "Users can view own orders" ON public.orders;
 CREATE POLICY "Users can view own orders"
   ON public.orders
   FOR SELECT
   USING (auth.role() = 'authenticated' AND customer_email = auth.email());
 
--- Policies tickets
+DROP POLICY IF EXISTS "Admins can view all orders" ON public.orders;
+CREATE POLICY "Admins can view all orders"
+  ON public.orders
+  FOR SELECT
+  USING (public.is_admin());
+
+-- Policies tickets : idem
+DROP POLICY IF EXISTS "Users can view own tickets" ON public.tickets;
 CREATE POLICY "Users can view own tickets"
   ON public.tickets
   FOR SELECT
   USING (auth.role() = 'authenticated' AND customer_email = auth.email());
+
+DROP POLICY IF EXISTS "Admins can view all tickets" ON public.tickets;
+CREATE POLICY "Admins can view all tickets"
+  ON public.tickets
+  FOR SELECT
+  USING (public.is_admin());
 
 -- Index
 CREATE INDEX IF NOT EXISTS idx_orders_customer_email ON public.orders(customer_email);
@@ -73,6 +114,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS set_orders_updated_at ON public.orders;
 CREATE TRIGGER set_orders_updated_at
   BEFORE UPDATE ON public.orders
   FOR EACH ROW

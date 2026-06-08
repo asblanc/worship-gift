@@ -31,7 +31,7 @@ export async function GET(request: Request) {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error && data.session) {
-      const isAdmin = data.session.user?.user_metadata?.role === "admin";
+      const isAdmin = data.session.user?.app_metadata?.role === "admin";
       const redirectPath = isAdmin ? "/admin" : next;
       const forwardedHost = request.headers.get("x-forwarded-host");
       const isLocalEnv = process.env.NODE_ENV === "development";
