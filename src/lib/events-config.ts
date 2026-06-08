@@ -5,7 +5,7 @@
 
 // ⚙️ Numéro WhatsApp (format international, sans +, ni espaces)
 // Exemple: "212600000000" pour le Maroc +212 6 00 00 00 00
-export const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "212600000000";
+export const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "212698472691";
 
 export const nextEvent = {
   title: "Worship Gift – Gospel Expérience",
