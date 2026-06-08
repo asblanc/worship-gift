@@ -15,7 +15,7 @@ export default function EventCard() {
       className="bg-[#F3EFE6] px-6 py-16 md:py-20"
     >
       <div className="mx-auto max-w-5xl">
-        <div className="relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-md">
+        <div className="relative overflow-hidden rounded-xl border border-white/10 bg-white/5 shadow-md">
           <div className="flex flex-col gap-8 p-8 md:flex-row md:items-center md:p-12">
             {/* Affiche réelle — même image que la page billetterie */}
             <div className="relative flex aspect-[2/3] w-full shrink-0 overflow-hidden rounded-lg md:w-56">
@@ -54,11 +54,11 @@ export default function EventCard() {
                 Prochainement
               </motion.span>
 
-              <h2 className="font-heading text-3xl font-bold leading-tight text-gray-900 md:text-4xl lg:text-5xl">
+              <h2 className="font-heading text-3xl font-bold leading-tight text-white md:text-4xl lg:text-5xl">
                 {nextEvent.title}
               </h2>
 
-              <p className="text-sm leading-relaxed text-gray-600 md:text-base">
+              <p className="text-sm leading-relaxed text-gray-400 md:text-base">
                 {nextEvent.description}
               </p>
 
@@ -77,7 +77,7 @@ export default function EventCard() {
                 </Link>
                 <Link
                   href="/a-propos"
-                  className="inline-flex h-12 items-center justify-center rounded-md border border-gray-300 px-8 text-sm font-medium text-gray-700 transition-all hover:border-[#C9A84C]/50 hover:text-[#C9A84C] active:scale-[0.97]"
+                  className="inline-flex h-12 items-center justify-center rounded-md border border-white/10 px-8 text-sm font-medium text-gray-300 transition-all hover:border-[#C9A84C]/50 hover:text-[#C9A84C] active:scale-[0.97]"
                 >
                   En savoir plus
                 </Link>

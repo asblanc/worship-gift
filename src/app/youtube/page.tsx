@@ -78,23 +78,23 @@ export default function MediasPage() {
         </section>
 
         {/* Bloc Chaîne YouTube — fond clair */}
-        <section className="bg-[#F9F5EC] px-6 pb-16 md:pb-20">
+        <section className="bg-[#0D0D0D] px-6 pb-16 md:pb-20">
           <div className="mx-auto max-w-4xl">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.5 }}
-              className="rounded-lg border border-[#C9A84C]/30 bg-white p-8 text-center shadow-sm md:p-12"
+              className="rounded-lg border border-[#C9A84C]/30 bg-white/5 p-8 text-center shadow-sm md:p-12"
             >
               {/* Icône YouTube */}
               <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#FF0000] shadow-lg shadow-[#FF0000]/30">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" className="text-white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
               </div>
-              <h2 className="font-heading text-3xl font-semibold text-gray-900">
+              <h2 className="font-heading text-3xl font-semibold text-white">
                 Chaîne YouTube Worship Gift
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-gray-600">
+              <p className="mx-auto mt-4 max-w-2xl text-gray-400">
                 Abonne-toi pour ne rien manquer de nos prochaines
                 publications : gospel en direct, répétitions, sessions
                 d'adoration et contenus exclusifs.
@@ -119,12 +119,12 @@ export default function MediasPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.5 }}
-              className="rounded-lg border border-[#C9A84C]/30 bg-white p-8 text-center shadow-sm md:p-12"
+              className="rounded-lg border border-[#C9A84C]/30 bg-white/5 p-8 text-center shadow-sm md:p-12"
             >
-              <h2 className="font-heading text-3xl font-semibold text-gray-900">
+              <h2 className="font-heading text-3xl font-semibold text-white">
                 Abonnez-vous pour ne rien manquer
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-gray-600">
+              <p className="mx-auto mt-4 max-w-2xl text-gray-400">
                 Rejoignez notre communauté sur les réseaux sociaux pour vivre
                 chaque moment de gospel et d'adoration avec Worship Gift.
               </p>
@@ -179,10 +179,10 @@ export default function MediasPage() {
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.5 }}
             >
-              <h2 className="font-heading text-3xl font-bold text-gray-900">
+              <h2 className="font-heading text-3xl font-bold text-white">
                 Live sessions
               </h2>
-              <p className="mt-3 max-w-2xl leading-relaxed text-gray-600">
+              <p className="mt-3 max-w-2xl leading-relaxed text-gray-400">
                 Chaque rencontre est un moment unique de gospel et
                 d'adoration. Revis ou découvre les temps forts de nos
                 rassemblements en direct. Toute la puissance du gospel, en
@@ -202,7 +202,7 @@ export default function MediasPage() {
                   key={video.id + video.title}
                   variants={cardVariants}
                   onClick={() => openVideo(video.id, video.title)}
-                  className="group cursor-pointer overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md active:scale-[0.98]"
+                  className="group cursor-pointer overflow-hidden rounded-lg border border-white/10 bg-white/5 shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md active:scale-[0.98]"
                 >
                   <div className="relative aspect-video">
                     <Image
@@ -227,7 +227,7 @@ export default function MediasPage() {
                     </div>
                   </div>
                   <div className="p-4">
-                    <h3 className="font-heading text-base font-semibold text-gray-900">
+                    <h3 className="font-heading text-base font-semibold text-white">
                       {video.title}
                     </h3>
                     <p className="mt-1 text-sm text-gray-500">
@@ -241,7 +241,7 @@ export default function MediasPage() {
         </section>
 
         {/* Vidéothèque — fond clair */}
-        <section className="bg-[#F9F5EC] px-6 py-16 md:py-20">
+        <section className="bg-[#0D0D0D] px-6 py-16 md:py-20">
           <div className="mx-auto max-w-4xl">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
@@ -249,10 +249,10 @@ export default function MediasPage() {
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.5 }}
             >
-              <h2 className="font-heading text-3xl font-bold text-gray-900">
+              <h2 className="font-heading text-3xl font-bold text-white">
                 Vidéothèque Worship Gift
               </h2>
-              <p className="mt-3 leading-relaxed text-gray-600">
+              <p className="mt-3 leading-relaxed text-gray-400">
                 Explore tous nos contenus : enseignements, répétitions,
                 extraits d'événements et bien plus.
               </p>
@@ -270,7 +270,7 @@ export default function MediasPage() {
                   key={video.id + video.title}
                   variants={cardVariants}
                   onClick={() => openVideo(video.id, video.title)}
-                  className="group cursor-pointer overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md active:scale-[0.98]"
+                  className="group cursor-pointer overflow-hidden rounded-lg border border-white/10 bg-white/5 shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md active:scale-[0.98]"
                 >
                   <div className="relative aspect-video">
                     <Image
@@ -295,7 +295,7 @@ export default function MediasPage() {
                     </div>
                   </div>
                   <div className="p-4">
-                    <h3 className="font-heading text-base font-semibold text-gray-900">
+                    <h3 className="font-heading text-base font-semibold text-white">
                       {video.title}
                     </h3>
                     <p className="mt-1 text-sm text-gray-500">

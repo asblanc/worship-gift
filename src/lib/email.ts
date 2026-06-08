@@ -182,6 +182,54 @@ function buildReminderHtml(opts: {
   </div>`;
 }
 
+/* ------------------------------------------------------------------
+   Message du formulaire de contact -> boîte de l'équipe
+   ------------------------------------------------------------------ */
+
+export async function sendContactEmail(opts: {
+  name: string;
+  email: string;
+  message: string;
+}): Promise<boolean> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return false;
+
+  const to = process.env.CONTACT_EMAIL || "contact@worship-gift.com";
+  const html = `
+  <div style="font-family:Inter,Arial,sans-serif;color:#111;line-height:1.5">
+    <h2 style="color:#C9A84C">Nouveau message — Worship Gift</h2>
+    <p><strong>Nom :</strong> ${escapeHtml(opts.name)}</p>
+    <p><strong>Email :</strong> ${escapeHtml(opts.email)}</p>
+    <p><strong>Message :</strong></p>
+    <p style="white-space:pre-wrap;border-left:3px solid #C9A84C;padding-left:12px">${escapeHtml(opts.message)}</p>
+  </div>`;
+
+  try {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: process.env.RESEND_FROM || "Worship Gift <onboarding@resend.dev>",
+        to,
+        reply_to: opts.email,
+        subject: `Contact site — ${opts.name}`,
+        html,
+      }),
+    });
+    if (!res.ok) {
+      console.error("[Email] Echec contact Resend:", res.status, await res.text());
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("[Email] Erreur sendContactEmail:", err);
+    return false;
+  }
+}
+
 export async function sendEventReminder(opts: {
   to: string;
   customerName: string;

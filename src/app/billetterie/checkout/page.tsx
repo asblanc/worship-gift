@@ -188,6 +188,33 @@ export default function CheckoutPage() {
               ) : (
                 /* --- RÉCAPITULATIF COMMANDE --- */
                 <>
+                  {/* Stepper du tunnel de réservation */}
+                  <ol className="mb-8 flex items-center justify-center gap-2 text-xs">
+                    {["Réservation", "Récapitulatif", "Paiement"].map((label, i) => {
+                      const current = i === 1; // on est à l'étape Récapitulatif
+                      const done = i < 1;
+                      return (
+                        <li key={label} className="flex items-center gap-2">
+                          <span
+                            className={`flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-bold ${
+                              current
+                                ? "bg-[#C9A84C] text-black"
+                                : done
+                                  ? "bg-[#C9A84C]/30 text-[#C9A84C]"
+                                  : "border border-white/15 text-gray-500"
+                            }`}
+                          >
+                            {i + 1}
+                          </span>
+                          <span className={current ? "font-semibold text-white" : "text-gray-500"}>
+                            {label}
+                          </span>
+                          {i < 2 && <span className="mx-1 h-px w-5 bg-white/15 sm:w-8" />}
+                        </li>
+                      );
+                    })}
+                  </ol>
+
                   <h1 className="font-heading text-3xl font-bold text-white md:text-4xl">
                     Récapitulatif
                   </h1>

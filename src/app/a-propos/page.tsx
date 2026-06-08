@@ -116,7 +116,7 @@ export default function AProposPage() {
         </section>
 
         {/* Vision & Mission — fond blanc cassé */}
-        <section className="bg-[#F9F5EC] px-6 py-16 md:py-20">
+        <section className="bg-[#0D0D0D] px-6 py-16 md:py-20">
           <div className="mx-auto max-w-5xl">
             <div className="grid gap-12 md:grid-cols-2 md:items-center">
               <motion.div
@@ -150,10 +150,10 @@ export default function AProposPage() {
                       <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                     </svg>
                   </span>
-                  <h2 className="mt-4 font-heading text-3xl font-semibold text-gray-900">
+                  <h2 className="mt-4 font-heading text-3xl font-semibold text-white">
                     Notre vision
                   </h2>
-                  <p className="mt-3 leading-relaxed text-gray-600">
+                  <p className="mt-3 leading-relaxed text-gray-400">
                     Voir une génération transformée par la puissance du
                     gospel, où chaque voix trouve sa place dans l'unité du
                     corps de Christ. Nous croyons que le gospel est un langage
@@ -169,10 +169,10 @@ export default function AProposPage() {
                       <path d="M12 8h.01" />
                     </svg>
                   </span>
-                  <h2 className="mt-4 font-heading text-3xl font-semibold text-gray-900">
+                  <h2 className="mt-4 font-heading text-3xl font-semibold text-white">
                     Notre mission
                   </h2>
-                  <p className="mt-3 leading-relaxed text-gray-600">
+                  <p className="mt-3 leading-relaxed text-gray-400">
                     Rassembler, former et équiper des adorateurs passionnés
                     pour impacter notre génération par la musique gospel. À
                     travers des événements, des formations et des rencontres,
@@ -194,10 +194,10 @@ export default function AProposPage() {
               transition={{ duration: 0.5 }}
               className="mb-14 text-center"
             >
-              <h2 className="font-heading text-3xl font-bold text-gray-900 md:text-4xl">
+              <h2 className="font-heading text-3xl font-bold text-white md:text-4xl">
                 Notre histoire
               </h2>
-              <p className="mx-auto mt-4 max-w-xl text-gray-600">
+              <p className="mx-auto mt-4 max-w-xl text-gray-400">
                 De la vision à la réalité, voici les étapes qui ont marqué
                 le chemin de Worship Gift.
               </p>
@@ -235,10 +235,10 @@ export default function AProposPage() {
                       <span className="font-heading text-2xl font-bold text-[#C9A84C] md:hidden">
                         {item.year}
                       </span>
-                      <h3 className="mt-1 font-heading text-lg font-semibold text-gray-900">
+                      <h3 className="mt-1 font-heading text-lg font-semibold text-white">
                         {item.title}
                       </h3>
-                      <p className="mt-2 text-sm leading-relaxed text-gray-600">
+                      <p className="mt-2 text-sm leading-relaxed text-gray-400">
                         {item.desc}
                       </p>
                     </div>
@@ -250,7 +250,7 @@ export default function AProposPage() {
         </section>
 
         {/* Valeurs — fond blanc cassé */}
-        <section className="bg-[#F9F5EC] px-6 py-16 md:py-20">
+        <section className="bg-[#0D0D0D] px-6 py-16 md:py-20">
           <div className="mx-auto max-w-4xl">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
@@ -262,7 +262,7 @@ export default function AProposPage() {
               <h2 className="font-heading text-3xl font-bold text-[#C9A84C] md:text-4xl">
                 Nos valeurs
               </h2>
-              <p className="mx-auto mt-4 max-w-xl text-gray-600">
+              <p className="mx-auto mt-4 max-w-xl text-gray-400">
                 Trois piliers qui guident chaque note, chaque rencontre,
                 chaque action du mouvement.
               </p>
@@ -279,15 +279,15 @@ export default function AProposPage() {
                 <motion.div
                   key={v.title}
                   variants={fadeUp}
-                  className="group rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md active:scale-[0.98]"
+                  className="group rounded-lg border border-white/10 bg-white/5 p-6 shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md active:scale-[0.98]"
                 >
                   <span className="flex h-12 w-12 items-center justify-center rounded-lg border border-[#C9A84C]/30 bg-[#C9A84C]/10 text-[#C9A84C] transition-colors group-hover:bg-[#C9A84C]/20">
                     {v.icon}
                   </span>
-                  <h3 className="mt-5 font-heading text-xl font-semibold text-gray-900">
+                  <h3 className="mt-5 font-heading text-xl font-semibold text-white">
                     {v.title}
                   </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-gray-600">
+                  <p className="mt-3 text-sm leading-relaxed text-gray-400">
                     {v.desc}
                   </p>
                 </motion.div>
@@ -306,10 +306,10 @@ export default function AProposPage() {
               transition={{ duration: 0.5 }}
               className="mb-12 text-center"
             >
-              <h2 className="font-heading text-3xl font-bold text-gray-900 md:text-4xl">
+              <h2 className="font-heading text-3xl font-bold text-white md:text-4xl">
                 L'équipe
               </h2>
-              <p className="mx-auto mt-4 max-w-xl text-gray-600">
+              <p className="mx-auto mt-4 max-w-xl text-gray-400">
                 Des cœurs passionnés, unis par la même vision : porter le
                 gospel au plus haut niveau.
               </p>
@@ -326,7 +326,7 @@ export default function AProposPage() {
                 <motion.div
                   key={membre.nom + membre.role}
                   variants={fadeUp}
-                  className="flex flex-col items-center rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm"
+                  className="flex flex-col items-center rounded-lg border border-white/10 bg-white/5 p-8 text-center shadow-sm"
                 >
                   {"photo" in membre && membre.photo ? (
                     <div className="relative h-20 w-20 overflow-hidden rounded-full border border-[#C9A84C]/30 ring-1 ring-[#C9A84C]/20">
@@ -343,7 +343,7 @@ export default function AProposPage() {
                       ?
                     </div>
                   )}
-                  <h3 className="mt-5 font-heading text-lg font-semibold text-gray-900">
+                  <h3 className="mt-5 font-heading text-lg font-semibold text-white">
                     {membre.nom}
                   </h3>
                   <p className="mt-1 text-sm text-gray-500">{membre.role}</p>
@@ -354,7 +354,7 @@ export default function AProposPage() {
         </section>
 
         {/* CTA bas de page — fond blanc cassé */}
-        <section className="border-t border-gray-200 bg-[#F9F5EC] px-6 py-16 md:py-24">
+        <section className="border-t border-white/10 bg-[#0D0D0D] px-6 py-16 md:py-24">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -362,10 +362,10 @@ export default function AProposPage() {
             transition={{ duration: 0.5 }}
             className="mx-auto max-w-2xl text-center"
           >
-            <h2 className="font-heading text-3xl font-semibold text-gray-900">
+            <h2 className="font-heading text-3xl font-semibold text-white">
               Tu veux faire partie du mouvement ?
             </h2>
-            <p className="mt-4 text-gray-600">
+            <p className="mt-4 text-gray-400">
               Rejoins-nous lors de nos prochains événements, abonne-toi à
               notre chaîne YouTube et suis-nous sur les réseaux pour vivre
               le gospel avec nous.
