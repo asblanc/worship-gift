@@ -60,7 +60,7 @@ function EventPoster({ event }: { event: (typeof upcomingEvents)[0] }) {
 
 export default function EventsList() {
   return (
-    <section className="bg-[#F9F5EC] px-6 py-16 md:py-20">
+    <section className="bg-[#0D0D0D] px-6 py-16 md:py-20">
       <div className="mx-auto max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -69,10 +69,10 @@ export default function EventsList() {
           transition={{ duration: 0.5 }}
           className="mb-12 text-center"
         >
-          <h2 className="font-heading text-3xl font-bold text-gray-900 md:text-4xl">
+          <h2 className="font-heading text-3xl font-bold text-white md:text-4xl">
             Événements à venir
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-gray-600">
+          <p className="mx-auto mt-4 max-w-xl text-gray-400">
             Reste connecté et réserve ta place pour les prochains rendez-vous
             du mouvement Worship Gift.
           </p>
@@ -90,15 +90,17 @@ export default function EventsList() {
             <motion.div
               key={event.id}
               variants={cardVariants}
-              className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md active:scale-[0.98]"
+              whileHover={{ y: -6 }}
+              transition={{ type: "spring", stiffness: 300, damping: 22 }}
+              className="group flex flex-col overflow-hidden rounded-lg border border-white/10 bg-white/[0.03] transition-colors hover:border-[#C9A84C]/50 hover:shadow-lg hover:shadow-[#C9A84C]/10"
             >
               <EventPoster event={event} />
 
               <div className="flex flex-1 flex-col gap-3 p-5">
-                <h3 className="font-heading text-lg font-semibold text-gray-900">
+                <h3 className="font-heading text-lg font-semibold text-white">
                   {event.title}
                 </h3>
-                <p className="text-sm leading-relaxed text-gray-500 line-clamp-2">
+                <p className="text-sm leading-relaxed text-gray-400 line-clamp-2">
                   {event.description}
                 </p>
                 <div className="mt-auto flex items-center justify-between pt-2">

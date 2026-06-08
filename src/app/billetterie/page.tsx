@@ -89,7 +89,7 @@ export default function BilletteriePage() {
         </section>
 
         {/* Événements — fond blanc cassé */}
-        <section className="bg-[#F9F5EC] px-6 py-16 md:py-20">
+        <section className="bg-[#0D0D0D] px-6 py-16 md:py-20">
           <div className="mx-auto max-w-4xl">
             <motion.div
               variants={containerVariants}
@@ -102,14 +102,14 @@ export default function BilletteriePage() {
                 <motion.div
                   key={event.id}
                   variants={cardVariants}
-                  className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md md:flex-row"
+                  className="group flex flex-col overflow-hidden rounded-lg border border-white/10 bg-white/5 shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md md:flex-row"
                 >
                   {/* Affiche réelle */}
                   <EventPosterVertical event={event} />
 
                   {/* Contenu */}
                   <div className="flex flex-1 flex-col gap-3 p-6">
-                    <h2 className="font-heading text-xl font-semibold text-gray-900 md:text-2xl">
+                    <h2 className="font-heading text-xl font-semibold text-white md:text-2xl">
                       {event.title}
                     </h2>
 
@@ -128,7 +128,7 @@ export default function BilletteriePage() {
                       </span>
                     </div>
 
-                    <p className="text-sm leading-relaxed text-gray-600">
+                    <p className="text-sm leading-relaxed text-gray-400">
                       {event.description}
                     </p>
 
@@ -152,7 +152,7 @@ export default function BilletteriePage() {
         </section>
 
         {/* CTA bas de page */}
-        <section className="border-t border-gray-200 bg-[#F3EFE6] px-6 py-16 md:py-20">
+        <section className="border-t border-white/10 bg-[#F3EFE6] px-6 py-16 md:py-20">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -160,10 +160,10 @@ export default function BilletteriePage() {
             transition={{ duration: 0.5 }}
             className="mx-auto max-w-2xl text-center"
           >
-            <h2 className="font-heading text-3xl font-semibold text-gray-900">
+            <h2 className="font-heading text-3xl font-semibold text-white">
               Tu veux être informé des prochains événements ?
             </h2>
-            <p className="mt-4 text-gray-600">
+            <p className="mt-4 text-gray-400">
               Suis-nous sur nos réseaux pour ne rien manquer et recevoir les
               annonces en avant-première.
             </p>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase/client";
 import { upcomingEvents } from "@/lib/events-config";
 import ChangePasswordForm from "@/components/ChangePasswordForm";
+import { Skeleton } from "@/components/Skeleton";
 
 /* ================================================================
    Worship Gift — /account — Tableau de bord utilisateur
@@ -96,8 +97,21 @@ export default function AccountPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#C9A84C] border-t-transparent" />
+      <div className="space-y-8">
+        <div className="space-y-2">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-4 w-64" />
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-24 w-full" />
+        </div>
+        <div className="space-y-3 rounded-lg border border-white/10 bg-white/5 p-6">
+          <Skeleton className="h-6 w-56" />
+          <Skeleton className="h-16 w-full" />
+          <Skeleton className="h-16 w-full" />
+          <Skeleton className="h-16 w-full" />
+        </div>
       </div>
     );
   }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
@@ -27,6 +28,38 @@ const staggerContainer = {
 };
 
 export default function ContactPage() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+    setErrorMsg("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setStatus("success");
+        setName("");
+        setEmail("");
+        setMessage("");
+      } else {
+        setStatus("error");
+        setErrorMsg(data.error || "Une erreur est survenue. Réessaie.");
+      }
+    } catch {
+      setStatus("error");
+      setErrorMsg("Erreur réseau. Vérifie ta connexion et réessaie.");
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -165,58 +198,103 @@ export default function ContactPage() {
                 <h2 className="font-heading text-3xl font-semibold text-white">
                   Envoie-nous un message
                 </h2>
-                <form className="mt-8 space-y-6">
-                  <div className="grid gap-6 md:grid-cols-2">
-                    <div>
-                      <label
-                        htmlFor="nom"
-                        className="block text-sm font-medium text-gray-300"
-                      >
-                        Nom complet
-                      </label>
-                      <input
-                        type="text"
-                        id="nom"
-                        placeholder="Ton nom"
-                        className="mt-2 block w-full rounded-md border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 outline-none ring-0 transition-colors focus:border-[#C9A84C] focus:ring-1 focus:ring-[#C9A84C]/30"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="email"
-                        className="block text-sm font-medium text-gray-300"
-                      >
-                        Adresse email
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        placeholder="ton@email.com"
-                        className="mt-2 block w-full rounded-md border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 outline-none ring-0 transition-colors focus:border-[#C9A84C] focus:ring-1 focus:ring-[#C9A84C]/30"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="message"
-                      className="block text-sm font-medium text-gray-300"
+                {status === "success" ? (
+                  <div className="mt-8 rounded-lg border border-green-500/30 bg-green-500/10 p-6 text-center">
+                    <p className="font-heading text-lg font-semibold text-green-400">
+                      Message envoyé ✓
+                    </p>
+                    <p className="mt-2 text-sm text-gray-300">
+                      Merci ! Nous te répondrons rapidement à l&rsquo;adresse fournie.
+                    </p>
+                    <button
+                      onClick={() => setStatus("idle")}
+                      className="mt-4 text-sm text-[#C9A84C] hover:underline"
                     >
-                      Votre message
-                    </label>
-                    <textarea
-                      id="message"
-                      rows={5}
-                      placeholder="Écris ton message ici..."
-                      className="mt-2 block w-full resize-none rounded-md border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 outline-none ring-0 transition-colors focus:border-[#C9A84C] focus:ring-1 focus:ring-[#C9A84C]/30"
-                    />
+                      Envoyer un autre message
+                    </button>
                   </div>
-                  <button
-                    type="submit"
-                    className="inline-flex h-12 items-center justify-center rounded-md bg-[#C9A84C] px-8 text-sm font-medium text-black transition-all hover:bg-[#F0CB6A] hover:shadow-lg hover:shadow-[#C9A84C]/30 active:scale-[0.97]"
-                  >
-                    Envoyer le message
-                  </button>
-                </form>
+                ) : (
+                  <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+                    <div className="grid gap-6 md:grid-cols-2">
+                      <div>
+                        <label
+                          htmlFor="nom"
+                          className="block text-sm font-medium text-gray-300"
+                        >
+                          Nom complet
+                        </label>
+                        <input
+                          type="text"
+                          id="nom"
+                          required
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          placeholder="Ton nom"
+                          className="mt-2 block w-full rounded-md border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 outline-none ring-0 transition-colors focus:border-[#C9A84C] focus:ring-1 focus:ring-[#C9A84C]/30"
+                        />
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="email"
+                          className="block text-sm font-medium text-gray-300"
+                        >
+                          Adresse email
+                        </label>
+                        <input
+                          type="email"
+                          id="email"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="ton@email.com"
+                          className="mt-2 block w-full rounded-md border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 outline-none ring-0 transition-colors focus:border-[#C9A84C] focus:ring-1 focus:ring-[#C9A84C]/30"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="message"
+                        className="block text-sm font-medium text-gray-300"
+                      >
+                        Votre message
+                      </label>
+                      <textarea
+                        id="message"
+                        rows={5}
+                        required
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        placeholder="Écris ton message ici..."
+                        className="mt-2 block w-full resize-none rounded-md border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 outline-none ring-0 transition-colors focus:border-[#C9A84C] focus:ring-1 focus:ring-[#C9A84C]/30"
+                      />
+                    </div>
+
+                    {status === "error" && (
+                      <p className="rounded-md bg-red-500/10 px-3 py-2 text-sm text-red-400">
+                        {errorMsg}
+                      </p>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={status === "loading"}
+                      className={`inline-flex h-12 items-center justify-center gap-2 rounded-md px-8 text-sm font-medium transition-all ${
+                        status === "loading"
+                          ? "cursor-not-allowed bg-gray-700 text-gray-400"
+                          : "bg-[#C9A84C] text-black hover:bg-[#F0CB6A] hover:shadow-lg hover:shadow-[#C9A84C]/30 active:scale-[0.97]"
+                      }`}
+                    >
+                      {status === "loading" ? (
+                        <>
+                          <span className="h-4 w-4 animate-spin rounded-full border-2 border-black/40 border-t-transparent" />
+                          Envoi…
+                        </>
+                      ) : (
+                        "Envoyer le message"
+                      )}
+                    </button>
+                  </form>
+                )}
               </motion.div>
             </motion.div>
           </div>
