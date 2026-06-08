@@ -51,6 +51,34 @@ export default function AdminOrdersPage() {
   const formatMAD = (cents: number) =>
     new Intl.NumberFormat("fr-MA", { style: "currency", currency: "MAD" }).format(cents / 100);
 
+  // Export CSV des commandes actuellement affichées (selon le filtre)
+  const exportCsv = () => {
+    const headers = ["Référence", "Client", "Email", "Description", "Montant (MAD)", "Statut", "Date"];
+    const escape = (v: string) => `"${String(v).replace(/"/g, '""')}"`;
+    const rows = orders.map((o) =>
+      [
+        o.id,
+        o.customer_name || "",
+        o.customer_email || "",
+        o.description || "",
+        (o.amount / 100).toFixed(2),
+        o.status,
+        new Date(o.created_at).toLocaleString("fr-FR"),
+      ]
+        .map(escape)
+        .join(","),
+    );
+    // BOM pour qu'Excel lise correctement les accents
+    const csv = "﻿" + [headers.map(escape).join(","), ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `commandes-worship-gift-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const statusBadge = (s: string) => {
     const map: Record<string, { label: string; classes: string }> = {
       pending: { label: "En attente", classes: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20" },
@@ -77,11 +105,29 @@ export default function AdminOrdersPage() {
 
   return (
     <motion.div variants={fadeUp} initial="hidden" animate="visible" className="space-y-6">
-      <div>
-        <h1 className="font-heading text-3xl font-bold text-white">Commandes</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Gérez toutes les commandes de la billetterie.
-        </p>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="font-heading text-3xl font-bold text-white">Commandes</h1>
+          <p className="mt-1 text-sm text-gray-500">
+            Gérez toutes les commandes de la billetterie.
+          </p>
+        </div>
+        <button
+          onClick={exportCsv}
+          disabled={orders.length === 0}
+          className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-xs font-semibold transition-all ${
+            orders.length === 0
+              ? "cursor-not-allowed border-white/[0.06] text-gray-600"
+              : "border-[#C9A84C]/40 bg-[#C9A84C]/10 text-[#C9A84C] hover:bg-[#C9A84C]/20"
+          }`}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Exporter CSV
+        </button>
       </div>
 
       {/* Filtres */}

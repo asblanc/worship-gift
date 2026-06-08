@@ -18,6 +18,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { CmiProvider } from "@/lib/payment/cmi-provider";
+import { sendOrderConfirmation } from "@/lib/email";
 import type { PaymentCallback } from "@/lib/payment/types";
 
 /* ------------------------------------------------------------------
@@ -137,6 +138,9 @@ export async function POST(request: NextRequest) {
               .eq("id", result.orderId);
             if (updateErr) {
               console.error("[CMI Callback] Erreur update orders:", updateErr);
+            } else {
+              // Email de confirmation (no-op si Resend non configuré)
+              await sendOrderConfirmation(result.orderId);
             }
           }
         } else {

@@ -10,6 +10,7 @@ interface StatsData {
   totalOrders: number;
   totalPaid: number;
   totalTickets: number;
+  totalScanned: number;
 }
 
 interface RecentOrder {
@@ -33,7 +34,7 @@ const stagger = {
 };
 
 export default function AdminDashboardPage() {
-  const [stats, setStats] = useState<StatsData>({ totalOrders: 0, totalPaid: 0, totalTickets: 0 });
+  const [stats, setStats] = useState<StatsData>({ totalOrders: 0, totalPaid: 0, totalTickets: 0, totalScanned: 0 });
   const [recentOrders, setRecentOrders] = useState<RecentOrder[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -48,12 +49,22 @@ export default function AdminDashboardPage() {
           .from("tickets")
           .select("*", { count: "exact", head: true });
 
+        const { count: totalScanned } = await supabase
+          .from("tickets")
+          .select("*", { count: "exact", head: true })
+          .eq("status", "used");
+
         const totalPaid =
           allOrders
             ?.filter((o) => o.status === "paid")
             .reduce((sum, o) => sum + (o.amount || 0), 0) || 0;
 
-        setStats({ totalOrders: totalOrders || 0, totalPaid, totalTickets: totalTickets || 0 });
+        setStats({
+          totalOrders: totalOrders || 0,
+          totalPaid,
+          totalTickets: totalTickets || 0,
+          totalScanned: totalScanned || 0,
+        });
 
         const { data: recent } = await supabase
           .from("orders")
@@ -152,6 +163,9 @@ export default function AdminDashboardPage() {
               <div>
                 <p className="text-xs text-gray-500">Billets émis</p>
                 <p className="font-heading text-2xl font-bold text-white">{stats.totalTickets}</p>
+                <p className="mt-0.5 text-[11px] text-gray-500">
+                  {stats.totalScanned} scanné{stats.totalScanned > 1 ? "s" : ""} à l&rsquo;entrée
+                </p>
               </div>
             </div>
           </motion.div>

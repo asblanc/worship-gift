@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { useAuth } from "@/lib/supabase/auth-context";
+import TicketQR from "@/components/TicketQR";
 
 /* ================================================================
    Worship Gift — Page Success (retour CMI OK)
@@ -130,20 +131,23 @@ export default function SuccessPage() {
                       <p className="text-sm font-medium text-gray-300">
                         Vos billets :
                       </p>
-                      {tickets.map((ticket, i) => (
+                      {tickets.map((ticket) => (
                         <div
                           key={ticket.ticket_code}
-                          className="rounded-lg border border-[#C9A84C]/20 bg-[#C9A84C]/5 p-3 text-left"
+                          className="flex items-center gap-3 rounded-lg border border-[#C9A84C]/20 bg-[#C9A84C]/5 p-3 text-left"
                         >
-                          <p className="text-sm font-semibold text-white">
-                            {ticket.event_title}
-                          </p>
-                          <p className="text-xs text-gray-400">
-                            {ticket.ticket_type} · Code :{" "}
-                            <span className="font-mono text-[#C9A84C]">
+                          <TicketQR code={ticket.ticket_code} size={88} />
+                          <div className="min-w-0">
+                            <p className="text-sm font-semibold text-white">
+                              {ticket.event_title}
+                            </p>
+                            <p className="text-xs text-gray-400">
+                              {ticket.ticket_type}
+                            </p>
+                            <p className="mt-0.5 truncate font-mono text-[11px] text-[#C9A84C]">
                               {ticket.ticket_code}
-                            </span>
-                          </p>
+                            </p>
+                          </div>
                         </div>
                       ))}
                     </div>
