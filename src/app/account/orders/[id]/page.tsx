@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase/client";
+import TicketQR from "@/components/TicketQR";
 
 /* ================================================================
    Worship Gift — /account/orders/[id] — Détail d'une commande
@@ -215,7 +216,7 @@ export default function OrderDetailPage() {
                 key={ticket.id}
                 className="rounded-lg border border-[#C9A84C]/20 bg-[#C9A84C]/5 p-4"
               >
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <p className="font-semibold text-white">
                       {ticket.event_title}
@@ -227,13 +228,29 @@ export default function OrderDetailPage() {
                     <p className="mt-1 text-sm text-gray-300">
                       {ticket.ticket_type}
                     </p>
+                    <div className="mt-2 flex items-center gap-2">
+                      <span className="rounded-md border border-[#C9A84C]/30 bg-black px-3 py-1.5 font-mono text-xs text-[#C9A84C]">
+                        {ticket.ticket_code}
+                      </span>
+                      {ticket.status === "used" ? (
+                        <span className="rounded-full bg-gray-500/15 px-2.5 py-0.5 text-[10px] font-semibold text-gray-400">
+                          Déjà utilisé
+                        </span>
+                      ) : ticket.status === "cancelled" ? (
+                        <span className="rounded-full bg-red-500/15 px-2.5 py-0.5 text-[10px] font-semibold text-red-400">
+                          Annulé
+                        </span>
+                      ) : (
+                        <span className="rounded-full bg-green-500/15 px-2.5 py-0.5 text-[10px] font-semibold text-green-400">
+                          Valide
+                        </span>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    {/* Placeholder: futur téléchargement billet PDF / QR code */}
-                    <span className="rounded-md border border-[#C9A84C]/30 bg-black px-3 py-2 font-mono text-xs text-[#C9A84C]">
-                      {ticket.ticket_code}
-                    </span>
-                    {/* TODO: Ajouter un bouton "Voir le billet" / "Télécharger PDF" quand le système de QR code sera prêt */}
+                  {/* QR code à présenter à l'entrée */}
+                  <div className="flex flex-col items-center gap-1 self-center">
+                    <TicketQR code={ticket.ticket_code} size={132} />
+                    <span className="text-[10px] text-gray-500">À scanner à l&rsquo;entrée</span>
                   </div>
                 </div>
               </div>

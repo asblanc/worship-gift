@@ -9,6 +9,7 @@
 
 import { randomUUID } from "crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { sendOrderConfirmation } from "@/lib/email";
 import type { EventData } from "@/lib/events-config";
 
 export interface CreateOrderParams {
@@ -150,6 +151,10 @@ export async function confirmFreeReservation(
   if (updErr) {
     return { ok: false, error: updErr.message };
   }
+
+  // Email de confirmation (no-op si Resend non configuré)
+  await sendOrderConfirmation(orderId);
+
   return { ok: true };
 }
 
