@@ -43,6 +43,7 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const totalMAD = (event.priceValue / 100) * qty;
   const isFree = event.priceValue === 0;
@@ -50,9 +51,10 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
   // ── Option 1 : WhatsApp ────────────────────────────────────
   const handleWhatsApp = () => {
     if (!name.trim()) {
-      alert("Merci de saisir votre nom.");
+      setError("Merci de saisir votre nom avant de continuer.");
       return;
     }
+    setError("");
     const link = buildWhatsAppLink(
       WHATSAPP_NUMBER,
       name,
@@ -69,9 +71,10 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
   // redirige vers le récapitulatif/paiement CMI.
   const handleCardPayment = async () => {
     if (!name.trim() || !email.trim()) {
-      alert("Merci de saisir votre nom et votre email.");
+      setError("Merci de saisir votre nom et votre email pour payer par carte.");
       return;
     }
+    setError("");
     setLoading(true);
     try {
       const res = await fetch("/api/orders", {
@@ -88,7 +91,7 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        alert(data.error || "Erreur lors de la création de la commande.");
+        setError(data.error || "Erreur lors de la création de la commande.");
         setLoading(false);
         return;
       }
@@ -104,7 +107,7 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
       // Redirection vers le récap (qui propose le paiement CMI sécurisé)
       window.location.href = `/billetterie/checkout?${params.toString()}`;
     } catch {
-      alert("Erreur lors de l'initialisation du paiement. Réessaie plus tard.");
+      setError("Erreur lors de l'initialisation du paiement. Réessaie plus tard.");
       setLoading(false);
     }
   };
@@ -112,7 +115,7 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-[#F9F5EC] pt-20">
+      <main className="min-h-screen bg-[#0D0D0D] pt-20">
         {/* En-tête */}
         <section className="bg-black px-6 py-12 md:py-16">
           <div className="mx-auto max-w-4xl flex items-center gap-3">
@@ -152,8 +155,8 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 </div>
                 {/* Infos résumé */}
-                <div className="rounded-xl border border-gray-200 bg-white p-4 space-y-2 text-sm text-gray-600">
-                  <p className="font-semibold text-gray-900 text-base">{event.title}</p>
+                <div className="rounded-xl border border-white/10 bg-white/5 p-4 space-y-2 text-sm text-gray-400">
+                  <p className="font-semibold text-white text-base">{event.title}</p>
                   <p>📅 {event.date} à {event.time}</p>
                   <p>📍 {event.location}</p>
                   <p className="font-bold text-[#C9A84C] text-lg">{isFree ? "Gratuit" : `${event.price} / billet`}</p>
@@ -161,56 +164,63 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
               </div>
 
               {/* ── Formulaire ──────────────────── */}
-              <div className="rounded-xl border border-gray-200 bg-white p-6 md:p-8 space-y-6">
-                <h2 className="font-heading text-2xl font-semibold text-gray-900">Vos informations</h2>
+              <div className="rounded-xl border border-white/10 bg-white/5 p-6 md:p-8 space-y-6">
+                <h2 className="font-heading text-2xl font-semibold text-white">Vos informations</h2>
 
                 {/* Nom */}
                 <div className="space-y-1.5">
-                  <label className="block text-sm font-medium text-gray-700">Nom complet *</label>
+                  <label className="block text-sm font-medium text-gray-300">Nom complet *</label>
                   <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Votre nom et prénom"
-                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-[#C9A84C] focus:outline-none focus:ring-1 focus:ring-[#C9A84C]"
+                    className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:border-[#C9A84C] focus:outline-none focus:ring-1 focus:ring-[#C9A84C]/40"
                   />
                 </div>
 
                 {/* Email */}
                 <div className="space-y-1.5">
-                  <label className="block text-sm font-medium text-gray-700">Email</label>
+                  <label className="block text-sm font-medium text-gray-300">Email</label>
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="votre@email.com"
-                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-[#C9A84C] focus:outline-none focus:ring-1 focus:ring-[#C9A84C]"
+                    className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:border-[#C9A84C] focus:outline-none focus:ring-1 focus:ring-[#C9A84C]/40"
                   />
                 </div>
 
                 {/* Quantité */}
                 <div className="space-y-1.5">
-                  <label className="block text-sm font-medium text-gray-700">Nombre de billets</label>
+                  <label className="block text-sm font-medium text-gray-300">Nombre de billets</label>
                   <div className="flex items-center gap-3">
                     <button onClick={() => setQty(Math.max(1, qty - 1))}
-                      className="h-9 w-9 rounded-full border border-gray-300 text-lg font-bold text-gray-700 hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors">−</button>
-                    <span className="min-w-[2rem] text-center text-lg font-semibold">{qty}</span>
+                      className="h-9 w-9 rounded-full border border-white/15 text-lg font-bold text-gray-300 hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors">−</button>
+                    <span className="min-w-[2rem] text-center text-lg font-semibold text-white">{qty}</span>
                     <button onClick={() => setQty(Math.min(10, qty + 1))}
-                      className="h-9 w-9 rounded-full border border-gray-300 text-lg font-bold text-gray-700 hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors">+</button>
+                      className="h-9 w-9 rounded-full border border-white/15 text-lg font-bold text-gray-300 hover:border-[#C9A84C] hover:text-[#C9A84C] transition-colors">+</button>
                   </div>
                 </div>
 
                 {/* Total */}
                 {!isFree && (
-                  <div className="rounded-lg bg-[#F9F5EC] px-4 py-3 flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Total</span>
+                  <div className="rounded-lg bg-black/40 px-4 py-3 flex items-center justify-between">
+                    <span className="text-sm text-gray-400">Total</span>
                     <span className="font-heading text-xl font-bold text-[#C9A84C]">{totalMAD} MAD</span>
                   </div>
                 )}
 
+                {/* Message d'erreur inline */}
+                {error && (
+                  <p className="rounded-md bg-red-500/10 px-3 py-2 text-sm text-red-400">
+                    {error}
+                  </p>
+                )}
+
                 {/* Séparateur */}
-                <div className="border-t border-gray-100 pt-4">
-                  <p className="mb-4 text-sm font-medium text-gray-700">Choisissez votre mode de réservation :</p>
+                <div className="border-t border-white/10 pt-4">
+                  <p className="mb-4 text-sm font-medium text-gray-300">Choisissez votre mode de réservation :</p>
 
                   <div className="flex flex-col gap-3 sm:flex-row">
                     {/* Bouton WhatsApp */}
