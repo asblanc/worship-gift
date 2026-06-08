@@ -22,6 +22,9 @@ const csp = [
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "object-src 'none'",
+  // worker/media : scanner QR caméra (html5-qrcode) côté admin
+  "worker-src 'self' blob:",
+  "media-src 'self' blob:",
 ].join("; ");
 
 const securityHeaders = [

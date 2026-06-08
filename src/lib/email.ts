@@ -135,3 +135,87 @@ export async function sendOrderConfirmation(orderId: string): Promise<void> {
     console.error("[Email] Erreur sendOrderConfirmation:", err);
   }
 }
+
+/* ------------------------------------------------------------------
+   Email de rappel avant l'événement
+   ------------------------------------------------------------------ */
+
+function buildReminderHtml(opts: {
+  customerName: string;
+  orderId: string;
+  eventTitle: string;
+  eventDate: string;
+  eventTime: string;
+  eventLocation: string;
+  ticketCount: number;
+}): string {
+  const { customerName, orderId, eventTitle, eventDate, eventTime, eventLocation, ticketCount } = opts;
+  return `
+  <div style="background:#0d0d0d;padding:32px 0;font-family:Inter,Arial,sans-serif;">
+    <div style="max-width:560px;margin:0 auto;background:#000;border:1px solid #222;border-radius:12px;overflow:hidden;">
+      <div style="padding:24px;text-align:center;border-bottom:1px solid #222;">
+        <h1 style="color:#C9A84C;margin:0;font-size:24px;">Worship Gift</h1>
+      </div>
+      <div style="padding:24px;">
+        <h2 style="color:#fff;font-size:20px;margin:0 0 8px;">C'est bientôt ! 🎶</h2>
+        <p style="color:#b0b0b0;font-size:14px;line-height:1.5;">
+          Bonjour ${escapeHtml(customerName)},<br/>
+          Petit rappel : ton événement approche. On a hâte de t'y voir !
+        </p>
+        <div style="margin-top:16px;padding:16px;background:#111;border-radius:8px;">
+          <p style="color:#fff;font-size:16px;font-weight:bold;margin:0;">${escapeHtml(eventTitle)}</p>
+          <p style="color:#C9A84C;font-size:14px;margin:6px 0 0;">${escapeHtml(eventDate)} à ${escapeHtml(eventTime)}</p>
+          <p style="color:#b0b0b0;font-size:14px;margin:4px 0 0;">${escapeHtml(eventLocation)}</p>
+          <p style="color:#b0b0b0;font-size:13px;margin:10px 0 0;">${ticketCount} billet(s) — présente ton QR code à l'entrée.</p>
+        </div>
+        <div style="text-align:center;margin-top:24px;">
+          <a href="${siteUrl}/account/orders/${encodeURIComponent(orderId)}"
+             style="display:inline-block;background:#C9A84C;color:#000;text-decoration:none;font-weight:600;padding:12px 24px;border-radius:8px;font-size:14px;">
+            Voir mes billets
+          </a>
+        </div>
+      </div>
+      <div style="padding:16px 24px;border-top:1px solid #222;text-align:center;">
+        <span style="color:#666;font-size:12px;">Worship Gift — Mouvement Gospel</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+export async function sendEventReminder(opts: {
+  to: string;
+  customerName: string;
+  orderId: string;
+  eventTitle: string;
+  eventDate: string;
+  eventTime: string;
+  eventLocation: string;
+  ticketCount: number;
+}): Promise<boolean> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return false;
+
+  try {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: process.env.RESEND_FROM || "Worship Gift <onboarding@resend.dev>",
+        to: opts.to,
+        subject: `Rappel : ${opts.eventTitle} approche 🎟️`,
+        html: buildReminderHtml(opts),
+      }),
+    });
+    if (!res.ok) {
+      console.error("[Email] Echec rappel Resend:", res.status, await res.text());
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("[Email] Erreur sendEventReminder:", err);
+    return false;
+  }
+}

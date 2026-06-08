@@ -26,6 +26,8 @@ export interface EventData {
   slug: string;
   date: string;
   time: string;
+  /** Date/heure ISO 8601 — utilisée pour les rappels email automatiques. Ex: "2026-08-15T19:00:00" */
+  isoDate: string;
   location: string;
   description: string;
   /** Prix unitaire en centimes (MAD). 0 = gratuit. Ex: 5000 = 50 MAD */
@@ -46,6 +48,7 @@ export const upcomingEvents: EventData[] = [
     slug: "worship-gift-gospel-experience",
     date: "15 août 2026",
     time: "19h00",
+    isoDate: "2026-08-15T19:00:00",
     location: "Casablanca, Maroc",
     description:
       "Une soirée Gospel pour célébrer ensemble la puissance et la joie du gospel.",
@@ -63,6 +66,7 @@ export const upcomingEvents: EventData[] = [
     slug: "worship-gift-gospel-experience-vol2",
     date: "15 août 2026",
     time: "21h00",
+    isoDate: "2026-08-15T21:00:00",
     location: "Casablanca, Maroc",
     description:
       "La seconde session de la soirée Gospel — une expérience encore plus profonde et vibrante.",
@@ -80,6 +84,7 @@ export const upcomingEvents: EventData[] = [
     slug: "session-gospel-speciale",
     date: "20 septembre 2026",
     time: "18h30",
+    isoDate: "2026-09-20T18:30:00",
     location: "Rabat, Maroc",
     description:
       "Un moment d'intimité et de prière à travers la musique et le gospel.",
@@ -97,6 +102,7 @@ export const upcomingEvents: EventData[] = [
     slug: "gospel-night-rassemblement-ete",
     date: "10 octobre 2026",
     time: "20h00",
+    isoDate: "2026-10-10T20:00:00",
     location: "Marrakech, Maroc",
     description:
       "Le grand rassemblement gospel de l'été avec plusieurs chorales invitées.",

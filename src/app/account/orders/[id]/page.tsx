@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase/client";
 import TicketQR from "@/components/TicketQR";
+import { generateTicketsPdf } from "@/lib/ticket-pdf";
 
 /* ================================================================
    Worship Gift — /account/orders/[id] — Détail d'une commande
@@ -41,6 +42,21 @@ export default function OrderDetailPage() {
   const [order, setOrder] = useState<OrderDetail | null>(null);
   const [tickets, setTickets] = useState<TicketRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [pdfLoading, setPdfLoading] = useState(false);
+
+  const handleDownloadPdf = async () => {
+    if (!order) return;
+    setPdfLoading(true);
+    try {
+      await generateTicketsPdf({
+        orderId: order.id,
+        customerName: order.customer_name,
+        tickets,
+      });
+    } finally {
+      setPdfLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -201,9 +217,29 @@ export default function OrderDetailPage() {
 
       {/* Billets */}
       <div className="rounded-lg border border-white/10 bg-white/5 p-6">
-        <h2 className="font-heading text-lg font-semibold text-white">
-          Billets ({tickets.length})
-        </h2>
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="font-heading text-lg font-semibold text-white">
+            Billets ({tickets.length})
+          </h2>
+          {tickets.length > 0 && (
+            <button
+              onClick={handleDownloadPdf}
+              disabled={pdfLoading}
+              className={`inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-xs font-semibold transition-all ${
+                pdfLoading
+                  ? "cursor-not-allowed border-white/10 text-gray-500"
+                  : "border-[#C9A84C]/40 bg-[#C9A84C]/10 text-[#C9A84C] hover:bg-[#C9A84C]/20"
+              }`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              {pdfLoading ? "Génération…" : "Télécharger PDF"}
+            </button>
+          )}
+        </div>
 
         {tickets.length === 0 ? (
           <p className="mt-3 text-sm text-gray-500">
