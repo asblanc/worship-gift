@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { nextEvent } from "@/lib/events-config";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://worship-gift.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.worship-gift.com";
 
 /* ------------------------------------------------------------------
    Donnees structurees JSON-LD (rich results Google)

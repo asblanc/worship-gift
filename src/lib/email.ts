@@ -12,7 +12,7 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://worship-gift.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://www.worship-gift.com";
 
 function escapeHtml(s: string): string {
   return s.replace(/[&<>"']/g, (c) =>
