@@ -5,10 +5,15 @@ import Countdown from "@/components/Countdown";
 import EventsList from "@/components/EventsList";
 import HeroCarousel from "@/components/HeroCarousel";
 import FAQ from "@/components/FAQ";
+import { buildJsonLd } from "@/lib/seo";
 
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd()) }}
+      />
       <Navbar />
       <HeroCarousel />
       <Marquee />

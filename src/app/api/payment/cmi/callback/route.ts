@@ -83,27 +83,64 @@ export async function POST(request: NextRequest) {
       orderId: result.orderId,
     });
 
-    // Mettre a jour la commande dans Supabase
+    // Signature invalide -> callback forge/corrompu : on REJETTE.
+    // On ne touche pas a la commande et on renvoie "FAILURE" a CMI.
+    if (result.errorCode === "HASH_INVALID") {
+      console.error("[CMI Callback] Signature invalide — callback rejete:", result.orderId);
+      return new NextResponse("FAILURE", {
+        status: 200,
+        headers: { "Content-Type": "text/plain" },
+      });
+    }
+
+    // Mettre a jour la commande dans Supabase (signature valide a ce stade)
     if (result.orderId) {
       try {
         const supabase = getServiceClient();
 
         if (result.success) {
-          // Paiement reussi -> marquer la commande comme "paid"
-          const { error: updateErr } = await supabase
+          // Verifier que le montant paye correspond a la commande enregistree
+          const { data: order } = await supabase
             .from("orders")
-            .update({
-              status: "paid",
-              transaction_id: result.transactionId,
-              paid_at: new Date().toISOString(),
-            })
-            .eq("id", result.orderId);
+            .select("amount, status")
+            .eq("id", result.orderId)
+            .single();
 
-          if (updateErr) {
-            console.error("[CMI Callback] Erreur update orders:", updateErr);
+          if (!order) {
+            console.error("[CMI Callback] Commande introuvable:", result.orderId);
+          } else if (order.amount !== result.amount) {
+            // Montant incoherent -> tentative de fraude : on marque failed
+            console.error(
+              "[CMI Callback] Montant incoherent:",
+              { attendu: order.amount, recu: result.amount },
+            );
+            await supabase
+              .from("orders")
+              .update({
+                status: "failed",
+                transaction_id: result.transactionId,
+                error_code: "AMOUNT_MISMATCH",
+                error_message: "Montant paye different du montant commande",
+              })
+              .eq("id", result.orderId);
+          } else if (order.status === "paid") {
+            // Idempotent : deja paye, on ne refait rien
+            console.log("[CMI Callback] Commande deja payee:", result.orderId);
+          } else {
+            const { error: updateErr } = await supabase
+              .from("orders")
+              .update({
+                status: "paid",
+                transaction_id: result.transactionId,
+                paid_at: new Date().toISOString(),
+              })
+              .eq("id", result.orderId);
+            if (updateErr) {
+              console.error("[CMI Callback] Erreur update orders:", updateErr);
+            }
           }
         } else {
-          // Paiement echoue
+          // Paiement echoue (signature valide mais refus banque)
           const { error: updateErr } = await supabase
             .from("orders")
             .update({
@@ -124,17 +161,16 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Toujours retourner "APPROVED" a CMI pour confirmer la reception
-    // (sinon CMI reessaie le callback)
+    // Signature valide : on acquitte la reception aupres de CMI.
     return new NextResponse("APPROVED", {
       status: 200,
       headers: { "Content-Type": "text/plain" },
     });
   } catch (error) {
     console.error("[CMI Callback] Erreur fatale:", error);
-    // Meme en cas d'erreur, on retourne APPROVED pour eviter les reessais infinis
-    // (on log l'erreur pour debug)
-    return new NextResponse("APPROVED", {
+    // Erreur interne : on renvoie FAILURE pour que CMI reessaie le callback
+    // (mieux qu'acquitter a tort un paiement qu'on n'a pas pu traiter).
+    return new NextResponse("FAILURE", {
       status: 200,
       headers: { "Content-Type": "text/plain" },
     });

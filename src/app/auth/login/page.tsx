@@ -57,7 +57,7 @@ export default function LoginPage() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        const isAdmin = session.user?.user_metadata?.role === "admin";
+        const isAdmin = session.user?.app_metadata?.role === "admin";
         window.location.href = isAdmin ? "/admin" : "/account";
       }
     });
@@ -87,7 +87,7 @@ export default function LoginPage() {
     }
 
     if (data.session) {
-      const isAdmin = data.session.user?.user_metadata?.role === "admin";
+      const isAdmin = data.session.user?.app_metadata?.role === "admin";
       // Hard redirect pour forcer le middleware à relire les cookies
       window.location.href = isAdmin ? "/admin" : "/account";
     } else {

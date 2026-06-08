@@ -205,10 +205,12 @@ export default function MediasPage() {
                   className="group cursor-pointer overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md active:scale-[0.98]"
                 >
                   <div className="relative aspect-video">
-                    <img
+                    <Image
                       src={`https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`}
                       alt={video.title}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors group-hover:bg-black/30">
                       <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#C9A84C]/90 text-black shadow-lg transition-transform group-hover:scale-110">
@@ -271,10 +273,12 @@ export default function MediasPage() {
                   className="group cursor-pointer overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md active:scale-[0.98]"
                 >
                   <div className="relative aspect-video">
-                    <img
+                    <Image
                       src={`https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`}
                       alt={video.title}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors group-hover:bg-black/30">
                       <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#C9A84C]/90 text-black shadow-lg transition-transform group-hover:scale-110">

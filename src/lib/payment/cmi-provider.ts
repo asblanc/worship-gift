@@ -1,20 +1,22 @@
 /* ================================================================
    Worship Gift — CMI Payment Provider
    Implementation de la passerelle CMI (Centre Monetique Interbancaire).
-   
-   DOC OFFICIELLE CMI : 
+
+   DOC OFFICIELLE CMI :
    - Formulaire POST vers la gateway CMI avec champs signes
-   - Algorithme de hash : SHA-512 (base64(sha512(...)))
+   - Algorithme de hash : "ver3"
+       hashval = valeurs des parametres triees par nom (insensible a
+       la casse), echappees, jointes par "|", suivies de la storeKey
+       echappee ; puis SHA-512 -> base64.
+       Sont exclus du calcul : "encoding" et "hash"/"HASH".
    - Callback serveur : CMI POST les resultats sur l'URL callback
-   - Verification : recalculer le hash cote serveur et comparer
+   - Verification : recalculer le hash ver3 cote serveur et comparer
 
    CONFIGURATION REQUISE dans .env.local :
    CMI_CLIENT_ID        -> ID marchand fourni par CMI
    CMI_STORE_KEY        -> Cle secrete fournie par CMI
    CMI_GATEWAY_URL_TEST -> https://testpayment.cmi.co.ma/fim/est3Dgate
    CMI_GATEWAY_URL_PROD -> https://payment.cmi.co.ma/fim/est3Dgate
-   CMI_OK_URL           -> https://TONSITE.com/billetterie/success
-   CMI_FAIL_URL         -> https://TONSITE.com/billetterie/checkout?error=1
    CMI_CALLBACK_URL     -> https://TONSITE.com/api/payment/cmi/callback
    PAYMENT_ENV          -> "test" ou "prod"
    ================================================================ */
@@ -29,91 +31,77 @@ import type {
 } from "./types";
 
 /* ------------------------------------------------------------------
-   Configuration CMI depuis les variables d'environnement
+   Configuration CMI — FAIL-CLOSED
+   En production, on refuse de fonctionner sans clientId/storeKey
+   reels. En test, on autorise des valeurs par defaut CMI sandbox.
    ------------------------------------------------------------------ */
 
 function getCmiConfig() {
   const env = process.env.PAYMENT_ENV || "test";
   const isProd = env === "prod";
 
+  const clientId = process.env.CMI_CLIENT_ID;
+  const storeKey = process.env.CMI_STORE_KEY;
+  const callbackUrl = process.env.CMI_CALLBACK_URL;
+
+  if (isProd && (!clientId || !storeKey || !callbackUrl)) {
+    throw new Error(
+      "[CMI] Configuration de production manquante (CMI_CLIENT_ID / CMI_STORE_KEY / CMI_CALLBACK_URL)",
+    );
+  }
+
   return {
-    clientId: process.env.CMI_CLIENT_ID || "60000000",
-    storeKey: process.env.CMI_STORE_KEY || "TEST1234",
+    clientId: clientId || "60000000",
+    storeKey: storeKey || "TEST1234",
     gatewayUrl: isProd
       ? process.env.CMI_GATEWAY_URL_PROD || "https://payment.cmi.co.ma/fim/est3Dgate"
       : process.env.CMI_GATEWAY_URL_TEST || "https://testpayment.cmi.co.ma/fim/est3Dgate",
-    okUrl: process.env.CMI_OK_URL || "http://localhost:3000/billetterie/success",
-    failUrl: process.env.CMI_FAIL_URL || "http://localhost:3000/billetterie/checkout?error=1",
-    callbackUrl: process.env.CMI_CALLBACK_URL || "http://localhost:3000/api/payment/cmi/callback",
+    callbackUrl: callbackUrl || "http://localhost:3000/api/payment/cmi/callback",
     environment: env as "test" | "prod",
   };
 }
 
 /* ------------------------------------------------------------------
-   Fonction de hash CMI (SHA-512 -> base64)
-   Ordre standard (a verifier avec la doc CMI fournie par ta banque) :
-   storeKey + clientId + oid + amount + okUrl + failUrl + transactionType + instalmentCount + lang + storeKey
+   Hash CMI ver3
    ------------------------------------------------------------------ */
 
-async function computeCmiHash(params: {
-  clientId: string;
-  oid: string;
-  amount: string;
-  okUrl: string;
-  failUrl: string;
-  storeKey: string;
-}): Promise<string> {
-  const raw = [
-    params.storeKey,
-    params.clientId,
-    params.oid,
-    params.amount,
-    params.okUrl,
-    params.failUrl,
-    "",
-    "",
-    "fr",
-    params.storeKey,
-  ].join("");
-
-  const encoder = new TextEncoder();
-  const data = encoder.encode(raw);
+async function sha512Base64(input: string): Promise<string> {
+  const data = new TextEncoder().encode(input);
   const hashBuffer = await crypto.subtle.digest("SHA-512", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashBase64 = btoa(String.fromCharCode(...hashArray));
-
-  return hashBase64;
+  const bytes = new Uint8Array(hashBuffer);
+  let binary = "";
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
 }
 
-/* ------------------------------------------------------------------
-   Verification du hash dans le callback CMI
-   ------------------------------------------------------------------ */
+/** Echappement ver3 : "\" -> "\\" puis "|" -> "\|" */
+function escapeHashValue(value: string): string {
+  return value.replace(/\\/g, "\\\\").replace(/\|/g, "\\|");
+}
 
-async function verifyCmiHash(
-  callback: PaymentCallback,
-  storeKey: string
-): Promise<boolean> {
-  const oid = callback.oid || "";
-  const amount = callback.amount || "";
-  const clientId = callback.rawBody?.clientid?.toString() || "";
+/**
+ * Calcule le hash ver3 a partir d'un ensemble de parametres.
+ * Exclut "encoding", "hash" et "HASH" (insensible a la casse).
+ */
+async function computeVer3Hash(
+  params: Record<string, string>,
+  storeKey: string,
+): Promise<string> {
+  const keys = Object.keys(params)
+    .filter((k) => {
+      const lower = k.toLowerCase();
+      return lower !== "encoding" && lower !== "hash";
+    })
+    .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase(), "en"));
 
-  const raw = [
-    storeKey,
-    clientId,
-    oid,
-    amount,
-    callback.ProcReturnCode || "",
-    callback.Response || "",
-    callback.TransId || "",
-  ].join("");
+  const hashval =
+    keys.map((k) => escapeHashValue(params[k] ?? "")).join("|") +
+    "|" +
+    escapeHashValue(storeKey);
 
-  const encoder = new TextEncoder();
-  const data = encoder.encode(raw);
-  const hashBuffer = await crypto.subtle.digest("SHA-512", data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const computedHash = btoa(String.fromCharCode(...hashArray));
-
-  return computedHash === (callback.HASH || "");
+  return sha512Base64(hashval);
 }
 
 /**
@@ -125,8 +113,6 @@ function formatCmiAmount(amountInCents: number): string {
 
 /* ------------------------------------------------------------------
    Echappement HTML (evite les attaques XSS dans le formulaire)
-   Utilise String.fromCharCode pour eviter l'interpretation des
-   entites HTML dans le code source TypeScript.
    ------------------------------------------------------------------ */
 
 const AMP = String.fromCharCode(38) + "amp;";
@@ -157,11 +143,12 @@ export class CmiProvider implements PaymentProvider {
   readonly supportedCurrencies: Currency[] = ["MAD"];
 
   async initiatePayment(
-    req: PaymentInitRequest
+    req: PaymentInitRequest,
   ): Promise<PaymentInitResponse> {
     const config = getCmiConfig();
     const amountFormatted = formatCmiAmount(req.amount);
 
+    // Parametres du formulaire (hors hash, qui est calcule ensuite)
     const formParams: Record<string, string> = {
       clientid: config.clientId,
       oid: req.orderId,
@@ -176,22 +163,16 @@ export class CmiProvider implements PaymentProvider {
       description: req.description,
       lang: "fr",
       hashAlgorithm: "ver3",
-      encoding: "UTF-8",
       storetype: "3D_PAY_HOSTING",
       trantype: "PreAuth",
+      rnd: Date.now().toString(),
     };
 
-    const hash = await computeCmiHash({
-      clientId: config.clientId,
-      oid: req.orderId,
-      amount: amountFormatted,
-      okUrl: req.okUrl,
-      failUrl: req.failUrl,
-      storeKey: config.storeKey,
-    });
-
-    formParams.hash = hash;
+    // Hash ver3 calcule sur l'ensemble des parametres ci-dessus
+    const hash = await computeVer3Hash(formParams, config.storeKey);
     formParams.HASH = hash;
+    // encoding ajoute APRES le calcul (exclu du hash)
+    formParams.encoding = "UTF-8";
 
     const formFields = Object.entries(formParams)
       .map(
@@ -200,16 +181,16 @@ export class CmiProvider implements PaymentProvider {
           escapeHtml(name) +
           '" value="' +
           escapeHtml(value) +
-          '" />'
+          '" />',
       )
       .join("\n");
 
     const safeGatewayUrl = escapeHtml(config.gatewayUrl);
 
     const formHtml =
-      '<!DOCTYPE html>\n' +
+      "<!DOCTYPE html>\n" +
       '<html lang="fr">\n' +
-      '<head>\n' +
+      "<head>\n" +
       '  <meta charset="UTF-8" />\n' +
       "  <title>Redirection vers le paiement CMI</title>\n" +
       "  <style>\n" +
@@ -220,7 +201,7 @@ export class CmiProvider implements PaymentProvider {
       "    p { color:#B0B0B0;font-size:14px; }\n" +
       "  </style>\n" +
       "</head>\n" +
-      '<body>\n' +
+      "<body>\n" +
       '  <div class="loader">\n' +
       '    <div class="spinner"></div>\n' +
       "    <p>Redirection vers le paiement securise CMI...</p>\n" +
@@ -243,24 +224,36 @@ export class CmiProvider implements PaymentProvider {
   }
 
   async verifyCallback(
-    callback: PaymentCallback
+    callback: PaymentCallback,
   ): Promise<PaymentVerificationResult> {
     const config = getCmiConfig();
 
-    const hashValid = await verifyCmiHash(callback, config.storeKey);
+    // Recalcule le hash ver3 sur l'ensemble des champs renvoyes par CMI
+    const flat: Record<string, string> = {};
+    for (const [k, v] of Object.entries(callback.rawBody || {})) {
+      flat[k] = Array.isArray(v) ? v.join(",") : String(v ?? "");
+    }
 
-    const responseCode = callback.Response || "";
-    const isSuccess = hashValid && responseCode === "00";
+    const computed = await computeVer3Hash(flat, config.storeKey);
+    const received = callback.HASH || "";
+    const hashValid = received.length > 0 && computed === received;
+
+    // CMI renvoie ProcReturnCode "00" et Response "Approved" en cas de succes
+    const approved =
+      callback.Response === "Approved" || callback.ProcReturnCode === "00";
+    const isSuccess = hashValid && approved;
 
     return {
       success: isSuccess,
       orderId: callback.oid || "",
-      amount: parseFloat(callback.amount || "0") * 100,
+      amount: Math.round(parseFloat(callback.amount || "0") * 100),
       transactionId: callback.TransId,
-      errorCode: isSuccess ? undefined : callback.ProcReturnCode || "UNKNOWN",
+      errorCode: hashValid ? callback.ProcReturnCode || undefined : "HASH_INVALID",
       errorMessage: isSuccess
         ? undefined
-        : callback.ErrMsg || "Paiement echoue",
+        : !hashValid
+          ? "Signature CMI invalide"
+          : callback.ErrMsg || "Paiement echoue",
     };
   }
 }

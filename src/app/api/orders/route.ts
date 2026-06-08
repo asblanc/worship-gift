@@ -27,10 +27,17 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { upcomingEvents } from "@/lib/events-config";
-import { createOrder } from "@/lib/orders-service";
+import { createOrder } from "@/lib/orders-service.server";
+import { rateLimit } from "@/lib/rate-limit";
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request: NextRequest) {
   try {
+    // Max 10 créations de commande / minute / IP
+    const limited = rateLimit(request, "orders", 10, 60_000);
+    if (limited) return limited;
+
     const body = await request.json();
 
     // Validation
@@ -41,9 +48,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (body.quantity < 1 || body.quantity > 10) {
+    const quantity = Number(body.quantity);
+    if (!Number.isInteger(quantity) || quantity < 1 || quantity > 10) {
       return NextResponse.json(
         { success: false, error: "Quantite invalide (1-10 billets max)" },
+        { status: 400 }
+      );
+    }
+
+    const customerEmail = String(body.customerEmail).trim().slice(0, 254);
+    const customerName = String(body.customerName).trim().slice(0, 120);
+    if (!EMAIL_RE.test(customerEmail) || customerName.length < 2) {
+      return NextResponse.json(
+        { success: false, error: "Email ou nom invalide" },
         { status: 400 }
       );
     }
@@ -57,25 +74,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // TODO: BRANCHER CMI ICI (etape 1/2)
-    // Quand tu auras les identifiants CMI, tu pourras :
-    // 1. Continuer avec createOrder (ci-dessous)
-    // 2. Puis appeler CmiProvider.initiatePayment() pour generer le formulaire
-    // 3. Renvoyer le formHtml au lieu du JSON orderId
-    // Voir src/app/api/payment/cmi/init/route.ts pour l'implementation CMI
-
+    // Le montant est calculé côté serveur dans createOrder à partir de
+    // event.priceValue (source de vérité) — jamais reçu du client.
     const result = await createOrder({
       event,
-      quantity: body.quantity,
-      ticketType: body.ticketType || "Entree libre",
-      customerName: body.customerName,
-      customerEmail: body.customerEmail,
-      telephone: body.telephone,
+      quantity,
+      ticketType: typeof body.ticketType === "string" ? body.ticketType.slice(0, 60) : "Entree libre",
+      customerName,
+      customerEmail,
+      telephone: typeof body.telephone === "string" ? body.telephone.slice(0, 40) : undefined,
     });
 
     return NextResponse.json({
       success: true,
       orderId: result.orderId,
+      amount: result.amount,
       tickets: result.tickets,
     });
   } catch (error) {

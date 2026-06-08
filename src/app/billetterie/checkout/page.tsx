@@ -8,7 +8,6 @@ import Navbar from "@/components/Navbar";
 import { upcomingEvents } from "@/lib/events-config";
 import type { EventData } from "@/lib/events-config";
 import { useAuth } from "@/lib/supabase/auth-context";
-import { updateOrderStatus } from "@/lib/orders-service";
 
 /* ================================================================
    Worship Gift — Page Checkout / Récapitulatif
@@ -54,21 +53,28 @@ export default function CheckoutPage() {
   const unitAmount = event.priceValue;
   const isFree = totalAmount === 0;
 
-  // Confirmer la réservation (passer de pending → reserved)
+  // Confirmer la réservation côté serveur (pending → reserved).
+  // La mutation passe par /api/orders/confirm (service_role) : le client
+  // ne peut pas modifier directement le statut d'une commande.
   const handleConfirm = async () => {
     setConfirming(true);
     setError("");
 
     try {
-      const success = await updateOrderStatus(orderId, "reserved");
-      if (success) {
+      const res = await fetch("/api/orders/confirm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId }),
+      });
+      const data = await res.json();
+
+      if (res.ok && data.success) {
         setConfirmed(true);
       } else {
-        // Même si la DB échoue (table pas encore créée), on affiche la confirmation
-        setConfirmed(true);
+        setError(data.error || "Impossible de confirmer la réservation. Réessaie.");
       }
     } catch {
-      setConfirmed(true); // Fallback : on affiche quand même la confirmation
+      setError("Erreur réseau. Vérifie ta connexion et réessaie.");
     } finally {
       setConfirming(false);
     }
