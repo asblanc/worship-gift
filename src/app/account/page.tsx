@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase/client";
 import { upcomingEvents } from "@/lib/events-config";
+import ChangePasswordForm from "@/components/ChangePasswordForm";
 
 /* ================================================================
    Worship Gift — /account — Tableau de bord utilisateur
@@ -183,6 +184,9 @@ export default function AccountPage() {
           </div>
         )}
       </div>
+
+      {/* Sécurité — changer le mot de passe */}
+      <ChangePasswordForm />
     </div>
   );
 }
