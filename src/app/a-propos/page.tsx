@@ -128,11 +128,11 @@ export default function AProposPage() {
               >
                 <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle, #C9A84C 1px, transparent 1px)", backgroundSize: "14px 14px" }} />
                 <Image
-                  src="/img_worship-gift/logo-worship-gift.png"
+                  src="/img_worship-gift/logo-circle.png"
                   alt="Logo Worship Gift"
-                  width={220}
-                  height={220}
-                  className="relative z-10 h-auto w-48 drop-shadow-[0_0_30px_rgba(201,168,76,0.15)] md:w-56"
+                  width={600}
+                  height={600}
+                  className="relative z-10 h-auto w-[72%] max-w-[320px] drop-shadow-[0_0_40px_rgba(201,168,76,0.25)]"
                 />
               </motion.div>
 
