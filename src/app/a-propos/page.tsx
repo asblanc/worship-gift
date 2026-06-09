@@ -185,7 +185,7 @@ export default function AProposPage() {
         </section>
 
         {/* Timeline — fond blanc cassé alterné */}
-        <section className="bg-[#F3EFE6] px-6 py-16 md:py-20">
+        <section className="bg-[#0D0D0D] px-6 py-16 md:py-20">
           <div className="mx-auto max-w-3xl">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
@@ -297,7 +297,7 @@ export default function AProposPage() {
         </section>
 
         {/* Équipe — fond blanc cassé alterné */}
-        <section className="bg-[#F3EFE6] px-6 py-16 md:py-20">
+        <section className="bg-[#0D0D0D] px-6 py-16 md:py-20">
           <div className="mx-auto max-w-4xl">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
