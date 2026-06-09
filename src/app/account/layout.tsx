@@ -88,7 +88,7 @@ export default function AccountLayout({
           <div className="space-y-4 md:sticky md:top-24 md:space-y-6">
             <div className="rounded-lg border border-white/10 bg-white/5 p-3 md:p-4">
               <p className="text-sm font-medium text-white">👋 {userName}</p>
-              <p className="mt-1 text-xs text-gray-500">Mon espace</p>
+              <p className="mt-1 text-xs text-gray-400">Mon espace</p>
             </div>
             <AccountSidebar />
           </div>

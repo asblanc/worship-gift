@@ -174,7 +174,7 @@ export default function OrderDetailPage() {
             <h1 className="font-heading text-2xl font-bold text-white">
               {order.description}
             </h1>
-            <p className="mt-1 font-mono text-sm text-gray-500">{order.id}</p>
+            <p className="mt-1 font-mono text-sm text-gray-400">{order.id}</p>
             <p className="mt-1 text-sm text-gray-400">
               Commandé le{" "}
               {new Date(order.created_at).toLocaleDateString("fr-FR", {
@@ -227,7 +227,7 @@ export default function OrderDetailPage() {
               disabled={pdfLoading}
               className={`inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-xs font-semibold transition-all ${
                 pdfLoading
-                  ? "cursor-not-allowed border-white/10 text-gray-500"
+                  ? "cursor-not-allowed border-white/10 text-gray-400"
                   : "border-[#C9A84C]/40 bg-[#C9A84C]/10 text-[#C9A84C] hover:bg-[#C9A84C]/20"
               }`}
             >
@@ -242,7 +242,7 @@ export default function OrderDetailPage() {
         </div>
 
         {tickets.length === 0 ? (
-          <p className="mt-3 text-sm text-gray-500">
+          <p className="mt-3 text-sm text-gray-400">
             Les billets seront générés après confirmation du paiement.
           </p>
         ) : (
@@ -286,7 +286,7 @@ export default function OrderDetailPage() {
                   {/* QR code à présenter à l'entrée */}
                   <div className="flex flex-col items-center gap-1 self-center">
                     <TicketQR code={ticket.ticket_code} size={132} />
-                    <span className="text-[10px] text-gray-500">À scanner à l&rsquo;entrée</span>
+                    <span className="text-[10px] text-gray-400">À scanner à l&rsquo;entrée</span>
                   </div>
                 </div>
               </div>

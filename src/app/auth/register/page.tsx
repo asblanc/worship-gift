@@ -131,7 +131,7 @@ export default function RegisterPage() {
           {/* Séparateur "ou" */}
           <div className="my-6 flex items-center gap-3">
             <div className="h-px flex-1 bg-white/15" />
-            <span className="text-xs text-gray-500">ou</span>
+            <span className="text-xs text-gray-400">ou</span>
             <div className="h-px flex-1 bg-white/15" />
           </div>
 
@@ -219,7 +219,7 @@ export default function RegisterPage() {
             <p>
               <Link
                 href="/"
-                className="text-gray-500 hover:text-[#C9A84C] transition-colors"
+                className="text-gray-400 hover:text-[#C9A84C] transition-colors"
               >
                 ← Retour à l'accueil
               </Link>

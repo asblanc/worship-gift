@@ -346,7 +346,7 @@ export default function AProposPage() {
                   <h3 className="mt-5 font-heading text-lg font-semibold text-white">
                     {membre.nom}
                   </h3>
-                  <p className="mt-1 text-sm text-gray-500">{membre.role}</p>
+                  <p className="mt-1 text-sm text-gray-400">{membre.role}</p>
                 </motion.div>
               ))}
             </motion.div>

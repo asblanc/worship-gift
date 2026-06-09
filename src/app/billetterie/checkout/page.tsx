@@ -156,7 +156,7 @@ export default function CheckoutPage() {
                     Votre réservation a bien été enregistrée.
                   </p>
                   {orderId && (
-                    <p className="mt-3 text-xs text-gray-500">
+                    <p className="mt-3 text-xs text-gray-400">
                       Référence :{" "}
                       <span className="font-mono text-[#C9A84C]">{orderId}</span>
                     </p>
@@ -201,12 +201,12 @@ export default function CheckoutPage() {
                                 ? "bg-[#C9A84C] text-black"
                                 : done
                                   ? "bg-[#C9A84C]/30 text-[#C9A84C]"
-                                  : "border border-white/15 text-gray-500"
+                                  : "border border-white/15 text-gray-400"
                             }`}
                           >
                             {i + 1}
                           </span>
-                          <span className={current ? "font-semibold text-white" : "text-gray-500"}>
+                          <span className={current ? "font-semibold text-white" : "text-gray-400"}>
                             {label}
                           </span>
                           {i < 2 && <span className="mx-1 h-px w-5 bg-white/15 sm:w-8" />}
@@ -262,7 +262,7 @@ export default function CheckoutPage() {
 
                   {/* Référence commande */}
                   {orderId && (
-                    <p className="mt-4 text-xs text-gray-500">
+                    <p className="mt-4 text-xs text-gray-400">
                       Référence :{" "}
                       <span className="font-mono text-[#C9A84C]">{orderId}</span>
                       {" — Statut : "}
@@ -326,7 +326,7 @@ export default function CheckoutPage() {
                     )}
 
                     {!isFree && (
-                      <p className="flex items-center justify-center gap-1.5 text-center text-xs text-gray-500">
+                      <p className="flex items-center justify-center gap-1.5 text-center text-xs text-gray-400">
                         <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                         </svg>
@@ -339,7 +339,7 @@ export default function CheckoutPage() {
                   <div className="mt-6 text-center">
                     <Link
                       href="/billetterie/reserver"
-                      className="text-sm text-gray-500 underline hover:text-gray-300"
+                      className="text-sm text-gray-400 underline hover:text-gray-300"
                     >
                       ← Modifier ma réservation
                     </Link>
@@ -348,7 +348,7 @@ export default function CheckoutPage() {
               )}
             </motion.div>
 
-            <p className="mt-6 text-center text-xs text-gray-600">
+            <p className="mt-6 text-center text-xs text-gray-400">
               {isFree
                 ? "Cet événement est gratuit. Votre réservation sera confirmée immédiatement."
                 : "Vous allez être redirigé vers la plateforme de paiement sécurisée CMI pour régler par carte bancaire."}

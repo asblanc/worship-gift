@@ -113,7 +113,7 @@ export default function BilletteriePage() {
                       {event.title}
                     </h2>
 
-                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-500">
+                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-400">
                       <span className="flex items-center gap-1.5">
                         <span className="h-1 w-1 rounded-full bg-[#C9A84C]" />
                         {event.date}

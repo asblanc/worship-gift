@@ -30,7 +30,7 @@ export default function Footer() {
                 Worship Gift
               </span>
             </Link>
-            <p className="max-w-xs text-sm leading-relaxed text-gray-500">
+            <p className="max-w-xs text-sm leading-relaxed text-gray-400">
               Un mouvement gospel pour louer, adorer et unir à travers la
               musique. Une offrande musicale pour la gloire de Dieu.
             </p>
@@ -105,7 +105,7 @@ export default function Footer() {
 
               {/* Réseaux sociaux */}
               <li className="pt-2">
-                <span className="block text-xs font-semibold uppercase tracking-wider text-gray-600 mb-3">
+                <span className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">
                   Suivez-nous
                 </span>
                 <div className="flex gap-4">
@@ -158,7 +158,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-white/5 pt-8 text-center text-xs text-gray-600">
+        <div className="mt-12 border-t border-white/5 pt-8 text-center text-xs text-gray-400">
           <p>
             &copy; {new Date().getFullYear()} Worship Gift. Tous droits réservés.
           </p>

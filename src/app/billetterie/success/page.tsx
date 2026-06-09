@@ -181,7 +181,7 @@ export default function SuccessPage() {
               </div>
 
               {/* Note */}
-              <p className="mt-6 text-xs text-gray-600">
+              <p className="mt-6 text-xs text-gray-400">
                 Vous recevrez un email de confirmation avec vos billets a
                 l'adresse fournie lors du paiement.
               </p>

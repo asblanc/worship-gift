@@ -118,7 +118,7 @@ export default function ContactPage() {
                     variants={fadeUp}
                     className="rounded-lg border border-white/10 bg-white/5 p-6 transition-all hover:border-[#C9A84C]/40 hover:bg-white/[0.07]"
                   >
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
                       Email
                     </h3>
                     <a
@@ -133,7 +133,7 @@ export default function ContactPage() {
                     variants={fadeUp}
                     className="rounded-lg border border-white/10 bg-white/5 p-6 transition-all hover:border-[#C9A84C]/40 hover:bg-white/[0.07]"
                   >
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
                       Téléphone
                     </h3>
                     <a
@@ -148,7 +148,7 @@ export default function ContactPage() {
                     variants={fadeUp}
                     className="rounded-lg border border-white/10 bg-white/5 p-6 transition-all hover:border-[#C9A84C]/40 hover:bg-white/[0.07]"
                   >
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
                       Retrouvez-nous
                     </h3>
                     <div className="mt-3 flex flex-col gap-3">
