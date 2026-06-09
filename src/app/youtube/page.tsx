@@ -77,15 +77,15 @@ export default function MediasPage() {
           </motion.div>
         </section>
 
-        {/* Bloc Chaîne YouTube — fond clair */}
-        <section className="bg-[#0D0D0D] px-6 pb-16 md:pb-20">
+        {/* Bloc Chaîne YouTube */}
+        <section className="bg-[#0D0D0D] px-6 py-16 md:py-20">
           <div className="mx-auto max-w-4xl">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.5 }}
-              className="rounded-lg border border-[#C9A84C]/30 bg-white/5 p-8 text-center shadow-sm md:p-12"
+              className="rounded-lg border border-[#C9A84C]/30 bg-white/[0.08] p-8 text-center shadow-sm md:p-12"
             >
               {/* Icône YouTube */}
               <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#FF0000] shadow-lg shadow-[#FF0000]/30">
@@ -94,7 +94,7 @@ export default function MediasPage() {
               <h2 className="font-heading text-3xl font-semibold text-white">
                 Chaîne YouTube Worship Gift
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-gray-400">
+              <p className="mx-auto mt-4 max-w-2xl text-gray-300">
                 Abonne-toi pour ne rien manquer de nos prochaines
                 publications : gospel en direct, répétitions, sessions
                 d'adoration et contenus exclusifs.
@@ -119,12 +119,12 @@ export default function MediasPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.5 }}
-              className="rounded-lg border border-[#C9A84C]/30 bg-white/5 p-8 text-center shadow-sm md:p-12"
+              className="rounded-lg border border-[#C9A84C]/30 bg-white/[0.08] p-8 text-center shadow-sm md:p-12"
             >
               <h2 className="font-heading text-3xl font-semibold text-white">
                 Abonnez-vous pour ne rien manquer
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-gray-400">
+              <p className="mx-auto mt-4 max-w-2xl text-gray-300">
                 Rejoignez notre communauté sur les réseaux sociaux pour vivre
                 chaque moment de gospel et d'adoration avec Worship Gift.
               </p>
@@ -182,7 +182,7 @@ export default function MediasPage() {
               <h2 className="font-heading text-3xl font-bold text-white">
                 Live sessions
               </h2>
-              <p className="mt-3 max-w-2xl leading-relaxed text-gray-400">
+              <p className="mt-3 max-w-2xl leading-relaxed text-gray-300">
                 Chaque rencontre est un moment unique de gospel et
                 d'adoration. Revis ou découvre les temps forts de nos
                 rassemblements en direct. Toute la puissance du gospel, en
@@ -202,7 +202,7 @@ export default function MediasPage() {
                   key={video.id + video.title}
                   variants={cardVariants}
                   onClick={() => openVideo(video.id, video.title)}
-                  className="group cursor-pointer overflow-hidden rounded-lg border border-white/10 bg-white/5 shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md active:scale-[0.98]"
+                  className="group cursor-pointer overflow-hidden rounded-lg border border-white/10 bg-white/[0.08] shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md active:scale-[0.98]"
                 >
                   <div className="relative aspect-video">
                     <Image
@@ -230,7 +230,7 @@ export default function MediasPage() {
                     <h3 className="font-heading text-base font-semibold text-white">
                       {video.title}
                     </h3>
-                    <p className="mt-1 text-sm text-gray-400">
+                    <p className="mt-1 text-sm text-gray-300">
                       {video.description}
                     </p>
                   </div>
@@ -252,7 +252,7 @@ export default function MediasPage() {
               <h2 className="font-heading text-3xl font-bold text-white">
                 Vidéothèque Worship Gift
               </h2>
-              <p className="mt-3 leading-relaxed text-gray-400">
+              <p className="mt-3 leading-relaxed text-gray-300">
                 Explore tous nos contenus : enseignements, répétitions,
                 extraits d'événements et bien plus.
               </p>
@@ -270,7 +270,7 @@ export default function MediasPage() {
                   key={video.id + video.title}
                   variants={cardVariants}
                   onClick={() => openVideo(video.id, video.title)}
-                  className="group cursor-pointer overflow-hidden rounded-lg border border-white/10 bg-white/5 shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md active:scale-[0.98]"
+                  className="group cursor-pointer overflow-hidden rounded-lg border border-white/10 bg-white/[0.08] shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md active:scale-[0.98]"
                 >
                   <div className="relative aspect-video">
                     <Image
@@ -298,7 +298,7 @@ export default function MediasPage() {
                     <h3 className="font-heading text-base font-semibold text-white">
                       {video.title}
                     </h3>
-                    <p className="mt-1 text-sm text-gray-400">
+                    <p className="mt-1 text-sm text-gray-300">
                       {video.description}
                     </p>
                   </div>

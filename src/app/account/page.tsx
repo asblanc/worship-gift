@@ -92,7 +92,7 @@ export default function AccountPage() {
       cancelled: "text-red-400",
       failed: "text-red-400",
     };
-    return map[s] || "text-gray-400";
+    return map[s] || "text-gray-300";
   };
 
   if (loading) {
@@ -106,7 +106,7 @@ export default function AccountPage() {
           <Skeleton className="h-24 w-full" />
           <Skeleton className="h-24 w-full" />
         </div>
-        <div className="space-y-3 rounded-lg border border-white/10 bg-white/5 p-6">
+        <div className="space-y-3 rounded-lg border border-white/10 bg-white/[0.08] p-6">
           <Skeleton className="h-6 w-56" />
           <Skeleton className="h-16 w-full" />
           <Skeleton className="h-16 w-full" />
@@ -120,7 +120,7 @@ export default function AccountPage() {
     <div className="space-y-8">
       <div>
         <h1 className="font-heading text-3xl font-bold text-white">Mon espace</h1>
-        <p className="mt-1 text-sm text-gray-400">
+        <p className="mt-1 text-sm text-gray-300">
           Retrouvez vos billets et commandes.
         </p>
       </div>
@@ -128,18 +128,18 @@ export default function AccountPage() {
       {/* Stats rapides */}
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="rounded-lg border border-[#C9A84C]/20 bg-[#C9A84C]/5 p-5">
-          <p className="text-sm text-gray-400">Billets à venir</p>
+          <p className="text-sm text-gray-300">Billets à venir</p>
           <p className="mt-1 font-heading text-3xl font-bold text-[#C9A84C]">
             {stats.ticketCount}
           </p>
         </div>
-        <div className="rounded-lg border border-white/10 bg-white/5 p-5">
-          <p className="text-sm text-gray-400">Prochains événements</p>
+        <div className="rounded-lg border border-white/10 bg-white/[0.08] p-5">
+          <p className="text-sm text-gray-300">Prochains événements</p>
           <p className="mt-1 font-heading text-lg font-semibold text-white">
             {upcomingEvents[0]?.title || "Aucun événement à venir"}
           </p>
           {upcomingEvents[0] && (
-            <p className="mt-1 text-xs text-gray-400">
+            <p className="mt-1 text-xs text-gray-300">
               {upcomingEvents[0].date} — {upcomingEvents[0].location}
             </p>
           )}
@@ -147,7 +147,7 @@ export default function AccountPage() {
       </div>
 
       {/* Dernières commandes */}
-      <div className="rounded-lg border border-white/10 bg-white/5 p-6">
+      <div className="rounded-lg border border-white/10 bg-white/[0.08] p-6">
         <div className="flex items-center justify-between">
           <h2 className="font-heading text-xl font-semibold text-white">
             Mes commandes récentes
@@ -164,7 +164,7 @@ export default function AccountPage() {
 
         {orders.length === 0 ? (
           <div className="mt-6 rounded-lg border border-dashed border-gray-700 p-8 text-center">
-            <p className="text-gray-400">Aucune commande pour le moment.</p>
+            <p className="text-gray-300">Aucune commande pour le moment.</p>
             <Link
               href="/billetterie"
               className="mt-4 inline-flex h-10 items-center rounded-md bg-[#C9A84C] px-5 text-sm font-semibold text-black hover:bg-[#F0CB6A]"
@@ -178,13 +178,13 @@ export default function AccountPage() {
               <Link
                 key={order.id}
                 href={`/account/orders/${order.id}`}
-                className="flex items-center justify-between rounded-lg border border-white/5 p-4 transition-colors hover:bg-white/5"
+                className="flex items-center justify-between rounded-lg border border-white/5 p-4 transition-colors hover:bg-white/[0.08]"
               >
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-white">
                     {order.description}
                   </p>
-                  <p className="mt-0.5 text-xs text-gray-400">
+                  <p className="mt-0.5 text-xs text-gray-300">
                     {new Date(order.created_at).toLocaleDateString("fr-FR")} —{" "}
                     <span className="font-mono text-[#C9A84C]">{order.id}</span>
                   </p>

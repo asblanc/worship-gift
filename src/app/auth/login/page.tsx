@@ -137,7 +137,7 @@ export default function LoginPage() {
             <h1 className="mt-6 font-heading text-3xl font-bold text-white">
               Connexion
             </h1>
-            <p className="mt-2 text-sm text-gray-400">
+            <p className="mt-2 text-sm text-gray-300">
               Connecte-toi pour accéder à ton espace personnel.
             </p>
           </div>
@@ -163,7 +163,7 @@ export default function LoginPage() {
           {/* Séparateur "ou" */}
           <div className="my-6 flex items-center gap-3">
             <div className="h-px flex-1 bg-white/15" />
-            <span className="text-xs text-gray-400">ou</span>
+            <span className="text-xs text-gray-300">ou</span>
             <div className="h-px flex-1 bg-white/15" />
           </div>
 
@@ -236,7 +236,7 @@ export default function LoginPage() {
 
           {/* Liens rapides */}
           <div className="mt-6 flex flex-col gap-2 text-center text-sm">
-            <p className="text-gray-400">
+            <p className="text-gray-300">
               Pas encore inscrit ?{" "}
               <Link
                 href="/auth/register"
@@ -248,7 +248,7 @@ export default function LoginPage() {
             <p>
               <Link
                 href="/"
-                className="text-gray-400 hover:text-[#C9A84C] transition-colors"
+                className="text-gray-300 hover:text-[#C9A84C] transition-colors"
               >
                 ← Retour à l&apos;accueil
               </Link>

@@ -118,7 +118,7 @@ export default function Lightbox({
             priority
             sizes="90vw"
           />
-          <p className="mt-3 text-center text-sm text-gray-400">
+          <p className="mt-3 text-center text-sm text-gray-300">
             {currentIndex + 1} / {images.length}
           </p>
         </motion.div>

@@ -57,7 +57,7 @@ export default function Countdown() {
     return (
       <section className="px-6 py-16 md:py-20">
         <div className="mx-auto max-w-4xl text-center">
-          <p className="mb-8 text-sm font-medium uppercase tracking-[0.2em] text-gray-400">
+          <p className="mb-8 text-sm font-medium uppercase tracking-[0.2em] text-gray-300">
             {nextEvent.title}
           </p>
           <div className="flex items-center justify-center gap-2 md:gap-4">
@@ -72,7 +72,7 @@ export default function Countdown() {
                     --
                   </span>
                 </div>
-                <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.15em] text-gray-400 md:text-xs">
+                <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.15em] text-gray-300 md:text-xs">
                   {unit.label}
                 </span>
               </div>
@@ -86,7 +86,7 @@ export default function Countdown() {
   return (
     <section className="px-6 py-16 md:py-20">
       <div className="mx-auto max-w-4xl text-center">
-        <p className="mb-8 text-sm font-medium uppercase tracking-[0.2em] text-gray-400">
+        <p className="mb-8 text-sm font-medium uppercase tracking-[0.2em] text-gray-300">
           {nextEvent.title}
         </p>
         <div className="flex items-center justify-center gap-2 md:gap-4">
@@ -110,7 +110,7 @@ export default function Countdown() {
                   {pad(timeLeft[unit.key])}
                 </motion.span>
               </div>
-              <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.15em] text-gray-400 md:text-xs">
+              <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.15em] text-gray-300 md:text-xs">
                 {unit.label}
               </span>
             </motion.div>

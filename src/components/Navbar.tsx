@@ -125,7 +125,7 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className={`block rounded-md px-4 py-3 text-base font-medium transition-colors hover:bg-white/5 ${
+                    className={`block rounded-md px-4 py-3 text-base font-medium transition-colors hover:bg-white/[0.08] ${
                       isActive(link.href)
                         ? "text-[#C9A84C] bg-[#C9A84C]/10"
                         : "text-gray-300 hover:text-[#C9A84C]"
@@ -143,7 +143,7 @@ export default function Navbar() {
                       <Link
                         href="/account"
                         onClick={() => setMobileOpen(false)}
-                        className="flex items-center gap-3 rounded-md px-4 py-3 text-base font-medium text-[#C9A84C] transition-colors hover:bg-white/5"
+                        className="flex items-center gap-3 rounded-md px-4 py-3 text-base font-medium text-[#C9A84C] transition-colors hover:bg-white/[0.08]"
                       >
                         <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#C9A84C]/40 bg-[#C9A84C]/10 text-sm font-bold">
                           {(user.email?.charAt(0) || "?").toUpperCase()}

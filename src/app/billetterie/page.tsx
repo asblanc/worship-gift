@@ -102,7 +102,7 @@ export default function BilletteriePage() {
                 <motion.div
                   key={event.id}
                   variants={cardVariants}
-                  className="group flex flex-col overflow-hidden rounded-lg border border-white/10 bg-white/5 shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md md:flex-row"
+                  className="group flex flex-col overflow-hidden rounded-lg border border-white/10 bg-white/[0.08] shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md md:flex-row"
                 >
                   {/* Affiche réelle */}
                   <EventPosterVertical event={event} />
@@ -113,7 +113,7 @@ export default function BilletteriePage() {
                       {event.title}
                     </h2>
 
-                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-400">
+                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-300">
                       <span className="flex items-center gap-1.5">
                         <span className="h-1 w-1 rounded-full bg-[#C9A84C]" />
                         {event.date}
@@ -128,7 +128,7 @@ export default function BilletteriePage() {
                       </span>
                     </div>
 
-                    <p className="text-sm leading-relaxed text-gray-400">
+                    <p className="text-sm leading-relaxed text-gray-300">
                       {event.description}
                     </p>
 
@@ -163,7 +163,7 @@ export default function BilletteriePage() {
             <h2 className="font-heading text-3xl font-semibold text-white">
               Tu veux être informé des prochains événements ?
             </h2>
-            <p className="mt-4 text-gray-400">
+            <p className="mt-4 text-gray-300">
               Suis-nous sur nos réseaux pour ne rien manquer et recevoir les
               annonces en avant-première.
             </p>

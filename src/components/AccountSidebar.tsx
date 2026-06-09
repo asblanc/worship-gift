@@ -35,7 +35,7 @@ export default function AccountSidebar() {
               className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-all ${
                 isActive
                   ? "bg-[#C9A84C]/15 text-[#C9A84C] border border-[#C9A84C]/30"
-                  : "text-gray-400 hover:bg-gray-800/50 hover:text-gray-200"
+                  : "text-gray-300 hover:bg-gray-800/50 hover:text-gray-200"
               }`}
             >
               <span className="text-base">{link.icon}</span>
@@ -60,7 +60,7 @@ export default function AccountSidebar() {
               className={`flex shrink-0 items-center gap-1.5 rounded-lg px-4 py-2.5 text-xs font-medium transition-all ${
                 isActive
                   ? "bg-[#C9A84C]/15 text-[#C9A84C] border border-[#C9A84C]/30"
-                  : "text-gray-400 hover:bg-gray-800/50 hover:text-gray-200 border border-transparent"
+                  : "text-gray-300 hover:bg-gray-800/50 hover:text-gray-200 border border-transparent"
               }`}
             >
               <span className="text-sm">{link.icon}</span>

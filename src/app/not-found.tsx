@@ -10,7 +10,7 @@ export default function NotFound() {
         <h1 className="mt-4 font-heading text-2xl font-bold text-white md:text-3xl">
           Page introuvable
         </h1>
-        <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-gray-400">
+        <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-gray-300">
           La page que tu cherches n&rsquo;existe pas ou a été déplacée. Reviens à
           l&rsquo;accueil pour continuer l&rsquo;expérience Worship Gift.
         </p>

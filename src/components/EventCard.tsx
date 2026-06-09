@@ -15,7 +15,7 @@ export default function EventCard() {
       className="bg-[#0D0D0D] px-6 py-16 md:py-20"
     >
       <div className="mx-auto max-w-5xl">
-        <div className="relative overflow-hidden rounded-xl border border-white/10 bg-white/5 shadow-md">
+        <div className="relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.08] shadow-md">
           <div className="flex flex-col gap-8 p-8 md:flex-row md:items-center md:p-12">
             {/* Affiche réelle — même image que la page billetterie */}
             <div className="relative flex aspect-[2/3] w-full shrink-0 overflow-hidden rounded-lg md:w-56">
@@ -58,11 +58,11 @@ export default function EventCard() {
                 {nextEvent.title}
               </h2>
 
-              <p className="text-sm leading-relaxed text-gray-400 md:text-base">
+              <p className="text-sm leading-relaxed text-gray-300 md:text-base">
                 {nextEvent.description}
               </p>
 
-              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400">
+              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-300">
                 <span className="flex items-center gap-1.5">📅 {nextEvent.dateLabel}</span>
                 <span className="flex items-center gap-1.5">⏰ {nextEvent.time}</span>
                 <span className="flex items-center gap-1.5">📍 {nextEvent.location}</span>

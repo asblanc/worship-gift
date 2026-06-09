@@ -40,7 +40,7 @@ export default function TicketQR({
   if (!dataUrl) {
     return (
       <div
-        className="flex items-center justify-center rounded-lg bg-white/5"
+        className="flex items-center justify-center rounded-lg bg-white/[0.08]"
         style={{ width: size, height: size }}
       >
         <span className="h-5 w-5 animate-spin rounded-full border-2 border-[#C9A84C] border-t-transparent" />

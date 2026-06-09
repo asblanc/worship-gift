@@ -106,7 +106,7 @@ export default function ContactPage() {
                   <h2 className="font-heading text-3xl font-semibold text-white">
                     Nous contacter
                   </h2>
-                  <p className="mt-4 leading-relaxed text-gray-400">
+                  <p className="mt-4 leading-relaxed text-gray-300">
                     N'hésite pas à nous joindre directement par téléphone ou à
                     nous suivre sur nos réseaux sociaux pour rester connecté à
                     la communauté.
@@ -116,9 +116,9 @@ export default function ContactPage() {
                 <div className="space-y-4">
                   <motion.div
                     variants={fadeUp}
-                    className="rounded-lg border border-white/10 bg-white/5 p-6 transition-all hover:border-[#C9A84C]/40 hover:bg-white/[0.07]"
+                    className="rounded-lg border border-white/10 bg-white/[0.08] p-6 transition-all hover:border-[#C9A84C]/40 hover:bg-white/[0.07]"
                   >
-                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
+                    <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">
                       Email
                     </h3>
                     <a
@@ -131,9 +131,9 @@ export default function ContactPage() {
 
                   <motion.div
                     variants={fadeUp}
-                    className="rounded-lg border border-white/10 bg-white/5 p-6 transition-all hover:border-[#C9A84C]/40 hover:bg-white/[0.07]"
+                    className="rounded-lg border border-white/10 bg-white/[0.08] p-6 transition-all hover:border-[#C9A84C]/40 hover:bg-white/[0.07]"
                   >
-                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
+                    <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">
                       Téléphone
                     </h3>
                     <a
@@ -146,9 +146,9 @@ export default function ContactPage() {
 
                   <motion.div
                     variants={fadeUp}
-                    className="rounded-lg border border-white/10 bg-white/5 p-6 transition-all hover:border-[#C9A84C]/40 hover:bg-white/[0.07]"
+                    className="rounded-lg border border-white/10 bg-white/[0.08] p-6 transition-all hover:border-[#C9A84C]/40 hover:bg-white/[0.07]"
                   >
-                    <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
+                    <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">
                       Retrouvez-nous
                     </h3>
                     <div className="mt-3 flex flex-col gap-3">
@@ -280,7 +280,7 @@ export default function ContactPage() {
                       disabled={status === "loading"}
                       className={`inline-flex h-12 items-center justify-center gap-2 rounded-md px-8 text-sm font-medium transition-all ${
                         status === "loading"
-                          ? "cursor-not-allowed bg-gray-700 text-gray-400"
+                          ? "cursor-not-allowed bg-gray-700 text-gray-300"
                           : "bg-[#C9A84C] text-black hover:bg-[#F0CB6A] hover:shadow-lg hover:shadow-[#C9A84C]/30 active:scale-[0.97]"
                       }`}
                     >

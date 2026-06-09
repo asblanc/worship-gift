@@ -108,7 +108,7 @@ export default function GaleriePage() {
                       <h3 className="mt-1.5 font-heading text-lg font-bold text-white">
                         {album.title}
                       </h3>
-                      <p className="mt-1.5 text-sm leading-relaxed text-gray-400">
+                      <p className="mt-1.5 text-sm leading-relaxed text-gray-300">
                         {album.subtitle}
                       </p>
                       <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#C9A84C]">

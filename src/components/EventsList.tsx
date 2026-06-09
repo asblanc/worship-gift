@@ -72,7 +72,7 @@ export default function EventsList() {
           <h2 className="font-heading text-3xl font-bold text-white md:text-4xl">
             Événements à venir
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-gray-400">
+          <p className="mx-auto mt-4 max-w-xl text-gray-300">
             Reste connecté et réserve ta place pour les prochains rendez-vous
             du mouvement Worship Gift.
           </p>
@@ -100,7 +100,7 @@ export default function EventsList() {
                 <h3 className="font-heading text-lg font-semibold text-white">
                   {event.title}
                 </h3>
-                <p className="text-sm leading-relaxed text-gray-400 line-clamp-2">
+                <p className="text-sm leading-relaxed text-gray-300 line-clamp-2">
                   {event.description}
                 </p>
                 <div className="mt-auto flex items-center justify-between pt-2">

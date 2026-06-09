@@ -69,7 +69,7 @@ export default function AccountLayout({
             Worship Gift
           </Link>
           <div className="flex items-center gap-4">
-            <span className="hidden text-sm text-gray-400 sm:inline">
+            <span className="hidden text-sm text-gray-300 sm:inline">
               {userName}
             </span>
             <button
@@ -86,9 +86,9 @@ export default function AccountLayout({
         {/* Sidebar (desktop fixe) */}
         <aside className="w-full shrink-0 md:w-56">
           <div className="space-y-4 md:sticky md:top-24 md:space-y-6">
-            <div className="rounded-lg border border-white/10 bg-white/5 p-3 md:p-4">
+            <div className="rounded-lg border border-white/10 bg-white/[0.08] p-3 md:p-4">
               <p className="text-sm font-medium text-white">👋 {userName}</p>
-              <p className="mt-1 text-xs text-gray-400">Mon espace</p>
+              <p className="mt-1 text-xs text-gray-300">Mon espace</p>
             </div>
             <AccountSidebar />
           </div>

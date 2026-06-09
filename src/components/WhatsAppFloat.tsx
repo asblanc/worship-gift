@@ -111,7 +111,7 @@ export default function WhatsAppFloat() {
             <p className="font-heading text-lg font-semibold text-white">
               Besoin d'aide&nbsp;?
             </p>
-            <p className="mt-1 text-xs leading-relaxed text-gray-400">
+            <p className="mt-1 text-xs leading-relaxed text-gray-300">
               Choisissez le service concerné
             </p>
 
