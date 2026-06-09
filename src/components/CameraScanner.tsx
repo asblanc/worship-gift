@@ -72,7 +72,7 @@ export default function CameraScanner({
         <button
           onClick={onClose}
           aria-label="Fermer la caméra"
-          className="rounded-md border border-white/10 px-3 py-1 text-xs text-gray-400 hover:text-white"
+          className="rounded-md border border-white/10 px-3 py-1 text-xs text-gray-300 hover:text-white"
         >
           Fermer
         </button>
@@ -88,7 +88,7 @@ export default function CameraScanner({
           className="mx-auto mt-3 w-full max-w-xs overflow-hidden rounded-lg"
         />
       )}
-      <p className="mt-2 text-center text-[11px] text-gray-400">
+      <p className="mt-2 text-center text-[11px] text-gray-300">
         Vise le QR code du billet
       </p>
     </div>

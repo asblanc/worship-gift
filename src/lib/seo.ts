@@ -89,8 +89,5 @@ export const defaultMetadata: Metadata = {
     index: true,
     follow: true,
   },
-  icons: {
-    icon: "/img_worship-gift/logo-worship-gift.png",
-    apple: "/img_worship-gift/logo-worship-gift.png",
-  },
+  // Favicons : app/icon.png + app/apple-icon.png (convention Next)
 };

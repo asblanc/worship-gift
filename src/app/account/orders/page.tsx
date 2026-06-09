@@ -72,7 +72,7 @@ export default function OrdersPage() {
       cancelled: "bg-red-400/10 text-red-400 border border-red-400/30",
       failed: "bg-red-400/10 text-red-400 border border-red-400/30",
     };
-    return base + (colors[s] || "bg-gray-400/10 text-gray-400 border border-gray-400/30");
+    return base + (colors[s] || "bg-gray-400/10 text-gray-300 border border-gray-400/30");
   };
 
   if (loading) {
@@ -89,14 +89,14 @@ export default function OrdersPage() {
         <h1 className="font-heading text-3xl font-bold text-white">
           Mes commandes
         </h1>
-        <p className="mt-1 text-sm text-gray-400">
+        <p className="mt-1 text-sm text-gray-300">
           Historique complet de vos réservations et achats.
         </p>
       </div>
 
       {orders.length === 0 ? (
         <div className="rounded-lg border border-dashed border-gray-700 p-10 text-center">
-          <p className="text-gray-400">Aucune commande trouvée.</p>
+          <p className="text-gray-300">Aucune commande trouvée.</p>
           <Link
             href="/billetterie"
             className="mt-4 inline-flex h-10 items-center rounded-md bg-[#C9A84C] px-5 text-sm font-semibold text-black hover:bg-[#F0CB6A]"
@@ -107,7 +107,7 @@ export default function OrdersPage() {
       ) : (
         <div className="overflow-hidden rounded-lg border border-white/10">
           {/* Table header (hidden mobile) */}
-          <div className="hidden border-b border-white/10 bg-white/5 px-5 py-3 text-xs font-medium text-gray-400 sm:grid sm:grid-cols-[2fr_1fr_1fr_100px]">
+          <div className="hidden border-b border-white/10 bg-white/[0.08] px-5 py-3 text-xs font-medium text-gray-300 sm:grid sm:grid-cols-[2fr_1fr_1fr_100px]">
             <span>Commande</span>
             <span>Montant</span>
             <span>Statut</span>
@@ -118,7 +118,7 @@ export default function OrdersPage() {
             <Link
               key={order.id}
               href={`/account/orders/${order.id}`}
-              className="block border-b border-white/5 px-5 py-4 transition-colors hover:bg-white/5 last:border-b-0"
+              className="block border-b border-white/5 px-5 py-4 transition-colors hover:bg-white/[0.08] last:border-b-0"
             >
               {/* Mobile layout */}
               <div className="flex flex-col gap-1 sm:hidden">
@@ -133,7 +133,7 @@ export default function OrdersPage() {
                     {statusLabel(order.status)}
                   </span>
                 </div>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-gray-300">
                   {new Date(order.created_at).toLocaleDateString("fr-FR")}
                 </p>
               </div>
@@ -144,7 +144,7 @@ export default function OrdersPage() {
                   <p className="truncate text-sm font-medium text-white">
                     {order.description}
                   </p>
-                  <p className="mt-0.5 font-mono text-xs text-gray-400">
+                  <p className="mt-0.5 font-mono text-xs text-gray-300">
                     {order.id}
                   </p>
                 </div>
@@ -154,7 +154,7 @@ export default function OrdersPage() {
                 <span className={statusBadge(order.status)}>
                   {statusLabel(order.status)}
                 </span>
-                <span className="text-right text-xs text-gray-400">
+                <span className="text-right text-xs text-gray-300">
                   {new Date(order.created_at).toLocaleDateString("fr-FR", {
                     day: "2-digit",
                     month: "short",

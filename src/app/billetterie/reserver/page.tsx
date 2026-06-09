@@ -146,7 +146,7 @@ export default function ReserverPage() {
               <h1 className="font-heading text-3xl font-bold text-white md:text-4xl">
                 Réserve ta place
               </h1>
-              <p className="mt-3 text-sm text-gray-400">
+              <p className="mt-3 text-sm text-gray-300">
                 Remplis le formulaire pour participer à un événement Worship Gift.
               </p>
             </div>
@@ -167,7 +167,7 @@ export default function ReserverPage() {
                           ? "bg-[#C9A84C] text-black"
                           : i === step
                             ? "bg-[#C9A84C] text-black ring-4 ring-[#C9A84C]/30"
-                            : "bg-white/10 text-gray-400"
+                            : "bg-white/10 text-gray-300"
                       }`}
                       aria-current={i === step ? "step" : undefined}
                       aria-label={`Étape ${i + 1} : ${label}`}
@@ -176,7 +176,7 @@ export default function ReserverPage() {
                     </button>
                     <span
                       className={`hidden text-xs font-medium sm:inline ${
-                        i <= step ? "text-white" : "text-gray-400"
+                        i <= step ? "text-white" : "text-gray-300"
                       }`}
                     >
                       {label}
@@ -202,7 +202,7 @@ export default function ReserverPage() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -30 }}
                 transition={{ duration: 0.35 }}
-                className="rounded-xl border border-white/10 bg-white/5 p-6 shadow-sm md:p-8"
+                className="rounded-xl border border-white/10 bg-white/[0.08] p-6 shadow-sm md:p-8"
               >
                 {/* Étape 1 : Sélection de l'événement */}
                 {step === 0 && (
@@ -210,7 +210,7 @@ export default function ReserverPage() {
                     <legend className="font-heading text-xl font-semibold text-white">
                       Choisis ton événement
                     </legend>
-                    <p className="mt-1 text-sm text-gray-400">
+                    <p className="mt-1 text-sm text-gray-300">
                       Sélectionne l'événement auquel tu souhaites participer.
                     </p>
                     <div className="mt-6 space-y-3">
@@ -235,10 +235,10 @@ export default function ReserverPage() {
                             <p className="font-semibold text-white">
                               {event.title}
                             </p>
-                            <p className="mt-0.5 text-sm text-gray-400">
+                            <p className="mt-0.5 text-sm text-gray-300">
                               {event.date} • {event.time} • {event.location}
                             </p>
-                            <p className="mt-1 text-xs text-gray-400">
+                            <p className="mt-1 text-xs text-gray-300">
                               {event.price}
                             </p>
                           </div>
@@ -254,7 +254,7 @@ export default function ReserverPage() {
                     <legend className="font-heading text-xl font-semibold text-white">
                       Nombre de places
                     </legend>
-                    <p className="mt-1 text-sm text-gray-400">
+                    <p className="mt-1 text-sm text-gray-300">
                       Indique combien de places tu souhaites réserver.
                     </p>
 
@@ -273,7 +273,7 @@ export default function ReserverPage() {
                             onClick={() =>
                               setQuantity((q) => Math.max(1, q - 1))
                             }
-                            className="flex h-10 w-10 items-center justify-center rounded-md border border-white/10 text-gray-400 transition-colors hover:bg-white/10"
+                            className="flex h-10 w-10 items-center justify-center rounded-md border border-white/10 text-gray-300 transition-colors hover:bg-white/10"
                             aria-label="Réduire le nombre de places"
                           >
                             −
@@ -299,7 +299,7 @@ export default function ReserverPage() {
                             onClick={() =>
                               setQuantity((q) => Math.min(10, q + 1))
                             }
-                            className="flex h-10 w-10 items-center justify-center rounded-md border border-white/10 text-gray-400 transition-colors hover:bg-white/10"
+                            className="flex h-10 w-10 items-center justify-center rounded-md border border-white/10 text-gray-300 transition-colors hover:bg-white/10"
                             aria-label="Augmenter le nombre de places"
                           >
                             +
@@ -320,7 +320,7 @@ export default function ReserverPage() {
                                 className={`flex cursor-pointer items-center justify-center rounded-lg border p-3 text-sm font-medium transition-all ${
                                   ticketType === type
                                     ? "border-[#C9A84C] bg-[#C9A84C]/5 text-[#C9A84C]"
-                                    : "border-white/10 text-gray-400 hover:border-white/10"
+                                    : "border-white/10 text-gray-300 hover:border-white/10"
                                 }`}
                               >
                                 <input
@@ -339,7 +339,7 @@ export default function ReserverPage() {
                       </div>
 
                       {/* Récapitulatif rapide */}
-                      <div className="rounded-lg bg-white/5 p-3 text-sm text-gray-400">
+                      <div className="rounded-lg bg-white/[0.08] p-3 text-sm text-gray-300">
                         <p>
                           <span className="font-medium">Événement :</span>{" "}
                           {selectedEvent.title}
@@ -359,7 +359,7 @@ export default function ReserverPage() {
                     <legend className="font-heading text-xl font-semibold text-white">
                       Tes informations
                     </legend>
-                    <p className="mt-1 text-sm text-gray-400">
+                    <p className="mt-1 text-sm text-gray-300">
                       Remplis les champs ci-dessous pour finaliser ta
                       réservation.
                     </p>
@@ -438,7 +438,7 @@ export default function ReserverPage() {
                           onChange={(e) => setAcceptContact(e.target.checked)}
                           className="mt-0.5 h-4 w-4 accent-[#C9A84C]"
                         />
-                        <span className="text-sm text-gray-400">
+                        <span className="text-sm text-gray-300">
                           J'accepte d'être contacté(e) par Worship Gift pour
                           les prochains événements.
                         </span>
@@ -453,56 +453,56 @@ export default function ReserverPage() {
                     <h2 className="font-heading text-xl font-semibold text-white">
                       Récapitulatif de ta réservation
                     </h2>
-                    <p className="mt-1 text-sm text-gray-400">
+                    <p className="mt-1 text-sm text-gray-300">
                       Vérifie les informations avant de confirmer.
                     </p>
-                    <div className="mt-6 space-y-3 rounded-lg bg-white/5 p-5 text-sm">
+                    <div className="mt-6 space-y-3 rounded-lg bg-white/[0.08] p-5 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Événement</span>
+                        <span className="text-gray-300">Événement</span>
                         <span className="font-semibold text-white">
                           {selectedEvent.title}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Date</span>
+                        <span className="text-gray-300">Date</span>
                         <span className="text-white">
                           {selectedEvent.date} à {selectedEvent.time}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Lieu</span>
+                        <span className="text-gray-300">Lieu</span>
                         <span className="text-white">
                           {selectedEvent.location}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Places</span>
+                        <span className="text-gray-300">Places</span>
                         <span className="font-semibold text-white">
                           {quantity}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Type de billet</span>
+                        <span className="text-gray-300">Type de billet</span>
                         <span className="text-white">{ticketType}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Prix</span>
+                        <span className="text-gray-300">Prix</span>
                         <span className="font-semibold text-[#C9A84C]">
                           {selectedEvent.price}
                         </span>
                       </div>
                       <hr className="border-white/10" />
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Nom</span>
+                        <span className="text-gray-300">Nom</span>
                         <span className="text-white">{nom}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Email</span>
+                        <span className="text-gray-300">Email</span>
                         <span className="text-white">{email}</span>
                       </div>
                       {telephone && (
                         <div className="flex justify-between">
-                          <span className="text-gray-400">Téléphone</span>
+                          <span className="text-gray-300">Téléphone</span>
                           <span className="text-white">{telephone}</span>
                         </div>
                       )}

@@ -122,7 +122,7 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
             <Link href="/billetterie" className="text-[#C9A84C] hover:text-[#F0CB6A] text-sm flex items-center gap-1">
               ← Billetterie
             </Link>
-            <span className="text-gray-400">/</span>
+            <span className="text-gray-300">/</span>
             <span className="text-white text-sm">{event.title}</span>
           </div>
           <div className="mx-auto max-w-4xl mt-6 text-center">
@@ -155,7 +155,7 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 </div>
                 {/* Infos résumé */}
-                <div className="rounded-xl border border-white/10 bg-white/5 p-4 space-y-2 text-sm text-gray-400">
+                <div className="rounded-xl border border-white/10 bg-white/[0.08] p-4 space-y-2 text-sm text-gray-300">
                   <p className="font-semibold text-white text-base">{event.title}</p>
                   <p>📅 {event.date} à {event.time}</p>
                   <p>📍 {event.location}</p>
@@ -164,7 +164,7 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
               </div>
 
               {/* ── Formulaire ──────────────────── */}
-              <div className="rounded-xl border border-white/10 bg-white/5 p-6 md:p-8 space-y-6">
+              <div className="rounded-xl border border-white/10 bg-white/[0.08] p-6 md:p-8 space-y-6">
                 <h2 className="font-heading text-2xl font-semibold text-white">Vos informations</h2>
 
                 {/* Nom */}
@@ -206,7 +206,7 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
                 {/* Total */}
                 {!isFree && (
                   <div className="rounded-lg bg-black/40 px-4 py-3 flex items-center justify-between">
-                    <span className="text-sm text-gray-400">Total</span>
+                    <span className="text-sm text-gray-300">Total</span>
                     <span className="font-heading text-xl font-bold text-[#C9A84C]">{totalMAD} MAD</span>
                   </div>
                 )}
@@ -245,7 +245,7 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
                   </div>
 
                   {isFree && (
-                    <p className="mt-3 text-xs text-gray-400 text-center">
+                    <p className="mt-3 text-xs text-gray-300 text-center">
                       Cet événement est gratuit. Utilise WhatsApp pour confirmer ta place.
                     </p>
                   )}

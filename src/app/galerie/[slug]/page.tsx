@@ -46,7 +46,7 @@ export default function AlbumPage() {
       <>
         <Navbar />
         <main className="flex min-h-screen flex-col items-center justify-center gap-4 bg-black px-6 pt-20 text-center">
-          <p className="text-gray-400">Cet album est introuvable.</p>
+          <p className="text-gray-300">Cet album est introuvable.</p>
           <Link
             href="/galerie"
             className="rounded-md bg-[#C9A84C] px-5 py-2.5 text-sm font-semibold text-black hover:bg-[#F0CB6A]"

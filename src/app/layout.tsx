@@ -20,10 +20,7 @@ import { defaultMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  icons: {
-    icon: "/img_worship-gift/logo-worship-gift.png",
-    apple: "/img_worship-gift/logo-worship-gift.png",
-  },
+  // Favicons fournis par app/icon.png + app/apple-icon.png (convention Next)
 };
 
 export default function RootLayout({

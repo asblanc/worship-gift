@@ -48,17 +48,17 @@ export default function ChangePasswordForm() {
   };
 
   return (
-    <div className="rounded-lg border border-white/10 bg-white/5 p-6">
+    <div className="rounded-lg border border-white/10 bg-white/[0.08] p-6">
       <h2 className="font-heading text-xl font-semibold text-white">
         Changer mon mot de passe
       </h2>
-      <p className="mt-1 text-sm text-gray-400">
+      <p className="mt-1 text-sm text-gray-300">
         Choisis un nouveau mot de passe ({MIN_LEN} caractères minimum).
       </p>
 
       <form onSubmit={handleSubmit} className="mt-5 max-w-sm space-y-4">
         <div>
-          <label htmlFor="new-password" className="mb-1 block text-xs text-gray-400">
+          <label htmlFor="new-password" className="mb-1 block text-xs text-gray-300">
             Nouveau mot de passe
           </label>
           <input
@@ -73,7 +73,7 @@ export default function ChangePasswordForm() {
         </div>
 
         <div>
-          <label htmlFor="confirm-password" className="mb-1 block text-xs text-gray-400">
+          <label htmlFor="confirm-password" className="mb-1 block text-xs text-gray-300">
             Confirmer le mot de passe
           </label>
           <input
@@ -87,7 +87,7 @@ export default function ChangePasswordForm() {
           />
         </div>
 
-        <label className="flex items-center gap-2 text-xs text-gray-400">
+        <label className="flex items-center gap-2 text-xs text-gray-300">
           <input
             type="checkbox"
             checked={show}
@@ -113,7 +113,7 @@ export default function ChangePasswordForm() {
           disabled={loading}
           className={`inline-flex h-10 items-center justify-center rounded-md px-5 text-sm font-semibold transition-colors ${
             loading
-              ? "cursor-not-allowed bg-gray-700 text-gray-400"
+              ? "cursor-not-allowed bg-gray-700 text-gray-300"
               : "bg-[#C9A84C] text-black hover:bg-[#F0CB6A]"
           }`}
         >

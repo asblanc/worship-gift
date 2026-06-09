@@ -130,7 +130,7 @@ export default function OrderDetailPage() {
       cancelled: "bg-red-400/15 text-red-400 border border-red-400/40",
       failed: "bg-red-400/15 text-red-400 border border-red-400/40",
     };
-    return base + (colors[s] || "bg-gray-400/15 text-gray-400");
+    return base + (colors[s] || "bg-gray-400/15 text-gray-300");
   };
 
   if (loading) {
@@ -146,12 +146,12 @@ export default function OrderDetailPage() {
       <div className="space-y-6">
         <Link
           href="/account/orders"
-          className="text-xs text-gray-400 hover:text-[#C9A84C]"
+          className="text-xs text-gray-300 hover:text-[#C9A84C]"
         >
           ← Retour aux commandes
         </Link>
         <div className="rounded-lg border border-dashed border-gray-700 p-10 text-center">
-          <p className="text-gray-400">Commande introuvable.</p>
+          <p className="text-gray-300">Commande introuvable.</p>
         </div>
       </div>
     );
@@ -162,20 +162,20 @@ export default function OrderDetailPage() {
       {/* Retour */}
       <Link
         href="/account/orders"
-        className="text-xs text-gray-400 hover:text-[#C9A84C]"
+        className="text-xs text-gray-300 hover:text-[#C9A84C]"
       >
         ← Retour aux commandes
       </Link>
 
       {/* En-tête commande */}
-      <div className="rounded-lg border border-white/10 bg-white/5 p-6">
+      <div className="rounded-lg border border-white/10 bg-white/[0.08] p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <h1 className="font-heading text-2xl font-bold text-white">
               {order.description}
             </h1>
-            <p className="mt-1 font-mono text-sm text-gray-400">{order.id}</p>
-            <p className="mt-1 text-sm text-gray-400">
+            <p className="mt-1 font-mono text-sm text-gray-300">{order.id}</p>
+            <p className="mt-1 text-sm text-gray-300">
               Commandé le{" "}
               {new Date(order.created_at).toLocaleDateString("fr-FR", {
                 year: "numeric",
@@ -196,7 +196,7 @@ export default function OrderDetailPage() {
 
         {/* Infos transaction si paiement CMI */}
         {order.transaction_id && (
-          <div className="mt-4 rounded-md bg-gray-900/50 p-3 text-xs text-gray-400">
+          <div className="mt-4 rounded-md bg-gray-900/50 p-3 text-xs text-gray-300">
             Transaction CMI : {order.transaction_id}
             {order.paid_at && (
               <>
@@ -216,7 +216,7 @@ export default function OrderDetailPage() {
       </div>
 
       {/* Billets */}
-      <div className="rounded-lg border border-white/10 bg-white/5 p-6">
+      <div className="rounded-lg border border-white/10 bg-white/[0.08] p-6">
         <div className="flex items-center justify-between gap-3">
           <h2 className="font-heading text-lg font-semibold text-white">
             Billets ({tickets.length})
@@ -227,7 +227,7 @@ export default function OrderDetailPage() {
               disabled={pdfLoading}
               className={`inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-xs font-semibold transition-all ${
                 pdfLoading
-                  ? "cursor-not-allowed border-white/10 text-gray-400"
+                  ? "cursor-not-allowed border-white/10 text-gray-300"
                   : "border-[#C9A84C]/40 bg-[#C9A84C]/10 text-[#C9A84C] hover:bg-[#C9A84C]/20"
               }`}
             >
@@ -242,7 +242,7 @@ export default function OrderDetailPage() {
         </div>
 
         {tickets.length === 0 ? (
-          <p className="mt-3 text-sm text-gray-400">
+          <p className="mt-3 text-sm text-gray-300">
             Les billets seront générés après confirmation du paiement.
           </p>
         ) : (
@@ -257,7 +257,7 @@ export default function OrderDetailPage() {
                     <p className="font-semibold text-white">
                       {ticket.event_title}
                     </p>
-                    <p className="mt-0.5 text-sm text-gray-400">
+                    <p className="mt-0.5 text-sm text-gray-300">
                       {ticket.event_date} à {ticket.event_time} —{" "}
                       {ticket.event_location}
                     </p>
@@ -269,7 +269,7 @@ export default function OrderDetailPage() {
                         {ticket.ticket_code}
                       </span>
                       {ticket.status === "used" ? (
-                        <span className="rounded-full bg-gray-500/15 px-2.5 py-0.5 text-[10px] font-semibold text-gray-400">
+                        <span className="rounded-full bg-gray-500/15 px-2.5 py-0.5 text-[10px] font-semibold text-gray-300">
                           Déjà utilisé
                         </span>
                       ) : ticket.status === "cancelled" ? (
@@ -286,7 +286,7 @@ export default function OrderDetailPage() {
                   {/* QR code à présenter à l'entrée */}
                   <div className="flex flex-col items-center gap-1 self-center">
                     <TicketQR code={ticket.ticket_code} size={132} />
-                    <span className="text-[10px] text-gray-400">À scanner à l&rsquo;entrée</span>
+                    <span className="text-[10px] text-gray-300">À scanner à l&rsquo;entrée</span>
                   </div>
                 </div>
               </div>
