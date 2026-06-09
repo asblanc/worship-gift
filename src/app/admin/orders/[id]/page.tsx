@@ -125,7 +125,7 @@ export default function AdminOrderDetailPage() {
   if (!order) {
     return (
       <div className="space-y-6">
-        <Link href="/admin/orders" className="inline-flex items-center gap-1 text-xs text-gray-500 transition-colors hover:text-[#C9A84C]">
+        <Link href="/admin/orders" className="inline-flex items-center gap-1 text-xs text-gray-400 transition-colors hover:text-[#C9A84C]">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 12H5" /><polyline points="12 19 5 12 12 5" />
           </svg>
@@ -135,7 +135,7 @@ export default function AdminOrderDetailPage() {
           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
           </svg>
-          <p className="text-sm text-gray-600">Commande introuvable.</p>
+          <p className="text-sm text-gray-400">Commande introuvable.</p>
         </div>
       </div>
     );
@@ -143,7 +143,7 @@ export default function AdminOrderDetailPage() {
 
   return (
     <motion.div variants={fadeUp} initial="hidden" animate="visible" className="space-y-6">
-      <Link href="/admin/orders" className="inline-flex items-center gap-1 text-xs text-gray-500 transition-colors hover:text-[#C9A84C]">
+      <Link href="/admin/orders" className="inline-flex items-center gap-1 text-xs text-gray-400 transition-colors hover:text-[#C9A84C]">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M19 12H5" /><polyline points="12 19 5 12 12 5" />
         </svg>
@@ -155,8 +155,8 @@ export default function AdminOrderDetailPage() {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-2">
             <h1 className="font-heading text-2xl font-bold text-white">{order.description || "Commande"}</h1>
-            <p className="font-mono text-xs text-gray-600">{order.id}</p>
-            <p className="text-xs text-gray-500">
+            <p className="font-mono text-xs text-gray-400">{order.id}</p>
+            <p className="text-xs text-gray-400">
               {new Date(order.created_at).toLocaleDateString("fr-FR", {
                 year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit",
               })}
@@ -166,7 +166,7 @@ export default function AdminOrderDetailPage() {
             </span>
           </div>
           <div className="text-right">
-            <p className="text-xs uppercase tracking-wider text-gray-600">Montant</p>
+            <p className="text-xs uppercase tracking-wider text-gray-400">Montant</p>
             <p className="font-heading text-2xl font-bold text-[#C9A84C]">
               {order.amount === 0 ? "Gratuit" : formatMAD(order.amount)}
             </p>
@@ -201,7 +201,7 @@ export default function AdminOrderDetailPage() {
               <span className="text-gray-400">Transaction :</span>
               <span className="font-mono text-xs text-[#C9A84C]">{order.transaction_id}</span>
               {order.paid_at && (
-                <span className="text-xs text-gray-600">
+                <span className="text-xs text-gray-400">
                   — Payé le {new Date(order.paid_at).toLocaleDateString("fr-FR")}
                 </span>
               )}
@@ -211,7 +211,7 @@ export default function AdminOrderDetailPage() {
 
         {/* Changer statut */}
         <div className="mt-6 border-t border-white/[0.04] pt-6">
-          <p className="text-xs font-medium uppercase tracking-wider text-gray-500 mb-3">Modifier le statut</p>
+          <p className="text-xs font-medium uppercase tracking-wider text-gray-400 mb-3">Modifier le statut</p>
           <div className="flex flex-wrap gap-2">
             {ALL_STATUSES.map((s) => (
               <button
@@ -221,7 +221,7 @@ export default function AdminOrderDetailPage() {
                 className={`rounded-lg px-4 py-2 text-xs font-semibold transition-all ${
                   order.status === s
                     ? "bg-[#C9A84C]/15 text-[#C9A84C] border border-[#C9A84C]/20 cursor-default"
-                    : "border border-white/[0.06] text-gray-500 hover:border-[#C9A84C]/30 hover:text-[#C9A84C] disabled:opacity-30"
+                    : "border border-white/[0.06] text-gray-400 hover:border-[#C9A84C]/30 hover:text-[#C9A84C] disabled:opacity-30"
                 }`}
               >
                 {statusLabel(s)}
@@ -251,7 +251,7 @@ export default function AdminOrderDetailPage() {
               <path d="M15 5v2" /><path d="M15 11v2" /><path d="M15 17v2" />
               <path d="M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z" />
             </svg>
-            <p className="text-sm text-gray-600">Aucun billet pour cette commande.</p>
+            <p className="text-sm text-gray-400">Aucun billet pour cette commande.</p>
           </div>
         ) : (
           <div className="mt-4 space-y-3">
@@ -261,7 +261,7 @@ export default function AdminOrderDetailPage() {
                   <div className="space-y-1">
                     <p className="text-sm font-semibold text-white">{ticket.event_title || "Événement"}</p>
                     {(ticket.event_date || ticket.event_time || ticket.event_location) && (
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-400">
                         {[ticket.event_date, ticket.event_time, ticket.event_location].filter(Boolean).join(" — ")}
                       </p>
                     )}

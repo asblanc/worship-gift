@@ -62,7 +62,7 @@ export default function EventCard() {
                 {nextEvent.description}
               </p>
 
-              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400">
                 <span className="flex items-center gap-1.5">📅 {nextEvent.dateLabel}</span>
                 <span className="flex items-center gap-1.5">⏰ {nextEvent.time}</span>
                 <span className="flex items-center gap-1.5">📍 {nextEvent.location}</span>

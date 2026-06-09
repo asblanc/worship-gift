@@ -133,7 +133,7 @@ export default function OrdersPage() {
                     {statusLabel(order.status)}
                   </span>
                 </div>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-400">
                   {new Date(order.created_at).toLocaleDateString("fr-FR")}
                 </p>
               </div>
@@ -144,7 +144,7 @@ export default function OrdersPage() {
                   <p className="truncate text-sm font-medium text-white">
                     {order.description}
                   </p>
-                  <p className="mt-0.5 font-mono text-xs text-gray-500">
+                  <p className="mt-0.5 font-mono text-xs text-gray-400">
                     {order.id}
                   </p>
                 </div>
@@ -154,7 +154,7 @@ export default function OrdersPage() {
                 <span className={statusBadge(order.status)}>
                   {statusLabel(order.status)}
                 </span>
-                <span className="text-right text-xs text-gray-500">
+                <span className="text-right text-xs text-gray-400">
                   {new Date(order.created_at).toLocaleDateString("fr-FR", {
                     day: "2-digit",
                     month: "short",

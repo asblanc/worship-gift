@@ -47,7 +47,7 @@ export default function DashboardPage() {
       <main className="flex min-h-screen items-center justify-center bg-black px-4">
         <div className="flex flex-col items-center gap-3">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#C9A84C] border-t-transparent" />
-          <p className="text-sm text-gray-500">Chargement…</p>
+          <p className="text-sm text-gray-400">Chargement…</p>
         </div>
       </main>
     );
@@ -87,7 +87,7 @@ export default function DashboardPage() {
               <h1 className="truncate font-heading text-lg font-bold text-white sm:text-2xl">
                 Bonjour, {profile.nom}
               </h1>
-              <p className="truncate text-xs text-gray-500 sm:text-sm">
+              <p className="truncate text-xs text-gray-400 sm:text-sm">
                 {profile.email}
               </p>
             </div>
@@ -99,7 +99,7 @@ export default function DashboardPage() {
           <h2 className="font-heading text-base font-semibold text-white sm:text-xl">
             Mes billets
           </h2>
-          <p className="mt-3 text-xs leading-relaxed text-gray-500 sm:text-sm">
+          <p className="mt-3 text-xs leading-relaxed text-gray-400 sm:text-sm">
             Tu n&rsquo;as pas encore de billet réservé. Rends-toi sur la page
             Billetterie pour réserver ta place pour nos prochains événements.
           </p>

@@ -108,7 +108,7 @@ export default function AdminOrdersPage() {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 className="font-heading text-3xl font-bold text-white">Commandes</h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-400">
             Gérez toutes les commandes de la billetterie.
           </p>
         </div>
@@ -117,7 +117,7 @@ export default function AdminOrdersPage() {
           disabled={orders.length === 0}
           className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-xs font-semibold transition-all ${
             orders.length === 0
-              ? "cursor-not-allowed border-white/[0.06] text-gray-600"
+              ? "cursor-not-allowed border-white/[0.06] text-gray-400"
               : "border-[#C9A84C]/40 bg-[#C9A84C]/10 text-[#C9A84C] hover:bg-[#C9A84C]/20"
           }`}
         >
@@ -139,7 +139,7 @@ export default function AdminOrdersPage() {
             className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-all ${
               statusFilter === s.value
                 ? "border-[#C9A84C]/40 bg-[#C9A84C]/10 text-[#C9A84C]"
-                : "border-white/[0.06] text-gray-500 hover:border-white/10 hover:text-gray-300"
+                : "border-white/[0.06] text-gray-400 hover:border-white/10 hover:text-gray-300"
             }`}
           >
             {s.label}
@@ -157,7 +157,7 @@ export default function AdminOrdersPage() {
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
             <polyline points="14 2 14 8 20 8" />
           </svg>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-400">
             {statusFilter === "all" ? "Aucune commande." : "Aucune commande dans cette catégorie."}
           </p>
         </div>
@@ -165,7 +165,7 @@ export default function AdminOrdersPage() {
         <div className="overflow-x-auto rounded-xl border border-white/[0.06] bg-white/[0.01]">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/[0.04] text-left text-xs font-medium text-gray-600">
+              <tr className="border-b border-white/[0.04] text-left text-xs font-medium text-gray-400">
                 <th className="px-4 py-3">Référence</th>
                 <th className="px-4 py-3">Client</th>
                 <th className="px-4 py-3">Description</th>
@@ -179,7 +179,7 @@ export default function AdminOrdersPage() {
               {orders.map((order) => (
                 <tr key={order.id} className="border-b border-white/[0.02] transition-colors hover:bg-white/[0.02]">
                   <td className="px-4 py-3">
-                    <span className="font-mono text-xs text-gray-500">{order.id.slice(0, 12)}…</span>
+                    <span className="font-mono text-xs text-gray-400">{order.id.slice(0, 12)}…</span>
                   </td>
                   <td className="px-4 py-3 text-white max-w-[140px] truncate">
                     {order.customer_name || order.customer_email || "—"}
@@ -191,7 +191,7 @@ export default function AdminOrdersPage() {
                     {order.amount === 0 ? "Gratuit" : formatMAD(order.amount)}
                   </td>
                   <td className="px-4 py-3">{statusBadge(order.status)}</td>
-                  <td className="px-4 py-3 text-right text-xs text-gray-600">
+                  <td className="px-4 py-3 text-right text-xs text-gray-400">
                     {new Date(order.created_at).toLocaleDateString("fr-FR")}
                   </td>
                   <td className="px-4 py-3 text-right">

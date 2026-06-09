@@ -108,7 +108,7 @@ export default function AdminLayout({
       <div className="flex min-h-screen items-center justify-center bg-[#0D0D0D]">
         <div className="flex flex-col items-center gap-4">
           <span className="h-8 w-8 animate-spin rounded-full border-2 border-[#C9A84C] border-t-transparent" />
-          <span className="text-sm text-gray-500">Vérification…</span>
+          <span className="text-sm text-gray-400">Vérification…</span>
         </div>
       </div>
     );
@@ -151,7 +151,7 @@ export default function AdminLayout({
           <div className="flex items-center gap-4">
             <Link
               href="/"
-              className="hidden text-xs text-gray-500 transition-colors hover:text-gray-300 sm:inline-flex sm:items-center sm:gap-1"
+              className="hidden text-xs text-gray-400 transition-colors hover:text-gray-300 sm:inline-flex sm:items-center sm:gap-1"
               target="_blank"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -163,7 +163,7 @@ export default function AdminLayout({
             </Link>
             <Link
               href="/account"
-              className="hidden text-xs text-gray-500 transition-colors hover:text-gray-300 sm:inline-flex sm:items-center sm:gap-1"
+              className="hidden text-xs text-gray-400 transition-colors hover:text-gray-300 sm:inline-flex sm:items-center sm:gap-1"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -171,13 +171,13 @@ export default function AdminLayout({
               </svg>
               Mon compte
             </Link>
-            <span className="hidden text-xs text-gray-600 md:inline">
+            <span className="hidden text-xs text-gray-400 md:inline">
               {userEmail}
             </span>
             <button
               onClick={handleLogout}
               aria-label="Déconnexion"
-              className="flex items-center gap-1.5 rounded-lg border border-white/[0.06] px-3 py-1.5 text-xs text-gray-500 transition-all hover:border-red-500/20 hover:bg-red-500/5 hover:text-red-400"
+              className="flex items-center gap-1.5 rounded-lg border border-white/[0.06] px-3 py-1.5 text-xs text-gray-400 transition-all hover:border-red-500/20 hover:bg-red-500/5 hover:text-red-400"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
@@ -203,10 +203,10 @@ export default function AdminLayout({
                   className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 ${
                     active
                       ? "bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/20"
-                      : "text-gray-500 hover:bg-white/[0.03] hover:text-gray-300"
+                      : "text-gray-400 hover:bg-white/[0.03] hover:text-gray-300"
                   }`}
                 >
-                  <span className={active ? "text-[#C9A84C]" : "text-gray-600"}>{link.icon}</span>
+                  <span className={active ? "text-[#C9A84C]" : "text-gray-400"}>{link.icon}</span>
                   {link.label}
                 </Link>
               );
@@ -243,10 +243,10 @@ export default function AdminLayout({
                         className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 ${
                           active
                             ? "bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/20"
-                            : "text-gray-500 hover:bg-white/[0.03] hover:text-gray-300"
+                            : "text-gray-400 hover:bg-white/[0.03] hover:text-gray-300"
                         }`}
                       >
-                        <span className={active ? "text-[#C9A84C]" : "text-gray-600"}>{link.icon}</span>
+                        <span className={active ? "text-[#C9A84C]" : "text-gray-400"}>{link.icon}</span>
                         {link.label}
                       </Link>
                     );

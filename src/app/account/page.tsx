@@ -139,7 +139,7 @@ export default function AccountPage() {
             {upcomingEvents[0]?.title || "Aucun événement à venir"}
           </p>
           {upcomingEvents[0] && (
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-1 text-xs text-gray-400">
               {upcomingEvents[0].date} — {upcomingEvents[0].location}
             </p>
           )}
@@ -184,7 +184,7 @@ export default function AccountPage() {
                   <p className="truncate text-sm font-medium text-white">
                     {order.description}
                   </p>
-                  <p className="mt-0.5 text-xs text-gray-500">
+                  <p className="mt-0.5 text-xs text-gray-400">
                     {new Date(order.created_at).toLocaleDateString("fr-FR")} —{" "}
                     <span className="font-mono text-[#C9A84C]">{order.id}</span>
                   </p>

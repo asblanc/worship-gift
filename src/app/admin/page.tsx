@@ -108,7 +108,7 @@ export default function AdminDashboardPage() {
         <h1 className="font-heading text-3xl font-bold text-white">
           Tableau de bord
         </h1>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-gray-400">
               Vue d&rsquo;ensemble de l&rsquo;activité Worship Gift.
             </p>
       </motion.div>
@@ -129,7 +129,7 @@ export default function AdminDashboardPage() {
                 </svg>
               </div>
               <div>
-                <p className="text-xs text-gray-500">Commandes totales</p>
+                <p className="text-xs text-gray-400">Commandes totales</p>
                 <p className="font-heading text-2xl font-bold text-white">{stats.totalOrders}</p>
               </div>
             </div>
@@ -161,9 +161,9 @@ export default function AdminDashboardPage() {
                 </svg>
               </div>
               <div>
-                <p className="text-xs text-gray-500">Billets émis</p>
+                <p className="text-xs text-gray-400">Billets émis</p>
                 <p className="font-heading text-2xl font-bold text-white">{stats.totalTickets}</p>
-                <p className="mt-0.5 text-[11px] text-gray-500">
+                <p className="mt-0.5 text-[11px] text-gray-400">
                   {stats.totalScanned} scanné{stats.totalScanned > 1 ? "s" : ""} à l&rsquo;entrée
                 </p>
               </div>
@@ -187,7 +187,7 @@ export default function AdminDashboardPage() {
               className="rounded-lg border border-white/[0.04] bg-black/20 p-4 transition-all hover:border-[#C9A84C]/20"
             >
               <p className="text-sm font-semibold text-white">{evt.title}</p>
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-gray-400">
                 {evt.date} à {evt.time} — {evt.location}
               </p>
               <p className="mt-1 text-xs font-medium text-[#C9A84C]">{evt.price}</p>
@@ -211,13 +211,13 @@ export default function AdminDashboardPage() {
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
               <polyline points="14 2 14 8 20 8" />
             </svg>
-            <p className="text-sm text-gray-600">Aucune commande pour le moment.</p>
+            <p className="text-sm text-gray-400">Aucune commande pour le moment.</p>
           </div>
         ) : (
           <div className="mt-4 overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-white/[0.04] text-left text-xs font-medium text-gray-600">
+                <tr className="border-b border-white/[0.04] text-left text-xs font-medium text-gray-400">
                   <th className="pb-3">Client</th>
                   <th className="pb-3">Description</th>
                   <th className="pb-3 text-right">Montant</th>
@@ -238,7 +238,7 @@ export default function AdminDashboardPage() {
                       {order.amount === 0 ? "Gratuit" : formatMAD(order.amount)}
                     </td>
                     <td className="py-3 pr-3">{statusBadge(order.status)}</td>
-                    <td className="py-3 text-right text-xs text-gray-600">
+                    <td className="py-3 text-right text-xs text-gray-400">
                       {new Date(order.created_at).toLocaleDateString("fr-FR")}
                     </td>
                   </tr>

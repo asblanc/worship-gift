@@ -92,7 +92,7 @@ export default function AdminEventsPage() {
     <motion.div variants={stagger} initial="hidden" animate="visible" className="space-y-6">
       <motion.div variants={fadeUp}>
         <h1 className="font-heading text-3xl font-bold text-white">Événements</h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-gray-400">
           Statistiques et gestion des événements.
         </p>
       </motion.div>
@@ -113,7 +113,7 @@ export default function AdminEventsPage() {
                 <div className="space-y-1.5">
                   <h2 className="font-heading text-xl font-semibold text-white">{evt.title}</h2>
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-                    <span className="flex items-center gap-1.5 text-xs text-gray-500">
+                    <span className="flex items-center gap-1.5 text-xs text-gray-400">
                       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
                         <line x1="16" y1="2" x2="16" y2="6" />
@@ -122,14 +122,14 @@ export default function AdminEventsPage() {
                       </svg>
                       {evt.date}
                     </span>
-                    <span className="flex items-center gap-1.5 text-xs text-gray-500">
+                    <span className="flex items-center gap-1.5 text-xs text-gray-400">
                       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <circle cx="12" cy="12" r="10" />
                         <polyline points="12 6 12 12 16 14" />
                       </svg>
                       {evt.time}
                     </span>
-                    <span className="flex items-center gap-1.5 text-xs text-gray-500">
+                    <span className="flex items-center gap-1.5 text-xs text-gray-400">
                       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                         <circle cx="12" cy="10" r="3" />
@@ -142,13 +142,13 @@ export default function AdminEventsPage() {
                 <div className="flex gap-8">
                   <div className="text-center">
                     <p className="font-heading text-2xl font-bold text-white">{evt.ticketCount}</p>
-                    <p className="text-[10px] uppercase tracking-wider text-gray-600">Billets</p>
+                    <p className="text-[10px] uppercase tracking-wider text-gray-400">Billets</p>
                   </div>
                   <div className="text-center">
                     <p className="font-heading text-2xl font-bold text-[#C9A84C]">
                       {formatMAD(evt.totalRevenue)}
                     </p>
-                    <p className="text-[10px] uppercase tracking-wider text-gray-600">CA estimé</p>
+                    <p className="text-[10px] uppercase tracking-wider text-gray-400">CA estimé</p>
                   </div>
                 </div>
               </div>
@@ -158,7 +158,7 @@ export default function AdminEventsPage() {
       )}
 
       <div className="rounded-xl border border-dashed border-white/[0.06] p-6 text-center">
-        <p className="text-xs text-gray-600">
+        <p className="text-xs text-gray-400">
           Les événements sont configurés dans{" "}
           <code className="rounded bg-[#C9A84C]/10 px-1.5 py-0.5 font-mono text-xs text-[#C9A84C]">
             src/lib/events-config.ts

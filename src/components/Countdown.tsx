@@ -72,7 +72,7 @@ export default function Countdown() {
                     --
                   </span>
                 </div>
-                <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.15em] text-gray-500 md:text-xs">
+                <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.15em] text-gray-400 md:text-xs">
                   {unit.label}
                 </span>
               </div>
@@ -110,7 +110,7 @@ export default function Countdown() {
                   {pad(timeLeft[unit.key])}
                 </motion.span>
               </div>
-              <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.15em] text-gray-500 md:text-xs">
+              <span className="mt-2 text-[10px] font-medium uppercase tracking-[0.15em] text-gray-400 md:text-xs">
                 {unit.label}
               </span>
             </motion.div>

@@ -138,15 +138,15 @@ export default function ReserverPage() {
   return (
     <>
       <Navbar />
-      <main className="flex min-h-screen flex-col bg-[#F9F5EC] pt-20">
+      <main className="flex min-h-screen flex-col bg-[#0D0D0D] pt-20">
         <div className="flex-1 px-4 py-8 md:py-12">
           <div className="mx-auto max-w-2xl">
             {/* En-tête */}
             <div className="mb-10 text-center">
-              <h1 className="font-heading text-3xl font-bold text-gray-900 md:text-4xl">
+              <h1 className="font-heading text-3xl font-bold text-white md:text-4xl">
                 Réserve ta place
               </h1>
-              <p className="mt-3 text-sm text-gray-500">
+              <p className="mt-3 text-sm text-gray-400">
                 Remplis le formulaire pour participer à un événement Worship Gift.
               </p>
             </div>
@@ -167,7 +167,7 @@ export default function ReserverPage() {
                           ? "bg-[#C9A84C] text-black"
                           : i === step
                             ? "bg-[#C9A84C] text-black ring-4 ring-[#C9A84C]/30"
-                            : "bg-gray-200 text-gray-400"
+                            : "bg-white/10 text-gray-400"
                       }`}
                       aria-current={i === step ? "step" : undefined}
                       aria-label={`Étape ${i + 1} : ${label}`}
@@ -176,7 +176,7 @@ export default function ReserverPage() {
                     </button>
                     <span
                       className={`hidden text-xs font-medium sm:inline ${
-                        i <= step ? "text-gray-900" : "text-gray-400"
+                        i <= step ? "text-white" : "text-gray-400"
                       }`}
                     >
                       {label}
@@ -184,7 +184,7 @@ export default function ReserverPage() {
                     {i < STEPS.length - 1 && (
                       <div
                         className={`mx-1 h-px w-6 ${
-                          i < step ? "bg-[#C9A84C]" : "bg-gray-200"
+                          i < step ? "bg-[#C9A84C]" : "bg-white/10"
                         }`}
                       />
                     )}
@@ -202,15 +202,15 @@ export default function ReserverPage() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -30 }}
                 transition={{ duration: 0.35 }}
-                className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm md:p-8"
+                className="rounded-xl border border-white/10 bg-white/5 p-6 shadow-sm md:p-8"
               >
                 {/* Étape 1 : Sélection de l'événement */}
                 {step === 0 && (
                   <fieldset>
-                    <legend className="font-heading text-xl font-semibold text-gray-900">
+                    <legend className="font-heading text-xl font-semibold text-white">
                       Choisis ton événement
                     </legend>
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="mt-1 text-sm text-gray-400">
                       Sélectionne l'événement auquel tu souhaites participer.
                     </p>
                     <div className="mt-6 space-y-3">
@@ -220,7 +220,7 @@ export default function ReserverPage() {
                           className={`flex cursor-pointer items-start gap-4 rounded-lg border p-4 transition-all ${
                             selectedEventIndex === i
                               ? "border-[#C9A84C] bg-[#C9A84C]/5 shadow-sm"
-                              : "border-gray-200 hover:border-gray-300"
+                              : "border-white/10 hover:border-white/10"
                           }`}
                         >
                           <input
@@ -232,10 +232,10 @@ export default function ReserverPage() {
                             className="mt-0.5 h-4 w-4 accent-[#C9A84C]"
                           />
                           <div className="flex-1">
-                            <p className="font-semibold text-gray-900">
+                            <p className="font-semibold text-white">
                               {event.title}
                             </p>
-                            <p className="mt-0.5 text-sm text-gray-500">
+                            <p className="mt-0.5 text-sm text-gray-400">
                               {event.date} • {event.time} • {event.location}
                             </p>
                             <p className="mt-1 text-xs text-gray-400">
@@ -251,10 +251,10 @@ export default function ReserverPage() {
                 {/* Étape 2 : Nombre de places + type */}
                 {step === 1 && (
                   <fieldset>
-                    <legend className="font-heading text-xl font-semibold text-gray-900">
+                    <legend className="font-heading text-xl font-semibold text-white">
                       Nombre de places
                     </legend>
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="mt-1 text-sm text-gray-400">
                       Indique combien de places tu souhaites réserver.
                     </p>
 
@@ -263,7 +263,7 @@ export default function ReserverPage() {
                       <div>
                         <label
                           htmlFor="quantity"
-                          className="block text-sm font-medium text-gray-700"
+                          className="block text-sm font-medium text-gray-300"
                         >
                           Nombre de places
                         </label>
@@ -273,7 +273,7 @@ export default function ReserverPage() {
                             onClick={() =>
                               setQuantity((q) => Math.max(1, q - 1))
                             }
-                            className="flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 text-gray-600 transition-colors hover:bg-gray-100"
+                            className="flex h-10 w-10 items-center justify-center rounded-md border border-white/10 text-gray-400 transition-colors hover:bg-white/10"
                             aria-label="Réduire le nombre de places"
                           >
                             −
@@ -292,14 +292,14 @@ export default function ReserverPage() {
                                 ),
                               )
                             }
-                            className="h-10 w-20 rounded-md border border-gray-300 text-center text-sm font-semibold text-gray-900"
+                            className="h-10 w-20 rounded-md border border-white/10 text-center text-sm font-semibold text-white"
                           />
                           <button
                             type="button"
                             onClick={() =>
                               setQuantity((q) => Math.min(10, q + 1))
                             }
-                            className="flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 text-gray-600 transition-colors hover:bg-gray-100"
+                            className="flex h-10 w-10 items-center justify-center rounded-md border border-white/10 text-gray-400 transition-colors hover:bg-white/10"
                             aria-label="Augmenter le nombre de places"
                           >
                             +
@@ -309,7 +309,7 @@ export default function ReserverPage() {
 
                       {/* Type de billet */}
                       <div>
-                        <span className="block text-sm font-medium text-gray-700">
+                        <span className="block text-sm font-medium text-gray-300">
                           Type de billet
                         </span>
                         <div className="mt-2 grid grid-cols-2 gap-3">
@@ -320,7 +320,7 @@ export default function ReserverPage() {
                                 className={`flex cursor-pointer items-center justify-center rounded-lg border p-3 text-sm font-medium transition-all ${
                                   ticketType === type
                                     ? "border-[#C9A84C] bg-[#C9A84C]/5 text-[#C9A84C]"
-                                    : "border-gray-200 text-gray-600 hover:border-gray-300"
+                                    : "border-white/10 text-gray-400 hover:border-white/10"
                                 }`}
                               >
                                 <input
@@ -339,7 +339,7 @@ export default function ReserverPage() {
                       </div>
 
                       {/* Récapitulatif rapide */}
-                      <div className="rounded-lg bg-gray-50 p-3 text-sm text-gray-600">
+                      <div className="rounded-lg bg-white/5 p-3 text-sm text-gray-400">
                         <p>
                           <span className="font-medium">Événement :</span>{" "}
                           {selectedEvent.title}
@@ -356,17 +356,17 @@ export default function ReserverPage() {
                 {/* Étape 3 : Infos personnelles */}
                 {step === 2 && (
                   <fieldset>
-                    <legend className="font-heading text-xl font-semibold text-gray-900">
+                    <legend className="font-heading text-xl font-semibold text-white">
                       Tes informations
                     </legend>
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="mt-1 text-sm text-gray-400">
                       Remplis les champs ci-dessous pour finaliser ta
                       réservation.
                     </p>
 
                     {!user && (
                       <div className="mt-4 rounded-lg border border-[#C9A84C]/30 bg-[#C9A84C]/5 p-4 text-sm">
-                        <p className="text-gray-700">
+                        <p className="text-gray-300">
                           Tu n'es pas connecté.{" "}
                           <Link
                             href="/auth/login"
@@ -384,7 +384,7 @@ export default function ReserverPage() {
                       <div>
                         <label
                           htmlFor="nom"
-                          className="block text-sm font-medium text-gray-700"
+                          className="block text-sm font-medium text-gray-300"
                         >
                           Nom complet *
                         </label>
@@ -395,13 +395,13 @@ export default function ReserverPage() {
                           onChange={(e) => setNom(e.target.value)}
                           required
                           placeholder="Ton nom"
-                          className="mt-1.5 block w-full rounded-md border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 outline-none transition-colors focus:border-[#C9A84C] focus:ring-1 focus:ring-[#C9A84C]"
+                          className="mt-1.5 block w-full rounded-md border border-white/10 px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors focus:border-[#C9A84C] focus:ring-1 focus:ring-[#C9A84C]"
                         />
                       </div>
                       <div>
                         <label
                           htmlFor="email"
-                          className="block text-sm font-medium text-gray-700"
+                          className="block text-sm font-medium text-gray-300"
                         >
                           Email *
                         </label>
@@ -412,13 +412,13 @@ export default function ReserverPage() {
                           onChange={(e) => setEmail(e.target.value)}
                           required
                           placeholder="ton@email.com"
-                          className="mt-1.5 block w-full rounded-md border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 outline-none transition-colors focus:border-[#C9A84C] focus:ring-1 focus:ring-[#C9A84C]"
+                          className="mt-1.5 block w-full rounded-md border border-white/10 px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors focus:border-[#C9A84C] focus:ring-1 focus:ring-[#C9A84C]"
                         />
                       </div>
                       <div>
                         <label
                           htmlFor="telephone"
-                          className="block text-sm font-medium text-gray-700"
+                          className="block text-sm font-medium text-gray-300"
                         >
                           Téléphone
                         </label>
@@ -428,7 +428,7 @@ export default function ReserverPage() {
                           value={telephone}
                           onChange={(e) => setTelephone(e.target.value)}
                           placeholder="+212 6XX XXX XXX"
-                          className="mt-1.5 block w-full rounded-md border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 outline-none transition-colors focus:border-[#C9A84C] focus:ring-1 focus:ring-[#C9A84C]"
+                          className="mt-1.5 block w-full rounded-md border border-white/10 px-4 py-3 text-sm text-white placeholder-gray-500 outline-none transition-colors focus:border-[#C9A84C] focus:ring-1 focus:ring-[#C9A84C]"
                         />
                       </div>
                       <label className="flex items-start gap-3 cursor-pointer">
@@ -438,7 +438,7 @@ export default function ReserverPage() {
                           onChange={(e) => setAcceptContact(e.target.checked)}
                           className="mt-0.5 h-4 w-4 accent-[#C9A84C]"
                         />
-                        <span className="text-sm text-gray-500">
+                        <span className="text-sm text-gray-400">
                           J'accepte d'être contacté(e) par Worship Gift pour
                           les prochains événements.
                         </span>
@@ -450,66 +450,66 @@ export default function ReserverPage() {
                 {/* Étape 4 : Confirmation */}
                 {step === 3 && (
                   <div>
-                    <h2 className="font-heading text-xl font-semibold text-gray-900">
+                    <h2 className="font-heading text-xl font-semibold text-white">
                       Récapitulatif de ta réservation
                     </h2>
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="mt-1 text-sm text-gray-400">
                       Vérifie les informations avant de confirmer.
                     </p>
-                    <div className="mt-6 space-y-3 rounded-lg bg-gray-50 p-5 text-sm">
+                    <div className="mt-6 space-y-3 rounded-lg bg-white/5 p-5 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Événement</span>
-                        <span className="font-semibold text-gray-900">
+                        <span className="text-gray-400">Événement</span>
+                        <span className="font-semibold text-white">
                           {selectedEvent.title}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Date</span>
-                        <span className="text-gray-900">
+                        <span className="text-gray-400">Date</span>
+                        <span className="text-white">
                           {selectedEvent.date} à {selectedEvent.time}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Lieu</span>
-                        <span className="text-gray-900">
+                        <span className="text-gray-400">Lieu</span>
+                        <span className="text-white">
                           {selectedEvent.location}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Places</span>
-                        <span className="font-semibold text-gray-900">
+                        <span className="text-gray-400">Places</span>
+                        <span className="font-semibold text-white">
                           {quantity}
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Type de billet</span>
-                        <span className="text-gray-900">{ticketType}</span>
+                        <span className="text-gray-400">Type de billet</span>
+                        <span className="text-white">{ticketType}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Prix</span>
+                        <span className="text-gray-400">Prix</span>
                         <span className="font-semibold text-[#C9A84C]">
                           {selectedEvent.price}
                         </span>
                       </div>
-                      <hr className="border-gray-200" />
+                      <hr className="border-white/10" />
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Nom</span>
-                        <span className="text-gray-900">{nom}</span>
+                        <span className="text-gray-400">Nom</span>
+                        <span className="text-white">{nom}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Email</span>
-                        <span className="text-gray-900">{email}</span>
+                        <span className="text-gray-400">Email</span>
+                        <span className="text-white">{email}</span>
                       </div>
                       {telephone && (
                         <div className="flex justify-between">
-                          <span className="text-gray-500">Téléphone</span>
-                          <span className="text-gray-900">{telephone}</span>
+                          <span className="text-gray-400">Téléphone</span>
+                          <span className="text-white">{telephone}</span>
                         </div>
                       )}
                     </div>
 
                     {error && (
-                      <p className="mt-4 rounded-md bg-red-50 px-3 py-2 text-xs text-red-600">
+                      <p className="mt-4 rounded-md bg-red-500/10 px-3 py-2 text-xs text-red-400">
                         {error}
                       </p>
                     )}
@@ -523,7 +523,7 @@ export default function ReserverPage() {
                       <button
                         type="button"
                         onClick={handlePrev}
-                        className="inline-flex h-11 items-center rounded-md border border-gray-300 px-5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
+                        className="inline-flex h-11 items-center rounded-md border border-white/10 px-5 text-sm font-medium text-gray-300 transition-colors hover:bg-white/10"
                       >
                         ← Précédent
                       </button>
@@ -538,7 +538,7 @@ export default function ReserverPage() {
                       onClick={handleNext}
                       className={`inline-flex h-11 items-center justify-center rounded-md px-6 text-sm font-semibold transition-all ${
                         submitting
-                          ? "cursor-not-allowed bg-gray-400 text-white"
+                          ? "cursor-not-allowed bg-gray-700 text-white"
                           : "bg-[#C9A84C] text-black hover:bg-[#F0CB6A] hover:shadow-md hover:shadow-[#C9A84C]/30 active:scale-[0.97]"
                       }`}
                     >

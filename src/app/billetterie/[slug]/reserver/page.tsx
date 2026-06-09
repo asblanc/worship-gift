@@ -122,7 +122,7 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
             <Link href="/billetterie" className="text-[#C9A84C] hover:text-[#F0CB6A] text-sm flex items-center gap-1">
               ← Billetterie
             </Link>
-            <span className="text-gray-600">/</span>
+            <span className="text-gray-400">/</span>
             <span className="text-white text-sm">{event.title}</span>
           </div>
           <div className="mx-auto max-w-4xl mt-6 text-center">
@@ -245,7 +245,7 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
                   </div>
 
                   {isFree && (
-                    <p className="mt-3 text-xs text-gray-500 text-center">
+                    <p className="mt-3 text-xs text-gray-400 text-center">
                       Cet événement est gratuit. Utilise WhatsApp pour confirmer ta place.
                     </p>
                   )}

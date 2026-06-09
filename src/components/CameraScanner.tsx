@@ -88,7 +88,7 @@ export default function CameraScanner({
           className="mx-auto mt-3 w-full max-w-xs overflow-hidden rounded-lg"
         />
       )}
-      <p className="mt-2 text-center text-[11px] text-gray-500">
+      <p className="mt-2 text-center text-[11px] text-gray-400">
         Vise le QR code du billet
       </p>
     </div>

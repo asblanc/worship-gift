@@ -230,7 +230,7 @@ export default function MediasPage() {
                     <h3 className="font-heading text-base font-semibold text-white">
                       {video.title}
                     </h3>
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="mt-1 text-sm text-gray-400">
                       {video.description}
                     </p>
                   </div>
@@ -298,7 +298,7 @@ export default function MediasPage() {
                     <h3 className="font-heading text-base font-semibold text-white">
                       {video.title}
                     </h3>
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="mt-1 text-sm text-gray-400">
                       {video.description}
                     </p>
                   </div>
