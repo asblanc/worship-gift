@@ -12,7 +12,7 @@ export default function EventCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="bg-[#F3EFE6] px-6 py-16 md:py-20"
+      className="bg-[#0D0D0D] px-6 py-16 md:py-20"
     >
       <div className="mx-auto max-w-5xl">
         <div className="relative overflow-hidden rounded-xl border border-white/10 bg-white/5 shadow-md">

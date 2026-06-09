@@ -152,7 +152,7 @@ export default function BilletteriePage() {
         </section>
 
         {/* CTA bas de page */}
-        <section className="border-t border-white/10 bg-[#F3EFE6] px-6 py-16 md:py-20">
+        <section className="border-t border-white/10 bg-[#0D0D0D] px-6 py-16 md:py-20">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
