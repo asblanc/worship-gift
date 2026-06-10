@@ -54,35 +54,43 @@ export function buildJsonLd() {
 export const defaultMetadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Worship Gift | Mouvement Gospel",
+    default: "Worship Gift | Concerts & Billetterie Gospel au Maroc",
     template: "%s | Worship Gift",
   },
   description:
-    "Mouvement gospel dédié au gospel, à l'adoration et à l'unité à travers la musique. Concerts, événements et sessions gospel.",
+    "Worship Gift, mouvement gospel au Maroc. Vivez des concerts et sessions d'adoration uniques à Casablanca, Rabat et Marrakech. Réservez vos billets en ligne pour la musique gospel en direct.",
   keywords: [
-    "gospel",
-    "musique gospel",
-    "adoration",
     "Worship Gift",
+    "gospel Maroc",
     "concert gospel",
+    "concert gospel Casablanca",
+    "billetterie gospel",
+    "événement gospel Maroc",
+    "musique gospel",
     "musique chrétienne",
+    "adoration",
     "mouvement gospel",
+    "louange",
+    "concert chrétien Maroc",
   ],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
     locale: "fr_FR",
     siteName: "Worship Gift",
-    title: "Worship Gift | Mouvement Gospel",
+    title: "Worship Gift | Concerts & Billetterie Gospel au Maroc",
     description:
-      "Mouvement gospel dédié au gospel, à l'adoration et à l'unité à travers la musique.",
+      "Mouvement gospel au Maroc : concerts, événements et sessions d'adoration à Casablanca, Rabat et Marrakech. Réservez vos billets en ligne.",
     url: siteUrl,
     // L'image OG est fournie par app/opengraph-image.tsx (1200x630)
   },
   twitter: {
     card: "summary_large_image",
-    title: "Worship Gift | Mouvement Gospel",
+    title: "Worship Gift | Concerts & Billetterie Gospel au Maroc",
     description:
-      "Mouvement gospel dédié au gospel, à l'adoration et à l'unité à travers la musique.",
+      "Mouvement gospel au Maroc : concerts, événements et sessions d'adoration. Réservez vos billets en ligne.",
     // L'image Twitter est fournie par app/opengraph-image.tsx
   },
   robots: {
