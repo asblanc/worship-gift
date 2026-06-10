@@ -15,7 +15,8 @@ export function buildJsonLd() {
     "@type": "Organization",
     name: "Worship Gift",
     url: siteUrl,
-    logo: `${siteUrl}/img_worship-gift/logo-worship-gift.png`,
+    // Utiliser la version "tile" (carrée) pour les rich results / structured data
+    logo: `${siteUrl}/img_worship-gift/logo-tile.png`,
     description:
       "Mouvement gospel dédié au gospel, à l'adoration et à l'unité à travers la musique.",
   };
