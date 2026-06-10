@@ -1,13 +1,23 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "À propos",
+  title: "À propos — Le mouvement gospel Worship Gift au Maroc",
   description:
-    "Découvrez la vision, la mission et l'histoire du mouvement gospel Worship Gift. Gospel, unité et excellence au service de l'adoration.",
+    "Découvrez Worship Gift : vision, mission et histoire du mouvement gospel au Maroc. Unité, adoration et excellence au service de la musique gospel à Casablanca, Rabat et Marrakech.",
+  keywords: [
+    "Worship Gift",
+    "mouvement gospel Maroc",
+    "à propos Worship Gift",
+    "gospel Maroc",
+    "adoration",
+    "vision gospel",
+  ],
+  alternates: { canonical: "/a-propos" },
   openGraph: {
     title: "À propos | Worship Gift",
     description:
-      "Découvrez la vision, la mission et l'histoire du mouvement gospel Worship Gift.",
+      "Vision, mission et histoire du mouvement gospel Worship Gift au Maroc.",
+    url: "/a-propos",
   },
 };
 
