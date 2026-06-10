@@ -20,7 +20,15 @@ import { defaultMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  // Favicons fournis par app/icon.png + app/apple-icon.png (convention Next)
+  // Définit explicitement des favicons optimisés pour affichage circulaire
+  icons: {
+    icon: [
+      { url: '/img_worship-gift/logo-tile.png', sizes: '192x192', type: 'image/png' },
+      { url: '/img_worship-gift/logo-tile.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: '/img_worship-gift/logo-tile.png',
+    shortcut: '/img_worship-gift/logo-tile.png',
+  },
 };
 
 export default function RootLayout({
