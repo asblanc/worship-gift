@@ -2,6 +2,18 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function updateSession(request: NextRequest) {
+  // Canonicalisation : rediriger l'ancien domaine Vercel vers le domaine
+  // principal (évite le contenu dupliqué dans Google). On cible UNIQUEMENT
+  // le host de prod vercel.app — les déploiements de preview ne sont pas touchés.
+  const host = request.headers.get("host") || "";
+  if (host === "worship-gift.vercel.app") {
+    const url = request.nextUrl.clone();
+    url.protocol = "https";
+    url.host = "www.worship-gift.com";
+    url.port = "";
+    return NextResponse.redirect(url, 308);
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
