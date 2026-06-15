@@ -16,18 +16,21 @@ const cormorant = Cormorant_Garamond({
 });
 
 import ClientLayout from "@/components/ClientLayout";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { defaultMetadata } from "@/lib/seo";
+
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  // Définit explicitement des favicons optimisés pour affichage circulaire
+  // Favicon rond (disque noir + logo or) — affichage circulaire propre
   icons: {
     icon: [
-      { url: '/img_worship-gift/logo-tile.png', sizes: '192x192', type: 'image/png' },
-      { url: '/img_worship-gift/logo-tile.png', sizes: '512x512', type: 'image/png' },
+      { url: '/img_worship-gift/logo-disc.png', sizes: '192x192', type: 'image/png' },
+      { url: '/img_worship-gift/logo-disc.png', sizes: '512x512', type: 'image/png' },
     ],
-    apple: '/img_worship-gift/logo-tile.png',
-    shortcut: '/img_worship-gift/logo-tile.png',
+    apple: '/img_worship-gift/logo-disc.png',
+    shortcut: '/img_worship-gift/logo-disc.png',
   },
 };
 
@@ -45,6 +48,8 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#000000] overflow-x-hidden">
         <ClientLayout>{children}</ClientLayout>
       </body>
+      {/* Google Analytics — actif uniquement si NEXT_PUBLIC_GA_ID est défini */}
+      {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
     </html>
   );
 }
