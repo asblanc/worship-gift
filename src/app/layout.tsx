@@ -19,7 +19,7 @@ import ClientLayout from "@/components/ClientLayout";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { defaultMetadata } from "@/lib/seo";
 
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-4NL5SZDDFY";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
