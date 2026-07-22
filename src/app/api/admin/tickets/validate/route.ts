@@ -13,10 +13,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isRequestAdmin } from "@/lib/supabase/require-admin";
-import { rateLimit } from "@/lib/rate-limit";
+import { rateLimitAsync } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
-  const limited = rateLimit(request, "ticket-validate", 60, 60_000);
+  const limited = await rateLimitAsync(request, "ticket-validate", 60, 60_000);
   if (limited) return limited;
 
   if (!(await isRequestAdmin())) {

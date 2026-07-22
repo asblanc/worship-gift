@@ -28,14 +28,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { upcomingEvents } from "@/lib/events-config";
 import { createOrder } from "@/lib/orders-service.server";
-import { rateLimit } from "@/lib/rate-limit";
+import { rateLimitAsync } from "@/lib/rate-limit";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request: NextRequest) {
   try {
     // Max 10 créations de commande / minute / IP
-    const limited = rateLimit(request, "orders", 10, 60_000);
+    const limited = await rateLimitAsync(request, "orders", 10, 60_000);
     if (limited) return limited;
 
     const body = await request.json();

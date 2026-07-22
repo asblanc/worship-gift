@@ -36,6 +36,13 @@ const securityHeaders = [
     key: "Permissions-Policy",
     value: "camera=(), microphone=(), geolocation=(), browsing-topics=()",
   },
+  // HSTS : force HTTPS (2 ans, sous-domaines, éligible preload). Le site
+  // est servi exclusivement en HTTPS par Vercel → aucun risque de lock-out.
+  {
+    key: "Strict-Transport-Security",
+    value: "max-age=63072000; includeSubDomains; preload",
+  },
+  { key: "X-DNS-Prefetch-Control", value: "on" },
 ];
 
 const nextConfig: NextConfig = {

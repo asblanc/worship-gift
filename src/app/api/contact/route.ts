@@ -6,13 +6,13 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { sendContactEmail } from "@/lib/email";
-import { rateLimit } from "@/lib/rate-limit";
+import { rateLimitAsync } from "@/lib/rate-limit";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request: NextRequest) {
   // Anti-spam : 5 messages / minute / IP
-  const limited = rateLimit(request, "contact", 5, 60_000);
+  const limited = await rateLimitAsync(request, "contact", 5, 60_000);
   if (limited) return limited;
 
   try {

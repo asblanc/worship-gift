@@ -18,12 +18,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { CmiProvider } from "@/lib/payment/cmi-provider";
 import { getOrderForPayment } from "@/lib/orders-service.server";
-import { rateLimit } from "@/lib/rate-limit";
+import { rateLimitAsync } from "@/lib/rate-limit";
 import type { PaymentInitRequest } from "@/lib/payment/types";
 
 export async function POST(request: NextRequest) {
   try {
-    const limited = rateLimit(request, "cmi-init", 15, 60_000);
+    const limited = await rateLimitAsync(request, "cmi-init", 15, 60_000);
     if (limited) return limited;
 
     // Accepte JSON (fetch) ou form-urlencoded (POST plein-page depuis
