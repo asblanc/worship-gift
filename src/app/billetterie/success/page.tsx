@@ -91,7 +91,7 @@ export default function SuccessPage() {
                 </svg>
               </motion.div>
 
-              <h1 className="font-heading text-3xl font-bold text-white md:text-4xl">
+              <h1 className="t-h2 text-white">
                 Paiement confirme !
               </h1>
               <p className="mt-3 text-gray-300">

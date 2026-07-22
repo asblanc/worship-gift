@@ -103,7 +103,7 @@ export default function RegisterPage() {
                 Worship Gift
               </span>
             </Link>
-            <h1 className="mt-6 font-heading text-3xl font-bold text-white">
+            <h1 className="mt-6 t-h2 text-white">
               Créer un compte
             </h1>
             <p className="mt-2 text-sm text-gray-300">

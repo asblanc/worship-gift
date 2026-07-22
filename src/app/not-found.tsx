@@ -7,7 +7,7 @@ export default function NotFound() {
       <Navbar />
       <main className="flex min-h-screen flex-col items-center justify-center bg-[#0D0D0D] px-6 pt-20 text-center">
         <p className="font-heading text-7xl font-bold text-[#C9A84C] md:text-8xl">404</p>
-        <h1 className="mt-4 font-heading text-2xl font-bold text-white md:text-3xl">
+        <h1 className="mt-4 t-h2 text-white">
           Page introuvable
         </h1>
         <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-gray-300">

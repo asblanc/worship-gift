@@ -143,7 +143,7 @@ export default function ReserverPage() {
           <div className="mx-auto max-w-2xl">
             {/* En-tête */}
             <div className="mb-10 text-center">
-              <h1 className="font-heading text-3xl font-bold text-white md:text-4xl">
+              <h1 className="t-h2 text-white">
                 Réserve ta place
               </h1>
               <p className="mt-3 text-sm text-gray-300">
@@ -207,7 +207,7 @@ export default function ReserverPage() {
                 {/* Étape 1 : Sélection de l'événement */}
                 {step === 0 && (
                   <fieldset>
-                    <legend className="font-heading text-xl font-semibold text-white">
+                    <legend className="t-h3 text-white">
                       Choisis ton événement
                     </legend>
                     <p className="mt-1 text-sm text-gray-300">
@@ -251,7 +251,7 @@ export default function ReserverPage() {
                 {/* Étape 2 : Nombre de places + type */}
                 {step === 1 && (
                   <fieldset>
-                    <legend className="font-heading text-xl font-semibold text-white">
+                    <legend className="t-h3 text-white">
                       Nombre de places
                     </legend>
                     <p className="mt-1 text-sm text-gray-300">
@@ -356,7 +356,7 @@ export default function ReserverPage() {
                 {/* Étape 3 : Infos personnelles */}
                 {step === 2 && (
                   <fieldset>
-                    <legend className="font-heading text-xl font-semibold text-white">
+                    <legend className="t-h3 text-white">
                       Tes informations
                     </legend>
                     <p className="mt-1 text-sm text-gray-300">
@@ -450,7 +450,7 @@ export default function ReserverPage() {
                 {/* Étape 4 : Confirmation */}
                 {step === 3 && (
                   <div>
-                    <h2 className="font-heading text-xl font-semibold text-white">
+                    <h2 className="t-h3 text-white">
                       Récapitulatif de ta réservation
                     </h2>
                     <p className="mt-1 text-sm text-gray-300">

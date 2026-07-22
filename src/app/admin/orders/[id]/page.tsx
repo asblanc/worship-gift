@@ -154,7 +154,7 @@ export default function AdminOrderDetailPage() {
       <div className="rounded-xl border border-white/[0.06] bg-white/[0.01] p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-2">
-            <h1 className="font-heading text-2xl font-bold text-white">{order.description || "Commande"}</h1>
+            <h1 className="t-h3 text-white">{order.description || "Commande"}</h1>
             <p className="font-mono text-xs text-gray-400">{order.id}</p>
             <p className="text-xs text-gray-400">
               {new Date(order.created_at).toLocaleDateString("fr-FR", {
@@ -240,7 +240,7 @@ export default function AdminOrderDetailPage() {
               <path d="M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z" />
             </svg>
           </div>
-          <h2 className="font-heading text-lg font-semibold text-white">
+          <h2 className="t-card-title text-white">
             Billets ({tickets.length})
           </h2>
         </div>

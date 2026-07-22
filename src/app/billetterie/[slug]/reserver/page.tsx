@@ -126,7 +126,7 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
             <span className="text-white text-sm">{event.title}</span>
           </div>
           <div className="mx-auto max-w-4xl mt-6 text-center">
-            <h1 className="font-display text-4xl font-bold text-[#C9A84C] md:text-5xl">
+            <h1 className="t-hero text-[#C9A84C]">
               Finaliser ma réservation
             </h1>
           </div>
@@ -165,7 +165,7 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
 
               {/* ── Formulaire ──────────────────── */}
               <div className="rounded-xl border border-white/10 bg-white/[0.08] p-6 md:p-8 space-y-6">
-                <h2 className="font-heading text-2xl font-semibold text-white">Vos informations</h2>
+                <h2 className="t-h3 text-white">Vos informations</h2>
 
                 {/* Nom */}
                 <div className="space-y-1.5">

@@ -84,7 +84,7 @@ export default function DashboardPage() {
               {profile.nom.charAt(0).toUpperCase()}
             </div>
             <div className="min-w-0 flex-1">
-              <h1 className="truncate font-heading text-lg font-bold text-white sm:text-2xl">
+              <h1 className="truncate t-h3 text-white">
                 Bonjour, {profile.nom}
               </h1>
               <p className="truncate text-xs text-gray-300 sm:text-sm">
@@ -96,7 +96,7 @@ export default function DashboardPage() {
 
         {/* Mes billets */}
         <section className="rounded-lg border border-white/10 bg-white/[0.03] p-5 sm:p-8">
-          <h2 className="font-heading text-base font-semibold text-white sm:text-xl">
+          <h2 className="t-card-title text-white">
             Mes billets
           </h2>
           <p className="mt-3 text-xs leading-relaxed text-gray-300 sm:text-sm">

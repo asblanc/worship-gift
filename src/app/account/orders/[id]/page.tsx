@@ -171,7 +171,7 @@ export default function OrderDetailPage() {
       <div className="rounded-lg border border-white/10 bg-white/[0.08] p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h1 className="font-heading text-2xl font-bold text-white">
+            <h1 className="t-h3 text-white">
               {order.description}
             </h1>
             <p className="mt-1 font-mono text-sm text-gray-300">{order.id}</p>
@@ -218,7 +218,7 @@ export default function OrderDetailPage() {
       {/* Billets */}
       <div className="rounded-lg border border-white/10 bg-white/[0.08] p-6">
         <div className="flex items-center justify-between gap-3">
-          <h2 className="font-heading text-lg font-semibold text-white">
+          <h2 className="t-card-title text-white">
             Billets ({tickets.length})
           </h2>
           {tickets.length > 0 && (

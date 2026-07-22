@@ -91,7 +91,7 @@ export default function AdminEventsPage() {
   return (
     <motion.div variants={stagger} initial="hidden" animate="visible" className="space-y-6">
       <motion.div variants={fadeUp}>
-        <h1 className="font-heading text-3xl font-bold text-white">Événements</h1>
+        <h1 className="t-h2 text-white">Événements</h1>
         <p className="mt-1 text-sm text-gray-400">
           Statistiques et gestion des événements.
         </p>
@@ -111,7 +111,7 @@ export default function AdminEventsPage() {
             >
               <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
                 <div className="space-y-1.5">
-                  <h2 className="font-heading text-xl font-semibold text-white">{evt.title}</h2>
+                  <h2 className="t-h3 text-white">{evt.title}</h2>
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
                     <span className="flex items-center gap-1.5 text-xs text-gray-400">
                       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
