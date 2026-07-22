@@ -14,6 +14,29 @@ const staggerContainer = {
   visible: { transition: { staggerChildren: 0.15 } },
 };
 
+/**
+ * Label « eyebrow » — élément signature du thème ePentatonic :
+ * petit titre en majuscules, très espacé, précédé d'un trait doré.
+ */
+function Eyebrow({
+  children,
+  centered = false,
+}: {
+  children: React.ReactNode;
+  centered?: boolean;
+}) {
+  return (
+    <span
+      className={`mb-4 inline-flex items-center gap-3 text-[13px] font-semibold uppercase tracking-[0.24em] text-[#C9A84C] ${
+        centered ? "justify-center" : ""
+      }`}
+    >
+      <span className="h-px w-8 bg-[#C9A84C]/60" aria-hidden />
+      {children}
+    </span>
+  );
+}
+
 const timeline = [
   {
     year: "2020",
@@ -87,9 +110,10 @@ export default function AProposPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-1 pt-20">
+      {/* font-poppins : typographie du thème ePentatonic sur toute la page */}
+      <main className="flex-1 pt-20 font-poppins bg-black">
         {/* Héro — fond noir avec image d'illustration */}
-        <section className="relative border-b border-white/10 bg-black px-6 py-24 md:py-32 overflow-hidden">
+        <section className="relative border-b border-[#282828] bg-black px-6 py-28 md:py-36 overflow-hidden">
           <Image
             src="/img_worship-gift/img_apropos.jpg"
             alt="À propos Worship Gift"
@@ -97,17 +121,18 @@ export default function AProposPage() {
             className="object-cover opacity-90 brightness-110 saturate-105"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/55 to-black/90" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/60 to-black" />
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="relative z-10 mx-auto max-w-4xl text-center"
+            className="relative z-10 mx-auto flex max-w-4xl flex-col items-center text-center"
           >
-            <h1 className="font-heading text-5xl font-bold text-[#C9A84C] md:text-6xl [text-shadow:0_2px_20px_rgba(0,0,0,0.95)]">
+            <Eyebrow>Qui sommes-nous</Eyebrow>
+            <h1 className="font-display text-[clamp(2.5rem,6vw,3.5rem)] font-bold leading-[1.15] tracking-tight text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.95)]">
               À propos
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-[1.75] text-[#C7C7C7] [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
               Worship Gift est un mouvement gospel né d'une passion commune
               pour le gospel et l'adoration. Notre mission est de créer
               des espaces où la musique devient une rencontre avec Dieu.
@@ -115,8 +140,8 @@ export default function AProposPage() {
           </motion.div>
         </section>
 
-        {/* Vision & Mission — fond blanc cassé */}
-        <section className="bg-[#0D0D0D] px-6 py-16 md:py-20">
+        {/* Vision & Mission */}
+        <section className="bg-[#0A0A0A] px-6 py-20 md:py-28">
           <div className="mx-auto max-w-5xl">
             <div className="grid gap-12 md:grid-cols-2 md:items-center">
               <motion.div
@@ -124,7 +149,7 @@ export default function AProposPage() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl border border-[#C9A84C]/20 bg-gradient-to-br from-[#0A0A0A] to-[#1A1A1A] shadow-lg shadow-[#C9A84C]/5"
+                className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl border border-[#282828] bg-gradient-to-br from-[#0A0A0A] to-[#161616] shadow-[0_12px_50px_rgba(0,0,0,0.4)]"
               >
                 <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle, #C9A84C 1px, transparent 1px)", backgroundSize: "14px 14px" }} />
                 <Image
@@ -150,10 +175,10 @@ export default function AProposPage() {
                       <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                     </svg>
                   </span>
-                  <h2 className="mt-4 font-heading text-3xl font-semibold text-white">
+                  <h2 className="mt-4 font-poppins text-[clamp(1.6rem,2.4vw,2.25rem)] font-bold leading-tight text-white">
                     Notre vision
                   </h2>
-                  <p className="mt-3 leading-relaxed text-gray-300">
+                  <p className="mt-3 leading-[1.75] text-[#B0B0B0]">
                     Voir une génération transformée par la puissance du
                     gospel, où chaque voix trouve sa place dans l'unité du
                     corps de Christ. Nous croyons que le gospel est un langage
@@ -169,10 +194,10 @@ export default function AProposPage() {
                       <path d="M12 8h.01" />
                     </svg>
                   </span>
-                  <h2 className="mt-4 font-heading text-3xl font-semibold text-white">
+                  <h2 className="mt-4 font-poppins text-[clamp(1.6rem,2.4vw,2.25rem)] font-bold leading-tight text-white">
                     Notre mission
                   </h2>
-                  <p className="mt-3 leading-relaxed text-gray-300">
+                  <p className="mt-3 leading-[1.75] text-[#B0B0B0]">
                     Rassembler, former et équiper des adorateurs passionnés
                     pour impacter notre génération par la musique gospel. À
                     travers des événements, des formations et des rencontres,
@@ -184,85 +209,99 @@ export default function AProposPage() {
           </div>
         </section>
 
-        {/* Timeline — fond blanc cassé alterné */}
-        <section className="bg-[#0D0D0D] px-6 py-16 md:py-20">
-          <div className="mx-auto max-w-3xl">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.5 }}
-              className="mb-14 text-center"
-            >
-              <h2 className="font-heading text-3xl font-bold text-white md:text-4xl">
-                Notre histoire
-              </h2>
-              <p className="mx-auto mt-4 max-w-xl text-gray-300">
-                De la vision à la réalité, voici les étapes qui ont marqué
-                le chemin de Worship Gift.
-              </p>
-            </motion.div>
-
-            <div className="relative">
-              <div className="absolute left-5 top-0 h-full w-px bg-[#C9A84C]/40 md:left-1/2 md:-translate-x-px" />
-
-              <motion.div
-                variants={staggerContainer}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-80px" }}
-                className="space-y-12"
-              >
-                {timeline.map((item, i) => (
-                  <motion.div
-                    key={item.year}
-                    variants={fadeUp}
-                    className={`relative flex flex-col gap-3 md:flex-row md:items-start ${
-                      i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                    }`}
-                  >
-                    <div className="absolute left-5 top-1 z-10 flex h-2.5 w-2.5 -translate-x-1/2 items-center justify-center md:left-1/2">
-                      <span className="h-full w-full rounded-full bg-[#C9A84C]" />
-                    </div>
-
-                    <div className={`hidden md:block md:w-1/2 ${i % 2 === 0 ? "md:pr-12 md:text-right" : "md:pl-12"}`}>
-                      <span className="font-heading text-4xl font-bold text-[#C9A84C]/50">
-                        {item.year}
-                      </span>
-                    </div>
-
-                    <div className="ml-12 md:ml-0 md:w-1/2">
-                      <span className="font-heading text-2xl font-bold text-[#C9A84C] md:hidden">
-                        {item.year}
-                      </span>
-                      <h3 className="mt-1 font-heading text-lg font-semibold text-white">
-                        {item.title}
-                      </h3>
-                      <p className="mt-2 text-sm leading-relaxed text-gray-300">
-                        {item.desc}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* Valeurs — fond blanc cassé */}
-        <section className="bg-[#0D0D0D] px-6 py-16 md:py-20">
+        {/* Notre histoire — mise en page éditoriale « chapitres » */}
+        <section className="bg-[#101010] px-6 py-20 md:py-28">
           <div className="mx-auto max-w-4xl">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.5 }}
-              className="mb-12 text-center"
+              className="mb-16 flex flex-col"
             >
-              <h2 className="font-heading text-3xl font-bold text-[#C9A84C] md:text-4xl">
+              <Eyebrow>Depuis 2020</Eyebrow>
+              <h2 className="font-poppins text-[clamp(2rem,3vw,2.75rem)] font-bold leading-tight text-white">
+                Notre histoire
+              </h2>
+              <p className="mt-4 max-w-xl leading-[1.75] text-[#B0B0B0]">
+                De la vision à la réalité, voici les chapitres qui ont marqué
+                le chemin de Worship Gift.
+              </p>
+            </motion.div>
+
+            {/* Rail vertical à gauche + chapitres */}
+            <div className="relative">
+              <div className="absolute bottom-2 left-[11px] top-2 w-px bg-gradient-to-b from-[#C9A84C] via-[#C9A84C]/40 to-transparent md:left-[15px]" />
+
+              <motion.ol
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-80px" }}
+                className="space-y-6"
+              >
+                {timeline.map((item, i) => (
+                  <motion.li
+                    key={item.year}
+                    variants={fadeUp}
+                    className="relative pl-12 md:pl-20"
+                  >
+                    {/* Nœud sur le rail */}
+                    <span className="absolute left-0 top-6 flex h-6 w-6 items-center justify-center md:h-8 md:w-8">
+                      <span className="absolute inline-flex h-full w-full rounded-full bg-[#C9A84C]/20" />
+                      <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#C9A84C] ring-4 ring-[#101010]" />
+                    </span>
+
+                    {/* Carte chapitre */}
+                    <div className="group relative overflow-hidden rounded-xl border border-[#282828] bg-[#121212] p-6 transition-all duration-300 hover:border-[#C9A84C]/50 hover:shadow-[0_12px_50px_rgba(0,0,0,0.5)] md:p-8">
+                      {/* Millésime géant en filigrane */}
+                      <span
+                        aria-hidden
+                        className="pointer-events-none absolute -right-2 -top-6 select-none font-poppins text-[6rem] font-black leading-none text-white/[0.04] transition-colors duration-300 group-hover:text-[#C9A84C]/[0.07] md:text-[8rem]"
+                      >
+                        {item.year}
+                      </span>
+
+                      <div className="relative">
+                        <div className="flex items-center gap-3">
+                          <span className="text-[13px] font-semibold uppercase tracking-[0.2em] text-[#C9A84C]">
+                            Chapitre {String(i + 1).padStart(2, "0")}
+                          </span>
+                          <span className="h-px flex-1 bg-[#282828]" />
+                          <span className="font-poppins text-sm font-bold text-[#C9A84C]">
+                            {item.year}
+                          </span>
+                        </div>
+                        <h3 className="mt-4 font-poppins text-xl font-bold leading-snug text-white md:text-2xl">
+                          {item.title}
+                        </h3>
+                        <p className="mt-3 max-w-2xl leading-[1.75] text-[#B0B0B0]">
+                          {item.desc}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.li>
+                ))}
+              </motion.ol>
+            </div>
+          </div>
+        </section>
+
+        {/* Valeurs */}
+        <section className="bg-[#0A0A0A] px-6 py-20 md:py-28">
+          <div className="mx-auto max-w-4xl">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5 }}
+              className="mb-14 flex flex-col items-center text-center"
+            >
+              <Eyebrow centered>Ce qui nous porte</Eyebrow>
+              <h2 className="font-poppins text-[clamp(2rem,3vw,2.75rem)] font-bold leading-tight text-white">
                 Nos valeurs
               </h2>
-              <p className="mx-auto mt-4 max-w-xl text-gray-300">
+              <p className="mx-auto mt-4 max-w-xl leading-[1.75] text-[#B0B0B0]">
                 Trois piliers qui guident chaque note, chaque rencontre,
                 chaque action du mouvement.
               </p>
@@ -279,15 +318,15 @@ export default function AProposPage() {
                 <motion.div
                   key={v.title}
                   variants={fadeUp}
-                  className="group rounded-lg border border-white/10 bg-white/[0.08] p-6 shadow-sm transition-all hover:border-[#C9A84C]/40 hover:shadow-md active:scale-[0.98]"
+                  className="group rounded-xl border border-[#282828] bg-[#121212] p-7 transition-all duration-300 hover:border-[#C9A84C]/50 hover:shadow-[0_12px_50px_rgba(0,0,0,0.4)] active:scale-[0.98]"
                 >
                   <span className="flex h-12 w-12 items-center justify-center rounded-lg border border-[#C9A84C]/30 bg-[#C9A84C]/10 text-[#C9A84C] transition-colors group-hover:bg-[#C9A84C]/20">
                     {v.icon}
                   </span>
-                  <h3 className="mt-5 font-heading text-xl font-semibold text-white">
+                  <h3 className="mt-5 font-poppins text-xl font-bold text-white">
                     {v.title}
                   </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-gray-300">
+                  <p className="mt-3 text-sm leading-[1.75] text-[#9A9A9A]">
                     {v.desc}
                   </p>
                 </motion.div>
@@ -296,20 +335,21 @@ export default function AProposPage() {
           </div>
         </section>
 
-        {/* Équipe — fond blanc cassé alterné */}
-        <section className="bg-[#0D0D0D] px-6 py-16 md:py-20">
+        {/* Équipe */}
+        <section className="bg-[#101010] px-6 py-20 md:py-28">
           <div className="mx-auto max-w-4xl">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.5 }}
-              className="mb-12 text-center"
+              className="mb-14 flex flex-col items-center text-center"
             >
-              <h2 className="font-heading text-3xl font-bold text-white md:text-4xl">
+              <Eyebrow centered>Les visages</Eyebrow>
+              <h2 className="font-poppins text-[clamp(2rem,3vw,2.75rem)] font-bold leading-tight text-white">
                 L'équipe
               </h2>
-              <p className="mx-auto mt-4 max-w-xl text-gray-300">
+              <p className="mx-auto mt-4 max-w-xl leading-[1.75] text-[#B0B0B0]">
                 Des cœurs passionnés, unis par la même vision : porter le
                 gospel au plus haut niveau.
               </p>
@@ -326,7 +366,7 @@ export default function AProposPage() {
                 <motion.div
                   key={membre.nom + membre.role}
                   variants={fadeUp}
-                  className="flex flex-col items-center rounded-lg border border-white/10 bg-white/[0.08] p-8 text-center shadow-sm"
+                  className="group flex flex-col items-center rounded-xl border border-[#282828] bg-[#121212] p-8 text-center transition-all duration-300 hover:border-[#C9A84C]/50 hover:shadow-[0_12px_50px_rgba(0,0,0,0.4)]"
                 >
                   {"photo" in membre && membre.photo ? (
                     <div className="relative h-20 w-20 overflow-hidden rounded-full border border-[#C9A84C]/30 ring-1 ring-[#C9A84C]/20">
@@ -343,29 +383,30 @@ export default function AProposPage() {
                       ?
                     </div>
                   )}
-                  <h3 className="mt-5 font-heading text-lg font-semibold text-white">
+                  <h3 className="mt-5 font-poppins text-lg font-bold text-white">
                     {membre.nom}
                   </h3>
-                  <p className="mt-1 text-sm text-gray-300">{membre.role}</p>
+                  <p className="mt-1 text-sm text-[#9A9A9A]">{membre.role}</p>
                 </motion.div>
               ))}
             </motion.div>
           </div>
         </section>
 
-        {/* CTA bas de page — fond blanc cassé */}
-        <section className="border-t border-white/10 bg-[#0D0D0D] px-6 py-16 md:py-24">
+        {/* CTA bas de page */}
+        <section className="border-t border-[#282828] bg-[#0A0A0A] px-6 py-20 md:py-28">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5 }}
-            className="mx-auto max-w-2xl text-center"
+            className="mx-auto flex max-w-2xl flex-col items-center text-center"
           >
-            <h2 className="font-heading text-3xl font-semibold text-white">
+            <Eyebrow centered>Rejoins l'aventure</Eyebrow>
+            <h2 className="font-poppins text-[clamp(1.75rem,2.6vw,2.5rem)] font-bold leading-tight text-white">
               Tu veux faire partie du mouvement ?
             </h2>
-            <p className="mt-4 text-gray-300">
+            <p className="mt-4 leading-[1.75] text-[#B0B0B0]">
               Rejoins-nous lors de nos prochains événements, abonne-toi à
               notre chaîne YouTube et suis-nous sur les réseaux pour vivre
               le gospel avec nous.

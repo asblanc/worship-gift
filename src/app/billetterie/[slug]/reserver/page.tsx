@@ -126,7 +126,7 @@ function ReservationForm({ event }: { event: (typeof upcomingEvents)[0] }) {
             <span className="text-white text-sm">{event.title}</span>
           </div>
           <div className="mx-auto max-w-4xl mt-6 text-center">
-            <h1 className="font-heading text-4xl font-bold text-[#C9A84C] md:text-5xl">
+            <h1 className="font-display text-4xl font-bold text-[#C9A84C] md:text-5xl">
               Finaliser ma réservation
             </h1>
           </div>

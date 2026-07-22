@@ -77,7 +77,7 @@ export default function BilletteriePage() {
             transition={{ duration: 0.6 }}
             className="relative z-10 mx-auto max-w-4xl text-center"
           >
-            <h1 className="font-heading text-5xl font-bold text-[#C9A84C] md:text-6xl [text-shadow:0_2px_20px_rgba(0,0,0,0.95)]">
+            <h1 className="font-display text-5xl font-bold text-[#C9A84C] md:text-6xl [text-shadow:0_2px_20px_rgba(0,0,0,0.95)]">
               Billetterie
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">

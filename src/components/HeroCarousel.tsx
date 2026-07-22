@@ -169,7 +169,7 @@ export default function HeroCarousel() {
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="font-heading text-4xl font-bold tracking-wide text-[#C9A84C] md:text-6xl lg:text-7xl"
+          className="font-display text-4xl font-bold tracking-wide text-[#C9A84C] md:text-6xl lg:text-7xl"
         >
           Worship Gift
         </motion.h1>

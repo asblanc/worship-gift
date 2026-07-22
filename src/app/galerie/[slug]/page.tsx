@@ -89,7 +89,7 @@ export default function AlbumPage() {
             <p className="text-xs font-semibold uppercase tracking-widest text-[#C9A84C]">
               {album.label}
             </p>
-            <h1 className="mt-2 font-heading text-4xl font-bold text-white md:text-5xl">
+            <h1 className="mt-2 font-display text-4xl font-bold text-white md:text-5xl">
               {album.title}
             </h1>
             <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-gray-300">
