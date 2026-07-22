@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
+import Eyebrow from "@/components/Eyebrow";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -13,29 +14,6 @@ const staggerContainer = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.15 } },
 };
-
-/**
- * Label « eyebrow » — élément signature du thème ePentatonic :
- * petit titre en majuscules, très espacé, précédé d'un trait doré.
- */
-function Eyebrow({
-  children,
-  centered = false,
-}: {
-  children: React.ReactNode;
-  centered?: boolean;
-}) {
-  return (
-    <span
-      className={`mb-4 inline-flex items-center gap-3 text-[13px] font-semibold uppercase tracking-[0.24em] text-[#C9A84C] ${
-        centered ? "justify-center" : ""
-      }`}
-    >
-      <span className="h-px w-8 bg-[#C9A84C]/60" aria-hidden />
-      {children}
-    </span>
-  );
-}
 
 const timeline = [
   {
@@ -129,10 +107,10 @@ export default function AProposPage() {
             className="relative z-10 mx-auto flex max-w-4xl flex-col items-center text-center"
           >
             <Eyebrow>Qui sommes-nous</Eyebrow>
-            <h1 className="font-display text-[clamp(2.5rem,6vw,3.5rem)] font-bold leading-[1.15] tracking-tight text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.95)]">
+            <h1 className="t-hero text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.95)]">
               À propos
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-[1.75] text-[#C7C7C7] [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
+            <p className="mx-auto mt-6 max-w-2xl t-lead text-[#C7C7C7] [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
               Worship Gift est un mouvement gospel né d'une passion commune
               pour le gospel et l'adoration. Notre mission est de créer
               des espaces où la musique devient une rencontre avec Dieu.
@@ -175,10 +153,10 @@ export default function AProposPage() {
                       <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                     </svg>
                   </span>
-                  <h2 className="mt-4 font-poppins text-[clamp(1.6rem,2.4vw,2.25rem)] font-bold leading-tight text-white">
+                  <h2 className="mt-4 t-h3 text-white">
                     Notre vision
                   </h2>
-                  <p className="mt-3 leading-[1.75] text-[#B0B0B0]">
+                  <p className="mt-3 t-body text-[#B0B0B0]">
                     Voir une génération transformée par la puissance du
                     gospel, où chaque voix trouve sa place dans l'unité du
                     corps de Christ. Nous croyons que le gospel est un langage
@@ -194,10 +172,10 @@ export default function AProposPage() {
                       <path d="M12 8h.01" />
                     </svg>
                   </span>
-                  <h2 className="mt-4 font-poppins text-[clamp(1.6rem,2.4vw,2.25rem)] font-bold leading-tight text-white">
+                  <h2 className="mt-4 t-h3 text-white">
                     Notre mission
                   </h2>
-                  <p className="mt-3 leading-[1.75] text-[#B0B0B0]">
+                  <p className="mt-3 t-body text-[#B0B0B0]">
                     Rassembler, former et équiper des adorateurs passionnés
                     pour impacter notre génération par la musique gospel. À
                     travers des événements, des formations et des rencontres,
@@ -220,10 +198,10 @@ export default function AProposPage() {
               className="mb-16 flex flex-col"
             >
               <Eyebrow>Depuis 2020</Eyebrow>
-              <h2 className="font-poppins text-[clamp(2rem,3vw,2.75rem)] font-bold leading-tight text-white">
+              <h2 className="t-h2 text-white">
                 Notre histoire
               </h2>
-              <p className="mt-4 max-w-xl leading-[1.75] text-[#B0B0B0]">
+              <p className="mt-4 max-w-xl t-body text-[#B0B0B0]">
                 De la vision à la réalité, voici les chapitres qui ont marqué
                 le chemin de Worship Gift.
               </p>
@@ -272,10 +250,10 @@ export default function AProposPage() {
                             {item.year}
                           </span>
                         </div>
-                        <h3 className="mt-4 font-poppins text-xl font-bold leading-snug text-white md:text-2xl">
+                        <h3 className="mt-4 t-h3 text-white">
                           {item.title}
                         </h3>
-                        <p className="mt-3 max-w-2xl leading-[1.75] text-[#B0B0B0]">
+                        <p className="mt-3 max-w-2xl t-body text-[#B0B0B0]">
                           {item.desc}
                         </p>
                       </div>
@@ -298,10 +276,10 @@ export default function AProposPage() {
               className="mb-14 flex flex-col items-center text-center"
             >
               <Eyebrow centered>Ce qui nous porte</Eyebrow>
-              <h2 className="font-poppins text-[clamp(2rem,3vw,2.75rem)] font-bold leading-tight text-white">
+              <h2 className="t-h2 text-white">
                 Nos valeurs
               </h2>
-              <p className="mx-auto mt-4 max-w-xl leading-[1.75] text-[#B0B0B0]">
+              <p className="mx-auto mt-4 max-w-xl t-body text-[#B0B0B0]">
                 Trois piliers qui guident chaque note, chaque rencontre,
                 chaque action du mouvement.
               </p>
@@ -323,10 +301,10 @@ export default function AProposPage() {
                   <span className="flex h-12 w-12 items-center justify-center rounded-lg border border-[#C9A84C]/30 bg-[#C9A84C]/10 text-[#C9A84C] transition-colors group-hover:bg-[#C9A84C]/20">
                     {v.icon}
                   </span>
-                  <h3 className="mt-5 font-poppins text-xl font-bold text-white">
+                  <h3 className="mt-5 t-h3 text-white">
                     {v.title}
                   </h3>
-                  <p className="mt-3 text-sm leading-[1.75] text-[#9A9A9A]">
+                  <p className="mt-3 t-meta text-[#9A9A9A]">
                     {v.desc}
                   </p>
                 </motion.div>
@@ -346,10 +324,10 @@ export default function AProposPage() {
               className="mb-14 flex flex-col items-center text-center"
             >
               <Eyebrow centered>Les visages</Eyebrow>
-              <h2 className="font-poppins text-[clamp(2rem,3vw,2.75rem)] font-bold leading-tight text-white">
+              <h2 className="t-h2 text-white">
                 L'équipe
               </h2>
-              <p className="mx-auto mt-4 max-w-xl leading-[1.75] text-[#B0B0B0]">
+              <p className="mx-auto mt-4 max-w-xl t-body text-[#B0B0B0]">
                 Des cœurs passionnés, unis par la même vision : porter le
                 gospel au plus haut niveau.
               </p>
@@ -383,10 +361,10 @@ export default function AProposPage() {
                       ?
                     </div>
                   )}
-                  <h3 className="mt-5 font-poppins text-lg font-bold text-white">
+                  <h3 className="mt-5 t-card-title text-white">
                     {membre.nom}
                   </h3>
-                  <p className="mt-1 text-sm text-[#9A9A9A]">{membre.role}</p>
+                  <p className="mt-1 t-meta text-[#9A9A9A]">{membre.role}</p>
                 </motion.div>
               ))}
             </motion.div>
@@ -403,10 +381,10 @@ export default function AProposPage() {
             className="mx-auto flex max-w-2xl flex-col items-center text-center"
           >
             <Eyebrow centered>Rejoins l'aventure</Eyebrow>
-            <h2 className="font-poppins text-[clamp(1.75rem,2.6vw,2.5rem)] font-bold leading-tight text-white">
+            <h2 className="t-h2 text-white">
               Tu veux faire partie du mouvement ?
             </h2>
-            <p className="mt-4 leading-[1.75] text-[#B0B0B0]">
+            <p className="mt-4 t-body text-[#B0B0B0]">
               Rejoins-nous lors de nos prochains événements, abonne-toi à
               notre chaîne YouTube et suis-nous sur les réseaux pour vivre
               le gospel avec nous.

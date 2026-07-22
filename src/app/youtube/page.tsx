@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
+import Eyebrow from "@/components/Eyebrow";
 
 // Dynamic import : la lightbox vidéo n'est chargée qu'au clic
 const VideoLightbox = dynamic(() => import("@/components/VideoLightbox"), {
@@ -35,19 +36,6 @@ const cardVariants = {
     transition: { duration: 0.5, ease: "easeOut" as const },
   },
 };
-
-/**
- * Label « eyebrow » — élément signature du thème ePentatonic :
- * petit titre en majuscules, très espacé, précédé d'un trait doré.
- */
-function Eyebrow({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="mb-4 inline-flex items-center gap-3 text-[13px] font-semibold uppercase tracking-[0.24em] text-[#C9A84C]">
-      <span className="h-px w-8 bg-[#C9A84C]/60" aria-hidden />
-      {children}
-    </span>
-  );
-}
 
 export default function MediasPage() {
   const [lightboxVideo, setLightboxVideo] = useState<{
@@ -81,10 +69,10 @@ export default function MediasPage() {
             className="relative z-10 mx-auto flex max-w-4xl flex-col items-center text-center"
           >
             <Eyebrow>Médias · Worship Gift</Eyebrow>
-            <h1 className="font-display text-[clamp(2.5rem,6vw,3.5rem)] font-bold leading-[1.15] tracking-tight text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.95)]">
+            <h1 className="t-hero text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.95)]">
               Médias
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-[1.75] text-[#C7C7C7] [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
+            <p className="mx-auto mt-6 max-w-2xl t-lead text-[#C7C7C7] [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
               Plonge dans l'univers Gospel Worship Gift. Retrouve
               nos vidéos, nos sessions live et tous nos moments
               d'adoration en intégralité.
@@ -107,10 +95,10 @@ export default function MediasPage() {
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" className="text-white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
               </div>
               <Eyebrow>Notre chaîne</Eyebrow>
-              <h2 className="font-poppins text-[clamp(1.75rem,2.6vw,2.5rem)] font-bold leading-tight text-white">
+              <h2 className="t-h2 text-white">
                 Chaîne YouTube Worship Gift
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl leading-[1.75] text-[#B0B0B0]">
+              <p className="mx-auto mt-4 max-w-2xl t-body text-[#B0B0B0]">
                 Abonne-toi pour ne rien manquer de nos prochaines
                 publications : gospel en direct, répétitions, sessions
                 d'adoration et contenus exclusifs.
@@ -138,10 +126,10 @@ export default function MediasPage() {
               className="flex flex-col items-center rounded-xl border border-[#282828] bg-[#121212] p-8 text-center shadow-[0_12px_50px_rgba(0,0,0,0.4)] md:p-14"
             >
               <Eyebrow>Restons connectés</Eyebrow>
-              <h2 className="font-poppins text-[clamp(1.75rem,2.6vw,2.5rem)] font-bold leading-tight text-white">
+              <h2 className="t-h2 text-white">
                 Abonnez-vous pour ne rien manquer
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl leading-[1.75] text-[#B0B0B0]">
+              <p className="mx-auto mt-4 max-w-2xl t-body text-[#B0B0B0]">
                 Rejoignez notre communauté sur les réseaux sociaux pour vivre
                 chaque moment de gospel et d'adoration avec Worship Gift.
               </p>
@@ -198,10 +186,10 @@ export default function MediasPage() {
               className="flex flex-col"
             >
               <Eyebrow>En direct</Eyebrow>
-              <h2 className="font-poppins text-[clamp(1.75rem,2.6vw,2.5rem)] font-bold leading-tight text-white">
+              <h2 className="t-h2 text-white">
                 Live sessions
               </h2>
-              <p className="mt-3 max-w-2xl leading-[1.75] text-[#B0B0B0]">
+              <p className="mt-3 max-w-2xl t-body text-[#B0B0B0]">
                 Chaque rencontre est un moment unique de gospel et
                 d'adoration. Revis ou découvre les temps forts de nos
                 rassemblements en direct. Toute la puissance du gospel, en
@@ -246,10 +234,10 @@ export default function MediasPage() {
                     </div>
                   </div>
                   <div className="p-5">
-                    <h3 className="font-poppins text-base font-semibold leading-snug text-white transition-colors group-hover:text-[#C9A84C]">
+                    <h3 className="t-card-title text-white transition-colors group-hover:text-[#C9A84C]">
                       {video.title}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-[#9A9A9A]">
+                    <p className="mt-2 t-meta text-[#9A9A9A]">
                       {video.description}
                     </p>
                   </div>
@@ -270,10 +258,10 @@ export default function MediasPage() {
               className="flex flex-col"
             >
               <Eyebrow>Toutes nos vidéos</Eyebrow>
-              <h2 className="font-poppins text-[clamp(1.75rem,2.6vw,2.5rem)] font-bold leading-tight text-white">
+              <h2 className="t-h2 text-white">
                 Vidéothèque Worship Gift
               </h2>
-              <p className="mt-3 leading-[1.75] text-[#B0B0B0]">
+              <p className="mt-3 t-body text-[#B0B0B0]">
                 Explore tous nos contenus : enseignements, répétitions,
                 extraits d'événements et bien plus.
               </p>
@@ -316,10 +304,10 @@ export default function MediasPage() {
                     </div>
                   </div>
                   <div className="p-5">
-                    <h3 className="font-poppins text-base font-semibold leading-snug text-white transition-colors group-hover:text-[#C9A84C]">
+                    <h3 className="t-card-title text-white transition-colors group-hover:text-[#C9A84C]">
                       {video.title}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-[#9A9A9A]">
+                    <p className="mt-2 t-meta text-[#9A9A9A]">
                       {video.description}
                     </p>
                   </div>

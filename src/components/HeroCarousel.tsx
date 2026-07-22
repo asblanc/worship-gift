@@ -169,7 +169,7 @@ export default function HeroCarousel() {
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="font-display text-4xl font-bold tracking-wide text-[#C9A84C] sm:text-5xl md:text-6xl lg:text-7xl"
+          className="t-hero text-[#C9A84C]"
         >
           Worship Gift
         </motion.h1>
@@ -179,7 +179,7 @@ export default function HeroCarousel() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.35 }}
-          className="mt-6 max-w-2xl text-base leading-relaxed text-gray-200 md:text-lg"
+          className="mt-6 max-w-2xl t-lead text-gray-200"
         >
           Une expérience unique de Gospel. Laissez la musique
           gospel vous transporter dans la présence de Dieu.

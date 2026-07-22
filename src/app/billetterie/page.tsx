@@ -77,10 +77,10 @@ export default function BilletteriePage() {
             transition={{ duration: 0.6 }}
             className="relative z-10 mx-auto max-w-4xl text-center"
           >
-            <h1 className="font-display text-4xl font-bold text-[#C9A84C] sm:text-5xl md:text-6xl [text-shadow:0_2px_20px_rgba(0,0,0,0.95)]">
+            <h1 className="t-hero text-[#C9A84C] [text-shadow:0_2px_20px_rgba(0,0,0,0.95)]">
               Billetterie
             </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white sm:mt-6 sm:text-lg [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
+            <p className="mx-auto mt-6 max-w-2xl t-lead text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
               Réserve ta place pour vivre un moment unique de Gospel au
               cœur du mouvement Worship Gift. Chaque rencontre est une
               invitation à la communion et à la joie.
@@ -109,7 +109,7 @@ export default function BilletteriePage() {
 
                   {/* Contenu */}
                   <div className="flex flex-1 flex-col gap-3 p-6">
-                    <h2 className="font-heading text-xl font-semibold text-white md:text-2xl">
+                    <h2 className="t-h3 text-white">
                       {event.title}
                     </h2>
 
@@ -128,7 +128,7 @@ export default function BilletteriePage() {
                       </span>
                     </div>
 
-                    <p className="text-sm leading-relaxed text-gray-300">
+                    <p className="t-meta text-gray-300">
                       {event.description}
                     </p>
 
@@ -160,10 +160,10 @@ export default function BilletteriePage() {
             transition={{ duration: 0.5 }}
             className="mx-auto max-w-2xl text-center"
           >
-            <h2 className="font-heading text-2xl font-semibold text-white sm:text-3xl">
+            <h2 className="t-h2 text-white">
               Tu veux être informé des prochains événements ?
             </h2>
-            <p className="mt-4 text-gray-300">
+            <p className="mt-4 t-body text-gray-300">
               Suis-nous sur nos réseaux pour ne rien manquer et recevoir les
               annonces en avant-première.
             </p>
