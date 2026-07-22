@@ -62,7 +62,7 @@ export default function BilletteriePage() {
       <Navbar />
       <main className="flex-1 pt-20">
         {/* Héro — fond noir avec image d'illustration */}
-        <section className="relative border-b border-white/10 bg-black px-6 py-24 md:py-32 overflow-hidden">
+        <section className="relative border-b border-white/10 bg-black px-6 py-20 sm:py-24 md:py-32 overflow-hidden">
           <Image
             src="/img_worship-gift/img_billeterie.jpg"
             alt="Billetterie Worship Gift"
@@ -77,10 +77,10 @@ export default function BilletteriePage() {
             transition={{ duration: 0.6 }}
             className="relative z-10 mx-auto max-w-4xl text-center"
           >
-            <h1 className="font-display text-5xl font-bold text-[#C9A84C] md:text-6xl [text-shadow:0_2px_20px_rgba(0,0,0,0.95)]">
+            <h1 className="font-display text-4xl font-bold text-[#C9A84C] sm:text-5xl md:text-6xl [text-shadow:0_2px_20px_rgba(0,0,0,0.95)]">
               Billetterie
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white sm:mt-6 sm:text-lg [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
               Réserve ta place pour vivre un moment unique de Gospel au
               cœur du mouvement Worship Gift. Chaque rencontre est une
               invitation à la communion et à la joie.
@@ -89,7 +89,7 @@ export default function BilletteriePage() {
         </section>
 
         {/* Événements — fond blanc cassé */}
-        <section className="bg-[#0D0D0D] px-6 py-16 md:py-20">
+        <section className="bg-[#0D0D0D] px-6 py-12 sm:py-16 md:py-20">
           <div className="mx-auto max-w-4xl">
             <motion.div
               variants={containerVariants}
@@ -152,7 +152,7 @@ export default function BilletteriePage() {
         </section>
 
         {/* CTA bas de page */}
-        <section className="border-t border-white/10 bg-[#0D0D0D] px-6 py-16 md:py-20">
+        <section className="border-t border-white/10 bg-[#0D0D0D] px-6 py-12 sm:py-16 md:py-20">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -160,7 +160,7 @@ export default function BilletteriePage() {
             transition={{ duration: 0.5 }}
             className="mx-auto max-w-2xl text-center"
           >
-            <h2 className="font-heading text-3xl font-semibold text-white">
+            <h2 className="font-heading text-2xl font-semibold text-white sm:text-3xl">
               Tu veux être informé des prochains événements ?
             </h2>
             <p className="mt-4 text-gray-300">
