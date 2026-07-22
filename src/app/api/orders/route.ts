@@ -27,7 +27,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { upcomingEvents } from "@/lib/events-config";
-import { createOrder } from "@/lib/orders-service.server";
+import { createPendingOrder } from "@/lib/orders-service.server";
 import { rateLimitAsync } from "@/lib/rate-limit";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -40,62 +40,86 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
 
-    // Validation
-    if (!body.eventId || !body.quantity || !body.customerName || !body.customerEmail) {
+    const channel = body.channel === "whatsapp" ? "whatsapp" : "site";
+    const customerName = String(body.customerName ?? "").trim().slice(0, 120);
+    const customerEmail = body.customerEmail
+      ? String(body.customerEmail).trim().slice(0, 254)
+      : "";
+    const telephone = body.telephone
+      ? String(body.telephone).trim().slice(0, 40)
+      : "";
+
+    // Champs de base
+    if (!body.eventId || !body.quantity || customerName.length < 2) {
       return NextResponse.json(
-        { success: false, error: "Champs requis manquants: eventId, quantity, customerName, customerEmail" },
-        { status: 400 }
+        { success: false, error: "Champs requis manquants (événement, quantité, nom)." },
+        { status: 400 },
       );
+    }
+
+    // Coordonnées : site = email obligatoire ; WhatsApp = téléphone obligatoire.
+    if (channel === "site") {
+      if (!EMAIL_RE.test(customerEmail)) {
+        return NextResponse.json(
+          { success: false, error: "Un email valide est requis." },
+          { status: 400 },
+        );
+      }
+    } else {
+      if (telephone.replace(/\D/g, "").length < 6) {
+        return NextResponse.json(
+          { success: false, error: "Un numéro de téléphone valide est requis." },
+          { status: 400 },
+        );
+      }
+      if (customerEmail && !EMAIL_RE.test(customerEmail)) {
+        return NextResponse.json(
+          { success: false, error: "Email invalide." },
+          { status: 400 },
+        );
+      }
     }
 
     const quantity = Number(body.quantity);
     if (!Number.isInteger(quantity) || quantity < 1 || quantity > 10) {
       return NextResponse.json(
-        { success: false, error: "Quantite invalide (1-10 billets max)" },
-        { status: 400 }
+        { success: false, error: "Quantité invalide (1 à 10 billets)." },
+        { status: 400 },
       );
     }
 
-    const customerEmail = String(body.customerEmail).trim().slice(0, 254);
-    const customerName = String(body.customerName).trim().slice(0, 120);
-    if (!EMAIL_RE.test(customerEmail) || customerName.length < 2) {
-      return NextResponse.json(
-        { success: false, error: "Email ou nom invalide" },
-        { status: 400 }
-      );
-    }
-
-    // Trouver l'evenement
     const event = upcomingEvents.find((e) => e.id === body.eventId);
     if (!event) {
       return NextResponse.json(
-        { success: false, error: "Evenement introuvable" },
-        { status: 404 }
+        { success: false, error: "Événement introuvable." },
+        { status: 404 },
       );
     }
 
-    // Le montant est calculé côté serveur dans createOrder à partir de
-    // event.priceValue (source de vérité) — jamais reçu du client.
-    const result = await createOrder({
+    // Commande "en attente" — le montant est calculé serveur (event.priceValue),
+    // jamais reçu du client. Les billets seront générés à la validation du
+    // paiement par l'admin (paiement traité hors-site par le prestataire).
+    const result = await createPendingOrder({
       event,
       quantity,
-      ticketType: typeof body.ticketType === "string" ? body.ticketType.slice(0, 60) : "Entree libre",
+      ticketType:
+        typeof body.ticketType === "string" ? body.ticketType.slice(0, 60) : "Entrée libre",
       customerName,
-      customerEmail,
-      telephone: typeof body.telephone === "string" ? body.telephone.slice(0, 40) : undefined,
+      customerEmail: customerEmail || undefined,
+      telephone: telephone || undefined,
+      channel,
     });
 
     return NextResponse.json({
       success: true,
       orderId: result.orderId,
       amount: result.amount,
-      tickets: result.tickets,
     });
   } catch (error) {
     console.error("[API Orders] Erreur:", error);
     return NextResponse.json(
       { success: false, error: "Erreur interne du serveur" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

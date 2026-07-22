@@ -35,6 +35,13 @@ export interface EventData {
   /** Libellé affiché (ex: "Gratuit", "50 MAD", "VIP 150 MAD") */
   price: string;
   ticketLink: string;
+  /**
+   * 🔗 Lien de paiement du prestataire EXTERNE (facultatif).
+   * Colle ici l'URL fournie par ton prestataire de paiement. Tant qu'elle
+   * est vide, le bouton « Payer en ligne » invite à passer par WhatsApp.
+   * Ex: "https://prestataire.com/pay/mon-concert"
+   */
+  paymentUrl?: string;
   color: string;
   // 🖼️ Affiche de l'événement — chemin relatif /img_worship-gift/
   coverImage: string;

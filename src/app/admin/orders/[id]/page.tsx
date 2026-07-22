@@ -9,7 +9,10 @@ import { supabase } from "@/lib/supabase/client";
 interface OrderDetail {
   id: string;
   customer_name: string;
-  customer_email: string;
+  customer_email: string | null;
+  customer_phone: string | null;
+  channel: string | null;
+  quantity: number | null;
   description: string;
   amount: number;
   currency: string;
@@ -75,18 +78,32 @@ export default function AdminOrderDetailPage() {
   const handleStatusChange = async (newStatus: string) => {
     setUpdating(true);
     try {
-      const updateData: Record<string, unknown> = { status: newStatus };
-      if (newStatus === "paid") {
-        updateData.paid_at = new Date().toISOString();
+      // Écriture côté serveur (service_role) : les RLS bloquent l'écriture
+      // client. "paid" génère les billets automatiquement.
+      const res = await fetch(`/api/admin/orders/${id}/status`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Échec de la mise à jour");
       }
-      const { error } = await supabase
-        .from("orders")
-        .update(updateData)
-        .eq("id", id);
-      if (error) throw error;
-      setOrder((prev) => (prev ? { ...prev, status: newStatus } : prev));
+      setOrder((prev) =>
+        prev
+          ? {
+              ...prev,
+              status: newStatus,
+              paid_at: newStatus === "paid" ? new Date().toISOString() : prev.paid_at,
+            }
+          : prev,
+      );
+      // Recharge les billets (générés au passage "payé")
+      const { data: t } = await supabase.from("tickets").select("*").eq("order_id", id);
+      if (t) setTickets(t);
     } catch (err) {
       console.error("Erreur changement statut:", err);
+      alert(err instanceof Error ? err.message : "Erreur lors de la mise à jour du statut");
     } finally {
       setUpdating(false);
     }
@@ -191,6 +208,20 @@ export default function AdminOrderDetailPage() {
             <span className="text-gray-400">Email :</span>
             <span className="font-medium text-white">{order.customer_email || "—"}</span>
           </div>
+          <div className="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.81.36 1.6.7 2.34a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.74-1.27a2 2 0 0 1 2.11-.45c.74.34 1.53.57 2.34.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+            <span className="text-gray-400">Téléphone :</span>
+            <span className="font-medium text-white">{order.customer_phone || "—"}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-gray-400">Canal :</span>
+            <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ${order.channel === "whatsapp" ? "bg-[#25D366]/15 text-[#25D366]" : "bg-[#C9A84C]/15 text-[#C9A84C]"}`}>
+              {order.channel === "whatsapp" ? "WhatsApp" : "Site"}
+            </span>
+            {order.quantity ? <span className="text-gray-400">· {order.quantity} billet(s)</span> : null}
+          </div>
           {order.transaction_id && (
             <div className="flex items-center gap-2 sm:col-span-2">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -211,7 +242,8 @@ export default function AdminOrderDetailPage() {
 
         {/* Changer statut */}
         <div className="mt-6 border-t border-white/[0.04] pt-6">
-          <p className="text-xs font-medium uppercase tracking-wider text-gray-400 mb-3">Modifier le statut</p>
+          <p className="text-xs font-medium uppercase tracking-wider text-gray-400 mb-1">Modifier le statut</p>
+          <p className="mb-3 text-[11px] text-gray-500">Passer à « Payée » confirme le paiement et génère automatiquement les billets (QR).</p>
           <div className="flex flex-wrap gap-2">
             {ALL_STATUSES.map((s) => (
               <button
