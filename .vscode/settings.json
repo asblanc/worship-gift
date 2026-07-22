@@ -1,0 +1,6 @@
+{
+  "// Note": "Tailwind v4 utilise des at-rules (@theme, @apply, @custom-variant, @import 'tailwindcss') que le validateur CSS intégré de VS Code ne connaît pas. Sans ceci, il les marque en avertissement jaune, ce qui colore les dossiers src/app/components. Ce ne sont PAS des erreurs.",
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore",
+  "less.lint.unknownAtRules": "ignore"
+}

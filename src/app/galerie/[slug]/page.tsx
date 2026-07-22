@@ -64,7 +64,7 @@ export default function AlbumPage() {
       <Navbar />
       <main className="flex-1 pt-20">
         {/* En-tête album */}
-        <section className="relative overflow-hidden border-b border-white/10 bg-black px-6 py-20 md:py-28">
+        <section className="relative overflow-hidden border-b border-white/10 bg-black px-6 py-16 sm:py-20 md:py-28">
           <div className="absolute inset-0 opacity-30">
             {/* Couverture floutée en fond */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -90,10 +90,10 @@ export default function AlbumPage() {
             <p className="text-xs font-semibold uppercase tracking-widest text-[#C9A84C]">
               {album.label}
             </p>
-            <h1 className="mt-2 font-display text-4xl font-bold text-white md:text-5xl">
+            <h1 className="mt-2 font-display text-3xl font-bold text-white sm:text-4xl md:text-5xl">
               {album.title}
             </h1>
-            <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-gray-300">
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-gray-300 sm:text-base">
               {album.subtitle}
             </p>
             <p className="mt-4 text-xs text-[#C9A84C]/70">{album.images.length} photos</p>
@@ -101,7 +101,7 @@ export default function AlbumPage() {
         </section>
 
         {/* Masonry */}
-        <section className="min-h-screen bg-[#0a0a0a] px-4 py-14 md:px-8 md:py-20">
+        <section className="min-h-screen bg-[#0a0a0a] px-3 py-10 sm:px-4 sm:py-14 md:px-8 md:py-20">
           <div className="mx-auto max-w-7xl">
             <PortfolioGallery
               images={album.images}

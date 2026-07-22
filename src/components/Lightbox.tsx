@@ -80,7 +80,7 @@ export default function Lightbox({
         {/* Bouton fermer */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white transition-colors hover:bg-[#C9A84C] hover:text-black md:top-6 md:right-6"
+          className="absolute top-3 right-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white transition-colors hover:bg-[#C9A84C] hover:text-black md:top-6 md:right-6 md:h-10 md:w-10"
           aria-label="Fermer"
         >
           <svg
@@ -99,29 +99,31 @@ export default function Lightbox({
           </svg>
         </button>
 
-        {/* Image */}
+        {/* Image — taille adaptée à l'écran (dvh gère la barre d'adresse mobile) */}
         <motion.div
           key={currentIndex}
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="relative max-h-[85vh] max-w-[90vw]"
+          className="relative flex items-center justify-center"
           onClick={(e) => e.stopPropagation()}
         >
           <Image
             src={current.src}
             alt={current.alt}
-            width={1200}
-            height={800}
-            className="h-auto max-h-[85vh] w-auto max-w-[90vw] rounded-lg object-contain"
+            width={1600}
+            height={1067}
+            className="h-auto w-auto max-h-[82dvh] max-w-[92vw] rounded-lg object-contain md:max-h-[86dvh] md:max-w-[88vw]"
             priority
-            sizes="90vw"
+            sizes="(max-width: 768px) 92vw, 88vw"
           />
-          <p className="mt-3 text-center text-sm text-gray-300">
-            {currentIndex + 1} / {images.length}
-          </p>
         </motion.div>
+
+        {/* Compteur — hors de l'image pour ne pas rogner sa hauteur */}
+        <p className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-black/55 px-3 py-1 text-xs text-gray-200 backdrop-blur-sm md:bottom-5 md:text-sm">
+          {currentIndex + 1} / {images.length}
+        </p>
 
         {/* Précédent */}
         {images.length > 1 && (
@@ -130,7 +132,7 @@ export default function Lightbox({
               e.stopPropagation();
               onPrev();
             }}
-            className="absolute left-4 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white transition-colors hover:bg-[#C9A84C] hover:text-black md:left-6"
+            className="absolute left-2 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white transition-colors hover:bg-[#C9A84C] hover:text-black md:left-6 md:h-10 md:w-10"
             aria-label="Image précédente"
           >
             <svg
@@ -156,7 +158,7 @@ export default function Lightbox({
               e.stopPropagation();
               onNext();
             }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white transition-colors hover:bg-[#C9A84C] hover:text-black md:right-6"
+            className="absolute right-2 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/50 text-white transition-colors hover:bg-[#C9A84C] hover:text-black md:right-6 md:h-10 md:w-10"
             aria-label="Image suivante"
           >
             <svg

@@ -18,7 +18,7 @@ export default function GaleriePage() {
       <Navbar />
       <main className="flex-1 pt-20">
         {/* HERO */}
-        <section className="relative overflow-hidden border-b border-white/10 bg-black px-6 py-24 md:py-32">
+        <section className="relative overflow-hidden border-b border-white/10 bg-black px-6 py-20 sm:py-24 md:py-32">
           <Image
             src="/img_worship-gift/img_galerie.jpg"
             alt="Worship Gift Galerie"
@@ -34,10 +34,10 @@ export default function GaleriePage() {
             transition={{ duration: 0.6 }}
             className="relative z-10 mx-auto max-w-4xl text-center"
           >
-            <h1 className="font-display text-5xl font-bold text-[#C9A84C] md:text-6xl [text-shadow:0_2px_20px_rgba(0,0,0,0.95)]">
+            <h1 className="font-display text-4xl font-bold text-[#C9A84C] sm:text-5xl md:text-6xl [text-shadow:0_2px_20px_rgba(0,0,0,0.95)]">
               Galerie
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white sm:mt-6 sm:text-lg [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
               Revivez les meilleurs moments de nos concerts Gospel. Choisissez un
               album pour découvrir ses photos.
             </p>
@@ -52,7 +52,7 @@ export default function GaleriePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="mb-10 text-center font-heading text-2xl font-bold text-white md:text-3xl"
+              className="mb-8 text-center font-heading text-xl font-bold text-white sm:mb-10 sm:text-2xl md:text-3xl"
             >
               Nos événements en images
             </motion.h2>

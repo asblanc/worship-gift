@@ -26,7 +26,7 @@ export default function PortfolioGallery({
 
   return (
     <div
-      className="columns-2 gap-3 md:columns-3 xl:columns-4"
+      className="columns-2 gap-2 sm:gap-3 md:columns-3 xl:columns-4"
       onMouseLeave={() => setHovered(null)}
     >
       {images.map((img, index) => {
@@ -36,7 +36,7 @@ export default function PortfolioGallery({
         return (
           <motion.div
             key={img.src}
-            className="mb-3 break-inside-avoid"
+            className="mb-2 break-inside-avoid sm:mb-3"
             initial={{ opacity: 0, y: 26 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-40px" }}
