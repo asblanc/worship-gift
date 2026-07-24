@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import { albums } from "@/lib/gallery-config";
 
 /* ================================================================
@@ -18,31 +19,15 @@ export default function GaleriePage() {
       <Navbar />
       <main className="flex-1 pt-20">
         {/* HERO */}
-        <section className="relative overflow-hidden border-b border-white/10 bg-black px-6 py-20 sm:py-24 md:py-32">
-          <Image
-            src="/img_worship-gift/img_galerie.jpg"
-            alt="Worship Gift Galerie"
-            fill
-            className="object-cover opacity-90 brightness-110 saturate-105"
-            sizes="100vw"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/55 to-black/90" />
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="relative z-10 mx-auto max-w-4xl text-center"
-          >
-            <h1 className="t-hero text-[#C9A84C] [text-shadow:0_2px_20px_rgba(0,0,0,0.95)]">
-              Galerie
-            </h1>
-            <p className="mx-auto mt-6 max-w-2xl t-lead text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
-              Revivez les meilleurs moments de nos concerts Gospel. Choisissez un
-              album pour découvrir ses photos.
-            </p>
-          </motion.div>
-        </section>
+        <PageHero
+          image="/img_worship-gift/img_galerie.jpg"
+          alt="Worship Gift Galerie"
+          eyebrow="Galerie photo"
+          title="Galerie"
+        >
+          Revivez les meilleurs moments de nos concerts Gospel. Choisissez un
+          album pour découvrir ses photos.
+        </PageHero>
 
         {/* DOSSIERS / ALBUMS */}
         <section className="min-h-screen bg-black px-4 py-14 md:px-8 md:py-20">

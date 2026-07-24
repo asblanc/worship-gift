@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Navbar from "@/components/Navbar";
+import PageHero from "@/components/PageHero";
 import {
   youtubeChannelUrl,
   facebookUrl,
@@ -65,30 +65,15 @@ export default function ContactPage() {
       <Navbar />
       <main className="flex-1 pt-20">
         {/* Héro — fond noir avec image d'illustration */}
-        <section className="relative border-b border-white/10 bg-black px-6 py-20 sm:py-24 md:py-32 overflow-hidden">
-          <Image
-            src="/img_worship-gift/img_contact.jpg"
-            alt="Contact Worship Gift"
-            fill
-            className="object-cover opacity-90 brightness-110 saturate-105"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/55 to-black/90" />
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="relative z-10 mx-auto max-w-4xl text-center"
-          >
-            <h1 className="t-hero text-[#C9A84C] [text-shadow:0_2px_20px_rgba(0,0,0,0.95)]">
-              Contact
-            </h1>
-            <p className="mx-auto mt-6 max-w-2xl t-lead text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
-              Tu souhaites nous contacter, rejoindre le mouvement ou simplement
-              en savoir plus ? Écris-nous, nous serons ravis de t'accueillir.
-            </p>
-          </motion.div>
-        </section>
+        <PageHero
+          image="/img_worship-gift/img_contact.jpg"
+          alt="Contact Worship Gift"
+          eyebrow="Contact"
+          title="Contact"
+        >
+          Tu souhaites nous contacter, rejoindre le mouvement ou simplement en
+          savoir plus ? Écris-nous, nous serons ravis de t'accueillir.
+        </PageHero>
 
         {/* Contenu — fond sombre */}
         <section className="bg-[#0D0D0D] px-6 py-12 sm:py-16 md:py-20">

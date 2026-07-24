@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Eyebrow from "@/components/Eyebrow";
+import PageHero from "@/components/PageHero";
 
 // Dynamic import : la lightbox vidéo n'est chargée qu'au clic
 const VideoLightbox = dynamic(() => import("@/components/VideoLightbox"), {
@@ -53,32 +54,15 @@ export default function MediasPage() {
       {/* font-poppins : typographie du thème ePentatonic sur toute la page */}
       <main className="flex-1 pt-20 font-poppins bg-black">
         {/* Héro — fond noir avec image d'illustration */}
-        <section className="relative border-b border-[#282828] bg-black px-6 py-28 md:py-36 overflow-hidden">
-          <Image
-            src="/img_worship-gift/img_media.jpg"
-            alt="Médias Worship Gift"
-            fill
-            className="object-cover opacity-90 brightness-110 saturate-105"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/60 to-black" />
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="relative z-10 mx-auto flex max-w-4xl flex-col items-center text-center"
-          >
-            <Eyebrow>Médias · Worship Gift</Eyebrow>
-            <h1 className="t-hero text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.95)]">
-              Médias
-            </h1>
-            <p className="mx-auto mt-6 max-w-2xl t-lead text-[#C7C7C7] [text-shadow:0_1px_10px_rgba(0,0,0,0.9)]">
-              Plonge dans l'univers Gospel Worship Gift. Retrouve
-              nos vidéos, nos sessions live et tous nos moments
-              d'adoration en intégralité.
-            </p>
-          </motion.div>
-        </section>
+        <PageHero
+          image="/img_worship-gift/img_media.jpg"
+          alt="Médias Worship Gift"
+          eyebrow="Médias · Worship Gift"
+          title="Médias"
+        >
+          Plonge dans l'univers Gospel Worship Gift. Retrouve nos vidéos, nos
+          sessions live et tous nos moments d'adoration en intégralité.
+        </PageHero>
 
         {/* Bloc Chaîne YouTube */}
         <section className="bg-[#0A0A0A] px-6 py-20 md:py-28">
