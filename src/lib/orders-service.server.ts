@@ -183,26 +183,32 @@ export async function getOrderForPayment(orderId: string) {
    ================================================================ */
 
 export type OrderChannel = "site" | "whatsapp";
+export type PaymentMethod = "online" | "delivery";
 
 export interface CreatePendingOrderParams {
   event: EventData;
   quantity: number;
   ticketType: string;
+  /** Prix unitaire de la catégorie choisie (centimes). Défaut = event.priceValue. */
+  unitPriceValue?: number;
   customerName: string;
   customerEmail?: string;
   telephone?: string;
-  channel: OrderChannel;
+  paymentMethod: PaymentMethod;
 }
 
 /** Crée une commande "en attente" (sans billet). Renvoie sa référence (orderId). */
 export async function createPendingOrder(
   params: CreatePendingOrderParams,
 ): Promise<{ orderId: string; amount: number }> {
-  const { event, quantity, ticketType, customerName, customerEmail, telephone, channel } = params;
+  const { event, quantity, ticketType, unitPriceValue, customerName, customerEmail, telephone, paymentMethod } = params;
   const supabase = createAdminClient();
 
   const orderId = generateOrderId();
-  const amount = event.priceValue * quantity; // centimes, calculé serveur
+  const unit = typeof unitPriceValue === "number" ? unitPriceValue : event.priceValue;
+  const amount = unit * quantity; // centimes, calculé serveur
+  // Le canal reflète le moyen de coordination : livraison => WhatsApp.
+  const channel: OrderChannel = paymentMethod === "delivery" ? "whatsapp" : "site";
 
   const { error } = await supabase.from("orders").insert({
     id: orderId,
@@ -211,9 +217,10 @@ export async function createPendingOrder(
     customer_phone: telephone || null,
     amount,
     currency: "MAD",
-    description: `${event.title} — ${quantity} billet(s) ${ticketType}`,
+    description: `${event.title} — ${quantity} × ${ticketType}`,
     status: "pending",
     payment_provider: "external",
+    payment_method: paymentMethod,
     channel,
     quantity,
     event_id: event.id,

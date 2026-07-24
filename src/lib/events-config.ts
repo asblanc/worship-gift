@@ -1,28 +1,39 @@
 // ============================================================
 //  Worship Gift — Événements
-//  Modifier les données ici pour mettre à jour tout le site.
+//  👉 C'EST ICI qu'on saisit le VRAI concert (chantre, date, salle,
+//     catégories de billets, affiche). Tout le site se met à jour.
 // ============================================================
 
 // ⚙️ Numéro WhatsApp (format international, sans +, ni espaces)
 // Exemple: "212600000000" pour le Maroc +212 6 00 00 00 00
 export const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "212698472691";
 
-export const nextEvent = {
-  title: "Worship Gift – Gospel Expérience",
-  subtitle: "Une soirée Gospel et de communion",
-  date: new Date("2026-08-15T19:00:00"),
-  dateLabel: "15 août 2026",
-  time: "19h00",
-  location: "Casablanca, Maroc",
-  description:
-    "Viens vivre un moment unique de Gospel au cœur du mouvement Worship Gift. Une soirée placée sous le signe de l'unité, de la joie et de la puissance du gospel.",
-  // 🖼️ Affiche du prochain concert — changer ici pour mettre à jour la home
-  coverImage: "/img_worship-gift/img_m15.jpg",
-};
+/** Une catégorie de billet (tarif). */
+export interface TicketType {
+  /** Identifiant technique stable (minuscules, sans espace). Ex: "vip" */
+  id: string;
+  /** Libellé affiché. Ex: "VIP" */
+  label: string;
+  /** Prix unitaire en CENTIMES MAD. Ex: 20000 = 200 MAD. 0 = gratuit. */
+  priceValue: number;
+  /** Libellé prix affiché. Ex: "200 MAD" */
+  price: string;
+  /** Petite description facultative (ce que la catégorie inclut). */
+  description?: string;
+  /**
+   * 🔗 Lien de paiement du prestataire pour CETTE catégorie (facultatif).
+   * Si vide, on utilise le paymentUrl de l'événement.
+   */
+  paymentUrl?: string;
+  /** Passe à true quand la catégorie est épuisée. */
+  soldOut?: boolean;
+}
 
 export interface EventData {
   id: string;
   title: string;
+  /** 🎤 Le chantre / artiste principal invité (facultatif). */
+  artist?: string;
   slug: string;
   date: string;
   time: string;
@@ -30,97 +41,104 @@ export interface EventData {
   isoDate: string;
   location: string;
   description: string;
-  /** Prix unitaire en centimes (MAD). 0 = gratuit. Ex: 5000 = 50 MAD */
+  /** Prix « à partir de » en centimes (généralement = catégorie la moins chère). 0 = gratuit. */
   priceValue: number;
-  /** Libellé affiché (ex: "Gratuit", "50 MAD", "VIP 150 MAD") */
+  /** Libellé affiché sur la liste billetterie. Ex: "À partir de 100 MAD". */
   price: string;
   ticketLink: string;
   /**
-   * 🔗 Lien de paiement du prestataire EXTERNE (facultatif).
-   * Colle ici l'URL fournie par ton prestataire de paiement. Tant qu'elle
-   * est vide, le bouton « Payer en ligne » invite à passer par WhatsApp.
-   * Ex: "https://prestataire.com/pay/mon-concert"
+   * 🔗 Lien de paiement du prestataire EXTERNE (global à l'événement).
+   * Colle ici le lien/‪code‬ fourni par ton prestataire de billetterie.
+   * Sert de repli si une catégorie n'a pas son propre paymentUrl.
    */
   paymentUrl?: string;
+  /** 🚚 true = « paiement à la livraison » proposé (organisé via WhatsApp). */
+  deliveryAvailable?: boolean;
+  /**
+   * 🎟️ Catégories de billets (billetterie). Si vide/absent, l'événement
+   * utilise le prix unique priceValue/price.
+   */
+  ticketTypes?: TicketType[];
   color: string;
-  // 🖼️ Affiche de l'événement — chemin relatif /img_worship-gift/
+  // 🖼️ Affiche de l'événement — chemin relatif dans /public/img_worship-gift/
   coverImage: string;
 }
 
+// ============================================================
+//  🎫 CONCERT À VENIR — remplace les [CROCHETS] par les vraies infos.
+//  Pour ajouter un 2ᵉ concert, duplique tout le bloc { ... }.
+// ============================================================
 export const upcomingEvents: EventData[] = [
   {
-    id: "evt-001",
-    // 🏷️ Titre de l'événement 1
-    title: "Worship Gift – Gospel Expérience",
-    slug: "worship-gift-gospel-experience",
-    date: "15 août 2026",
-    time: "19h00",
-    isoDate: "2026-08-15T19:00:00",
-    location: "Casablanca, Maroc",
+    id: "concert-gospel-2026",
+    // 🏷️ Nom du concert
+    title: "Concert Gospel Worship Gift", // ✏️ à compléter
+    // 🎤 Le chantre invité
+    artist: "[NOM DU CHANTRE]", // ✏️ à compléter
+    // 🔗 slug URL (minuscules, tirets) — évite de le changer une fois partagé
+    slug: "concert-gospel-2026",
+    date: "[JJ mois AAAA]", // ✏️ ex: "20 décembre 2026"
+    time: "[HHhMM]", // ✏️ ex: "19h00"
+    isoDate: "2026-12-20T19:00:00", // ✏️ date/heure réelle (pour les rappels)
+    location: "[Ville — Salle]", // ✏️ ex: "Casablanca — Complexe Al Hamra"
     description:
-      "Une soirée Gospel pour célébrer ensemble la puissance et la joie du gospel.",
-    priceValue: 0, // Gratuit
-    price: "Gratuit",
+      "Une soirée exceptionnelle de gospel et d'adoration. Réserve ta place dès maintenant.", // ✏️
+    // « à partir de » = tarif le plus bas ci-dessous
+    priceValue: 10000,
+    price: "À partir de 100 MAD",
     ticketLink: "#",
+    // 🔗 Colle ici le lien/code du prestataire (paiement en ligne). Vide pour l'instant.
+    paymentUrl: "",
+    // 🚚 Paiement à la livraison activé
+    deliveryAvailable: true,
+    // 🎟️ Catégories de billets — ajuste libellés et PRIX (en centimes MAD)
+    ticketTypes: [
+      {
+        id: "standard",
+        label: "Standard",
+        priceValue: 10000, // 100 MAD ✏️
+        price: "100 MAD",
+        description: "Accès général",
+        paymentUrl: "", // 🔗 lien prestataire pour cette catégorie (facultatif)
+      },
+      {
+        id: "vip",
+        label: "VIP",
+        priceValue: 20000, // 200 MAD ✏️
+        price: "200 MAD",
+        description: "Placement privilégié",
+        paymentUrl: "",
+      },
+      {
+        id: "carre-or",
+        label: "Carré Or",
+        priceValue: 30000, // 300 MAD ✏️
+        price: "300 MAD",
+        description: "Premiers rangs + accueil privilégié",
+        paymentUrl: "",
+      },
+    ],
     color: "#C9A84C",
-    // 🖼️ Affiche événement 1 — modifier ici
+    // 🖼️ AFFICHE : dépose la vraie affiche dans public/img_worship-gift/ et mets son chemin ici.
+    // (placeholder existant en attendant la vraie affiche)
     coverImage: "/img_worship-gift/img_m16.jpg",
   },
-  {
-    id: "evt-002",
-    // 🏷️ Titre de l'événement 2
-    title: "Worship Gift – Gospel Expérience Vol. 2",
-    slug: "worship-gift-gospel-experience-vol2",
-    date: "15 août 2026",
-    time: "21h00",
-    isoDate: "2026-08-15T21:00:00",
-    location: "Casablanca, Maroc",
-    description:
-      "La seconde session de la soirée Gospel — une expérience encore plus profonde et vibrante.",
-    priceValue: 0, // Gratuit
-    price: "Gratuit",
-    ticketLink: "#",
-    color: "#C9A84C",
-    // 🖼️ Affiche événement 2 — modifier ici
-    coverImage: "/img_worship-gift/img_m18.jpg",
-  },
-  {
-    id: "evt-003",
-    // 🏷️ Titre de l'événement 3
-    title: "Session Gospel – Spéciale",
-    slug: "session-gospel-speciale",
-    date: "20 septembre 2026",
-    time: "18h30",
-    isoDate: "2026-09-20T18:30:00",
-    location: "Rabat, Maroc",
-    description:
-      "Un moment d'intimité et de prière à travers la musique et le gospel.",
-    priceValue: 5000, // 50 MAD
-    price: "50 MAD",
-    ticketLink: "#",
-    color: "#F0CB6A",
-    // 🖼️ Affiche événement 3 — modifier ici
-    coverImage: "/img_worship-gift/img_m14.jpg",
-  },
-  {
-    id: "evt-004",
-    // 🏷️ Titre de l'événement 4
-    title: "Gospel Night – Rassemblement d'été",
-    slug: "gospel-night-rassemblement-ete",
-    date: "10 octobre 2026",
-    time: "20h00",
-    isoDate: "2026-10-10T20:00:00",
-    location: "Marrakech, Maroc",
-    description:
-      "Le grand rassemblement gospel de l'été avec plusieurs chorales invitées.",
-    priceValue: 7500, // 75 MAD
-    price: "75 MAD",
-    ticketLink: "#",
-    color: "#C9A84C",
-    // 🖼️ Affiche événement 4 — modifier ici
-    coverImage: "/img_worship-gift/img_d17.jpg",
-  },
 ];
+
+// 🏠 Bloc « prochain événement » mis en avant sur l'accueil (home).
+// Garde-le aligné avec le concert ci-dessus.
+export const nextEvent = {
+  title: "Concert Gospel Worship Gift", // ✏️ à compléter
+  subtitle: "Une soirée Gospel avec [NOM DU CHANTRE]", // ✏️
+  date: new Date("2026-12-20T19:00:00"), // ✏️ date réelle
+  dateLabel: "[JJ mois AAAA]", // ✏️ ex: "20 décembre 2026"
+  time: "[HHhMM]", // ✏️ ex: "19h00"
+  location: "[Ville — Salle]", // ✏️
+  description:
+    "Viens vivre un moment unique de Gospel au cœur du mouvement Worship Gift.", // ✏️
+  // 🖼️ Affiche du prochain concert — même image que ci-dessus idéalement
+  coverImage: "/img_worship-gift/img_m16.jpg",
+};
 
 // 🎟️ Textes du bandeau défilant (Marquee)
 export const marqueeTexts = [
@@ -128,6 +146,6 @@ export const marqueeTexts = [
   "GOSPEL EXPÉRIENCE",
   "GOSPEL & COMMUNION",
   "UNITÉ & CÉLÉBRATION",
-  "RASSEMBLEMENT D'ÉTÉ",
+  "CONCERT GOSPEL",
   "GOSPEL EN DIRECT",
 ];

@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
 
-    const channel = body.channel === "whatsapp" ? "whatsapp" : "site";
+    const paymentMethod = body.paymentMethod === "delivery" ? "delivery" : "online";
     const customerName = String(body.customerName ?? "").trim().slice(0, 120);
     const customerEmail = body.customerEmail
       ? String(body.customerEmail).trim().slice(0, 254)
@@ -57,8 +57,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Coordonnées : site = email obligatoire ; WhatsApp = téléphone obligatoire.
-    if (channel === "site") {
+    // Coordonnées : en ligne = email requis ; livraison = téléphone requis.
+    if (paymentMethod === "online") {
       if (!EMAIL_RE.test(customerEmail)) {
         return NextResponse.json(
           { success: false, error: "Un email valide est requis." },
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
     } else {
       if (telephone.replace(/\D/g, "").length < 6) {
         return NextResponse.json(
-          { success: false, error: "Un numéro de téléphone valide est requis." },
+          { success: false, error: "Un numéro de téléphone valide est requis pour la livraison." },
           { status: 400 },
         );
       }
@@ -96,18 +96,36 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Commande "en attente" — le montant est calculé serveur (event.priceValue),
-    // jamais reçu du client. Les billets seront générés à la validation du
-    // paiement par l'admin (paiement traité hors-site par le prestataire).
+    // Catégorie de billet : le PRIX est résolu côté serveur depuis la config
+    // (source de vérité), jamais reçu du client.
+    let ticketLabel = "Entrée libre";
+    let unitPriceValue = event.priceValue;
+    if (Array.isArray(event.ticketTypes) && event.ticketTypes.length > 0) {
+      const tier =
+        event.ticketTypes.find((t) => t.id === body.ticketTypeId) ?? event.ticketTypes[0];
+      if (tier.soldOut) {
+        return NextResponse.json(
+          { success: false, error: "Cette catégorie est épuisée." },
+          { status: 409 },
+        );
+      }
+      ticketLabel = tier.label;
+      unitPriceValue = tier.priceValue;
+    } else if (typeof body.ticketType === "string") {
+      ticketLabel = body.ticketType.slice(0, 60);
+    }
+
+    // Commande "en attente" — billets générés à la validation admin
+    // (paiement traité hors-site par le prestataire, ou à la livraison).
     const result = await createPendingOrder({
       event,
       quantity,
-      ticketType:
-        typeof body.ticketType === "string" ? body.ticketType.slice(0, 60) : "Entrée libre",
+      ticketType: ticketLabel,
+      unitPriceValue,
       customerName,
       customerEmail: customerEmail || undefined,
       telephone: telephone || undefined,
-      channel,
+      paymentMethod,
     });
 
     return NextResponse.json({

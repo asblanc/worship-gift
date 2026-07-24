@@ -12,6 +12,8 @@ interface OrderDetail {
   customer_email: string | null;
   customer_phone: string | null;
   channel: string | null;
+  payment_method: string | null;
+  ticket_type: string | null;
   quantity: number | null;
   description: string;
   amount: number;
@@ -215,11 +217,14 @@ export default function AdminOrderDetailPage() {
             <span className="text-gray-400">Téléphone :</span>
             <span className="font-medium text-white">{order.customer_phone || "—"}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-gray-400">Canal :</span>
-            <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ${order.channel === "whatsapp" ? "bg-[#25D366]/15 text-[#25D366]" : "bg-[#C9A84C]/15 text-[#C9A84C]"}`}>
-              {order.channel === "whatsapp" ? "WhatsApp" : "Site"}
+          <div className="flex flex-wrap items-center gap-2 sm:col-span-2">
+            <span className="text-gray-400">Paiement :</span>
+            <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ${order.payment_method === "delivery" ? "bg-[#25D366]/15 text-[#25D366]" : "bg-[#C9A84C]/15 text-[#C9A84C]"}`}>
+              {order.payment_method === "delivery" ? "À la livraison" : "En ligne"}
             </span>
+            {order.ticket_type ? (
+              <span className="rounded-full bg-white/5 px-2 py-0.5 text-[10px] font-medium text-gray-300">{order.ticket_type}</span>
+            ) : null}
             {order.quantity ? <span className="text-gray-400">· {order.quantity} billet(s)</span> : null}
           </div>
           {order.transaction_id && (

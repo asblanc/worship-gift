@@ -112,6 +112,9 @@ export default function BilletteriePage() {
                     <h2 className="t-h3 text-white">
                       {event.title}
                     </h2>
+                    {event.artist && (
+                      <p className="-mt-1 text-sm font-medium text-[#C9A84C]">🎤 {event.artist}</p>
+                    )}
 
                     <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-300">
                       <span className="flex items-center gap-1.5">
