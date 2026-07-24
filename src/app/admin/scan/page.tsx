@@ -16,7 +16,7 @@ const CameraScanner = dynamic(() => import("@/components/CameraScanner"), {
    ================================================================ */
 
 type Result = {
-  kind: "validated" | "already_used" | "cancelled" | "not_found" | "error";
+  kind: "validated" | "already_used" | "cancelled" | "not_found" | "error" | "external";
   message: string;
   ticket?: {
     event_title?: string;
@@ -39,6 +39,20 @@ export default function ScanPage() {
   const validate = async (raw: string) => {
     const value = raw.trim();
     if (!value) return;
+
+    // Aiguillage : les billets internes (livraison) ont la référence WG-…
+    // Les billets achetés en ligne (billetteries.ma) ont un autre format et
+    // se valident dans l'application du prestataire, PAS avec ce scanner.
+    if (!/^WG-/i.test(value)) {
+      setResult({
+        kind: "external",
+        message: "Billet acheté en ligne — à valider dans l'app billetteries.ma",
+      });
+      setCode("");
+      inputRef.current?.focus();
+      return;
+    }
+
     setLoading(true);
     setResult(null);
 
@@ -80,6 +94,7 @@ export default function ScanPage() {
     cancelled: "border-red-500/40 bg-red-500/10 text-red-400",
     not_found: "border-red-500/40 bg-red-500/10 text-red-400",
     error: "border-red-500/40 bg-red-500/10 text-red-400",
+    external: "border-[#C9A84C]/40 bg-[#C9A84C]/10 text-[#C9A84C]",
   };
 
   return (
@@ -89,6 +104,21 @@ export default function ScanPage() {
         <p className="mt-1 text-sm text-gray-400">
           Scanne le QR code (ou saisis le code du billet) puis valide avec Entrée.
         </p>
+      </div>
+
+      {/* Consigne contrôle d'accès — deux billetteries, deux scanners */}
+      <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 text-xs leading-relaxed text-gray-300">
+        <p className="font-semibold text-white">Consigne à l&rsquo;entrée — deux types de billets</p>
+        <ul className="mt-2 space-y-1.5">
+          <li className="flex gap-2">
+            <span className="mt-0.5 inline-flex h-4 shrink-0 items-center rounded bg-[#C9A84C]/15 px-1.5 font-mono text-[10px] font-bold text-[#C9A84C]">WG-</span>
+            <span><strong className="text-white">Billet Worship Gift</strong> (livraison / interne) → se valide <strong className="text-white">ici</strong>.</span>
+          </li>
+          <li className="flex gap-2">
+            <span className="mt-0.5 inline-flex h-4 shrink-0 items-center rounded bg-[#25D366]/15 px-1.5 text-[10px] font-bold text-[#25D366]">web</span>
+            <span><strong className="text-white">Billet acheté en ligne</strong> (billetteries.ma) → se valide dans <strong className="text-white">l&rsquo;app billetteries.ma</strong>, pas ici.</span>
+          </li>
+        </ul>
       </div>
 
       <form
