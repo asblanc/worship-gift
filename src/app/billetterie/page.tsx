@@ -121,17 +121,26 @@ export default function BilletteriePage() {
                       {event.description}
                     </p>
 
-                    <div className="mt-auto flex items-center justify-between pt-4">
+                    <div className="mt-auto flex flex-col gap-3 pt-4 sm:flex-row sm:items-center sm:justify-between">
                       <span className="font-heading text-2xl font-bold text-[#C9A84C]">
                         {event.price}
                       </span>
-                      {/* ✅ Redirige vers la page de réservation du concert */}
-                      <Link
-                        href={`/billetterie/${event.slug}/reserver`}
-                        className="inline-flex h-10 items-center justify-center rounded-md bg-[#C9A84C] px-6 text-sm font-semibold text-black transition-all hover:bg-[#F0CB6A] hover:shadow-md hover:shadow-[#C9A84C]/30 active:scale-[0.97]"
-                      >
-                        Réserver
-                      </Link>
+                      <div className="flex flex-wrap gap-2">
+                        {/* Paiement en ligne — widget prestataire billetteries.ma */}
+                        <Link
+                          href="/billetterie/en-ligne"
+                          className="inline-flex h-10 items-center justify-center rounded-md bg-[#C9A84C] px-5 text-sm font-semibold text-black transition-all hover:bg-[#F0CB6A] hover:shadow-md hover:shadow-[#C9A84C]/30 active:scale-[0.97]"
+                        >
+                          Payer en ligne
+                        </Link>
+                        {/* Paiement à la livraison — flux interne (billet + QR) */}
+                        <Link
+                          href={`/billetterie/${event.slug}/reserver`}
+                          className="inline-flex h-10 items-center justify-center rounded-md border border-white/15 px-5 text-sm font-semibold text-gray-200 transition-all hover:border-[#C9A84C]/50 hover:text-[#C9A84C] active:scale-[0.97]"
+                        >
+                          À la livraison
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </motion.div>

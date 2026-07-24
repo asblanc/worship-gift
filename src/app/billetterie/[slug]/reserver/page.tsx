@@ -215,13 +215,12 @@ function ReservationForm({ event }: { event: EventData }) {
                   <div className="border-t border-white/10 pt-4">
                     <p className="mb-4 text-sm font-medium text-gray-300">Mode de paiement :</p>
                     <div className="flex flex-col gap-3 sm:flex-row">
-                      <button
-                        onClick={() => submitOrder("online")}
-                        disabled={loading !== null}
-                        className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-[#C9A84C] px-6 py-3 text-sm font-semibold text-black shadow-sm hover:bg-[#F0CB6A] transition-colors disabled:opacity-50"
+                      <Link
+                        href="/billetterie/en-ligne"
+                        className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-[#C9A84C] px-6 py-3 text-sm font-semibold text-black shadow-sm hover:bg-[#F0CB6A] transition-colors"
                       >
-                        {loading === "online" ? "…" : "Payer en ligne"}
-                      </button>
+                        Payer en ligne
+                      </Link>
                       {event.deliveryAvailable && (
                         <button
                           onClick={() => submitOrder("delivery")}

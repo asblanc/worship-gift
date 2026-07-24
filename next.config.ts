@@ -12,13 +12,14 @@ import type { NextConfig } from "next";
    ------------------------------------------------------------------ */
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com",
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://img.youtube.com https://*.supabase.co https://www.googletagmanager.com https://*.google-analytics.com",
-  "font-src 'self' data:",
-  "connect-src 'self' https://*.supabase.co https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com",
-  "frame-src https://www.youtube.com https://www.youtube-nocookie.com",
-  "form-action 'self' https://*.cmi.co.ma",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://*.billetteries.ma",
+  "style-src 'self' 'unsafe-inline' https://*.billetteries.ma",
+  "img-src 'self' data: blob: https://img.youtube.com https://*.supabase.co https://www.googletagmanager.com https://*.google-analytics.com https://*.billetteries.ma",
+  "font-src 'self' data: https://*.billetteries.ma",
+  "connect-src 'self' https://*.supabase.co https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://*.billetteries.ma",
+  // frame-src : embeds YouTube + widget billetterie (billetteries.ma)
+  "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://*.billetteries.ma",
+  "form-action 'self' https://*.cmi.co.ma https://*.billetteries.ma",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "object-src 'none'",
