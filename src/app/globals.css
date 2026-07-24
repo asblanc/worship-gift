@@ -236,3 +236,47 @@
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
+
+/* ================================================================
+   Panoramique galerie — bandes photo qui défilent en continu
+   (motion design cinématographique). Deux sens opposés, pause au
+   survol, respect de prefers-reduced-motion.
+   ================================================================ */
+@keyframes wg-pan-left {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@keyframes wg-pan-right {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+.wg-pan {
+  width: max-content;
+  will-change: transform;
+  animation-duration: var(--wg-pan-dur, 60s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.wg-pan-left {
+  animation-name: wg-pan-left;
+}
+.wg-pan-right {
+  animation-name: wg-pan-right;
+}
+/* Pause au survol de la bande entière (desktop) */
+.wg-pan-group:hover .wg-pan {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wg-pan {
+    animation: none;
+  }
+}

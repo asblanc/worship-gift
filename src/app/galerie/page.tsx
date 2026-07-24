@@ -1,19 +1,55 @@
 "use client";
 
+import { useState, useCallback, useMemo } from "react";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import Eyebrow from "@/components/Eyebrow";
 import PageHero from "@/components/PageHero";
+import PanoramicStrip from "@/components/PanoramicStrip";
 import { albums } from "@/lib/gallery-config";
+
+const Lightbox = dynamic(() => import("@/components/Lightbox"), { ssr: false });
 
 /* ================================================================
    Worship Gift — Galerie (index)
-   Affiche les albums sous forme de dossiers. Chaque dossier ouvre
-   sa propre page : /galerie/[slug].
+   1. Panoramique cinématographique : bandes photo qui défilent,
+      clic = plein écran.
+   2. Albums (dossiers) : chaque dossier ouvre /galerie/[slug].
    ================================================================ */
 
 export default function GaleriePage() {
+  // Sélection « best of » répartie sur tous les albums pour le panoramique.
+  const highlights = useMemo(() => {
+    const picks = albums.flatMap((album) =>
+      album.images.filter((_, i) => i % 3 === 0),
+    );
+    return picks.slice(0, 18);
+  }, []);
+
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const openLightbox = useCallback((i: number) => setLightboxIndex(i), []);
+  const closeLightbox = useCallback(() => setLightboxIndex(null), []);
+
+  const prevImage = useCallback(
+    () =>
+      setLightboxIndex((prev) =>
+        prev === null ? prev : (prev - 1 + highlights.length) % highlights.length,
+      ),
+    [highlights.length],
+  );
+  const nextImage = useCallback(
+    () =>
+      setLightboxIndex((prev) =>
+        prev === null ? prev : (prev + 1) % highlights.length,
+      ),
+    [highlights.length],
+  );
+
+  const totalPhotos = albums.reduce((n, a) => n + a.images.length, 0);
+
   return (
     <>
       <Navbar />
@@ -25,22 +61,61 @@ export default function GaleriePage() {
           eyebrow="Galerie photo"
           title="Galerie"
         >
-          Revivez les meilleurs moments de nos concerts Gospel. Choisissez un
-          album pour découvrir ses photos.
+          Revivez l&rsquo;intensité de nos concerts Gospel. Laissez défiler les
+          instants, ou ouvrez un album pour explorer chaque soirée en détail.
         </PageHero>
 
+        {/* PANORAMIQUE — bandes photo animées, clic = plein écran */}
+        <section className="relative overflow-hidden border-b border-white/10 bg-black py-14 md:py-20">
+          <div className="mx-auto mb-8 max-w-5xl px-6 text-center md:mb-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5 }}
+              className="flex flex-col items-center"
+            >
+              <Eyebrow centered>En mouvement</Eyebrow>
+              <h2 className="t-h2 text-white">Un aperçu en images</h2>
+              <p className="mx-auto mt-4 max-w-xl t-body text-gray-300">
+                {totalPhotos} photos capturées au cœur de nos soirées.
+                <span className="hidden sm:inline">
+                  {" "}
+                  Survolez pour ralentir,
+                </span>{" "}
+                touchez une image pour l&rsquo;afficher en plein écran.
+              </p>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+          >
+            <PanoramicStrip images={highlights} onOpen={openLightbox} />
+          </motion.div>
+        </section>
+
         {/* DOSSIERS / ALBUMS */}
-        <section className="min-h-screen bg-black px-4 py-14 md:px-8 md:py-20">
+        <section className="bg-[#0a0a0a] px-4 py-16 md:px-8 md:py-24">
           <div className="mx-auto max-w-5xl">
-            <motion.h2
+            <motion.div
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="mb-10 text-center t-h2 text-white"
+              className="mb-10 flex flex-col items-center text-center md:mb-14"
             >
-              Nos événements en images
-            </motion.h2>
+              <Eyebrow centered>Par événement</Eyebrow>
+              <h2 className="t-h2 text-white">Nos événements en images</h2>
+              <p className="mx-auto mt-4 max-w-xl t-body text-gray-300">
+                Chaque album raconte une soirée&nbsp;: son chantre, son
+                atmosphère, ses moments de grâce. Choisissez un dossier pour
+                l&rsquo;explorer.
+              </p>
+            </motion.div>
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               {albums.map((album, i) => (
@@ -57,12 +132,12 @@ export default function GaleriePage() {
                     className="group relative block overflow-hidden rounded-xl border border-white/10 bg-[#111] transition-all duration-300 hover:border-[#C9A84C]/60 hover:shadow-[0_0_24px_rgba(201,168,76,0.18)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C]"
                   >
                     {/* Couverture */}
-                    <div className="relative h-56 w-full overflow-hidden sm:h-64">
+                    <div className="relative h-60 w-full overflow-hidden sm:h-72">
                       <Image
                         src={album.cover}
                         alt={`Couverture ${album.title}`}
                         fill
-                        className="object-cover brightness-[0.65] transition-all duration-500 group-hover:scale-105 group-hover:brightness-75"
+                        className="object-cover brightness-[0.65] transition-all duration-700 group-hover:scale-105 group-hover:brightness-75"
                         sizes="(max-width: 640px) 100vw, 50vw"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-black/20 to-transparent" />
@@ -108,9 +183,42 @@ export default function GaleriePage() {
                 </motion.div>
               ))}
             </div>
+
+            {/* CTA bas de page */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="mt-16 flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-[#111] px-6 py-10 text-center"
+            >
+              <h3 className="t-h3 text-white">
+                Vous étiez présent&nbsp;? Partagez vos souvenirs.
+              </h3>
+              <p className="max-w-xl t-body text-gray-300">
+                Envoyez-nous vos plus belles photos&nbsp;: les meilleures
+                rejoindront la galerie de la prochaine édition.
+              </p>
+              <Link
+                href="/contact"
+                className="mt-2 inline-flex h-12 items-center justify-center rounded-full bg-[#C9A84C] px-8 text-[13px] font-semibold uppercase tracking-[0.12em] text-black transition-all hover:bg-[#F0CB6A] hover:shadow-lg hover:shadow-[#C9A84C]/30 active:scale-[0.97]"
+              >
+                Nous contacter
+              </Link>
+            </motion.div>
           </div>
         </section>
       </main>
+
+      {lightboxIndex !== null && (
+        <Lightbox
+          images={highlights}
+          currentIndex={lightboxIndex}
+          onClose={closeLightbox}
+          onPrev={prevImage}
+          onNext={nextImage}
+        />
+      )}
     </>
   );
 }
