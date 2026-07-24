@@ -6,9 +6,14 @@ import { billetteriesWidget as cfg } from "@/lib/ticketing-config";
 /* ================================================================
    Worship Gift — Widget billetterie externe (billetteries.ma)
    Charge le script renderer.js une seule fois, puis appelle
-   window.createss(formId, iframeUrl) pour injecter le formulaire de
-   vente/paiement dans le <div>. Gère un état de chargement et un
-   secours (lien direct) si le script est bloqué / indisponible.
+   window.createss(formId, iframeUrl) : leur script injecte un
+   spinner puis une iframe dont la HAUTEUR est fixée via postMessage
+   par la page cible.
+
+   Watchdog : si la page cible n'envoie pas sa hauteur en ~10 s
+   (lien invalide, événement non publié, framing bloqué…), on bascule
+   sur un secours « Ouvrir la billetterie » (nouvel onglet) au lieu
+   de laisser un spinner tourner indéfiniment.
    ================================================================ */
 
 declare global {
@@ -46,55 +51,70 @@ function loadRenderer(src: string): Promise<void> {
   return scriptPromise;
 }
 
+const WATCHDOG_MS = 10_000;
+
 export default function BilletteriesWidget() {
-  const [state, setState] = useState<"loading" | "ready" | "error">("loading");
+  // loading : script + iframe en cours ; embedded : iframe affichée ;
+  // fallback : échec -> on propose le lien direct
+  const [phase, setPhase] = useState<"loading" | "embedded" | "fallback">("loading");
   const injected = useRef(false);
 
   useEffect(() => {
     let active = true;
+    let watchdog: ReturnType<typeof setTimeout> | undefined;
 
     loadRenderer(cfg.scriptUrl)
       .then(() => {
         if (!active || injected.current) return;
         if (typeof window.createss !== "function") {
-          setState("error");
+          setPhase("fallback");
           return;
         }
         try {
-          // Garde anti double-injection (StrictMode / re-render)
           injected.current = true;
           window.createss(cfg.formId, cfg.iframeUrl);
-          setState("ready");
+
+          // Vérifie que l'iframe a bien reçu une hauteur exploitable.
+          watchdog = setTimeout(() => {
+            if (!active) return;
+            const container = document.getElementById(cfg.formId);
+            const stillLoading = !!container?.querySelector("#ticketingloading");
+            const iframe = container?.querySelector("iframe");
+            const height = iframe ? iframe.getBoundingClientRect().height : 0;
+            setPhase(!stillLoading && height >= 60 ? "embedded" : "fallback");
+          }, WATCHDOG_MS);
         } catch {
-          setState("error");
+          setPhase("fallback");
         }
       })
       .catch(() => {
-        if (active) setState("error");
+        if (active) setPhase("fallback");
       });
 
     return () => {
       active = false;
+      if (watchdog) clearTimeout(watchdog);
     };
   }, []);
 
   return (
     <div className="relative min-h-[520px]">
-      {/* Conteneur rempli par createss() */}
+      {/* Conteneur rempli par createss() (iframe billetteries.ma) */}
       <div id={cfg.formId} className="integrationss" />
 
-      {state === "loading" && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center">
+      {phase === "loading" && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[#0D0D0D] text-center">
           <span className="h-7 w-7 animate-spin rounded-full border-2 border-[#C9A84C] border-t-transparent" />
           <p className="text-sm text-gray-400">Chargement de la billetterie sécurisée…</p>
         </div>
       )}
 
-      {state === "error" && (
-        <div className="flex flex-col items-center justify-center gap-4 rounded-xl border border-white/10 bg-white/[0.03] px-6 py-12 text-center">
-          <p className="text-sm text-gray-300">
-            La billetterie n&rsquo;a pas pu se charger ici. Vous pouvez
-            l&rsquo;ouvrir directement pour réserver et payer en toute sécurité.
+      {phase === "fallback" && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-xl border border-white/10 bg-[#0D0D0D] px-6 py-12 text-center">
+          <p className="max-w-md text-sm text-gray-300">
+            La billetterie ne s&rsquo;affiche pas ici pour le moment. Vous pouvez
+            l&rsquo;ouvrir dans un nouvel onglet pour réserver et payer en toute
+            sécurité.
           </p>
           <a
             href={cfg.directUrl}
