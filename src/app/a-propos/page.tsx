@@ -85,6 +85,34 @@ const equipe = [
   { nom: "À venir", role: "Technique & production" },
 ];
 
+const chiffres = [
+  { valeur: "6", suffixe: "ans", label: "de louange et de rencontres" },
+  { valeur: "20", suffixe: "+", label: "concerts & soirées d'adoration" },
+  { valeur: "5000", suffixe: "+", label: "cœurs touchés en présentiel" },
+  { valeur: "4", suffixe: "villes", label: "et une communauté qui grandit" },
+];
+
+const temoignages = [
+  {
+    citation:
+      "Je suis venue par curiosité et je suis repartie transformée. L'atmosphère d'adoration était puissante, on sentait vraiment la présence de Dieu.",
+    auteur: "Grâce",
+    contexte: "Participante — Concert gospel",
+  },
+  {
+    citation:
+      "Worship Gift, ce n'est pas qu'un concert, c'est une famille. On y trouve sa place, quel que soit son parcours. J'y reviens à chaque édition.",
+    auteur: "Emmanuel",
+    contexte: "Membre de la communauté",
+  },
+  {
+    citation:
+      "La qualité musicale et le message m'ont profondément marqué. Mes enfants chantent encore les louanges à la maison une semaine après !",
+    auteur: "Sarah",
+    contexte: "Venue en famille",
+  },
+];
+
 export default function AProposPage() {
   return (
     <>
@@ -93,8 +121,8 @@ export default function AProposPage() {
       <main className="flex-1 pt-20 font-poppins bg-black">
         {/* Héro — fond noir avec image d'illustration */}
         <PageHero
-          image="/img_worship-gift/worship-golden.jpg"
-          alt="Foule en adoration lors d'un concert gospel Worship Gift"
+          image="/img_worship-gift/img_apropos.jpg"
+          alt="À propos Worship Gift"
           eyebrow="Qui sommes-nous"
           title="À propos"
         >
@@ -169,6 +197,55 @@ export default function AProposPage() {
                 </motion.div>
               </motion.div>
             </div>
+          </div>
+        </section>
+
+        {/* Worship Gift en chiffres */}
+        <section className="relative overflow-hidden border-y border-[#282828] bg-[#0D0D0D] px-6 py-20 md:py-24">
+          {/* halo doré discret */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.12]"
+            style={{
+              background:
+                "radial-gradient(60% 60% at 50% 0%, rgba(201,168,76,0.5), transparent 70%)",
+            }}
+          />
+          <div className="relative mx-auto max-w-5xl">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5 }}
+              className="mb-12 flex flex-col items-center text-center"
+            >
+              <Eyebrow centered>Le mouvement en un coup d'œil</Eyebrow>
+              <h2 className="t-h2 text-white">Worship Gift en chiffres</h2>
+            </motion.div>
+
+            <motion.dl
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-80px" }}
+              className="grid grid-cols-2 gap-6 md:grid-cols-4"
+            >
+              {chiffres.map((c) => (
+                <motion.div
+                  key={c.label}
+                  variants={fadeUp}
+                  className="flex flex-col items-center rounded-xl border border-[#282828] bg-[#121212]/80 px-4 py-8 text-center"
+                >
+                  <dd className="font-poppins text-4xl font-black leading-none text-[#C9A84C] md:text-5xl">
+                    {c.valeur}
+                    <span className="ml-1 align-top text-xl font-bold text-[#C9A84C]/70 md:text-2xl">
+                      {c.suffixe}
+                    </span>
+                  </dd>
+                  <dt className="mt-3 t-meta text-[#B0B0B0]">{c.label}</dt>
+                </motion.div>
+              ))}
+            </motion.dl>
           </div>
         </section>
 
@@ -298,8 +375,72 @@ export default function AProposPage() {
           </div>
         </section>
 
-        {/* Équipe */}
+        {/* Témoignages */}
         <section className="bg-[#101010] px-6 py-20 md:py-28">
+          <div className="mx-auto max-w-5xl">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5 }}
+              className="mb-14 flex flex-col items-center text-center"
+            >
+              <Eyebrow centered>Ils l'ont vécu</Eyebrow>
+              <h2 className="t-h2 text-white">Témoignages</h2>
+              <p className="mx-auto mt-4 max-w-xl t-body text-[#B0B0B0]">
+                Derrière chaque concert, il y a des vies touchées. Voici ce que
+                partagent celles et ceux qui ont vécu un moment Worship Gift.
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-80px" }}
+              className="grid gap-6 md:grid-cols-3"
+            >
+              {temoignages.map((t) => (
+                <motion.figure
+                  key={t.auteur + t.contexte}
+                  variants={fadeUp}
+                  className="relative flex h-full flex-col rounded-xl border border-[#282828] bg-[#121212] p-7 transition-all duration-300 hover:border-[#C9A84C]/50 hover:shadow-[0_12px_50px_rgba(0,0,0,0.4)]"
+                >
+                  {/* Guillemet décoratif */}
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute right-5 top-3 select-none font-poppins text-6xl font-black leading-none text-[#C9A84C]/10"
+                  >
+                    &rdquo;
+                  </span>
+                  {/* Étoiles */}
+                  <div className="flex gap-1 text-[#C9A84C]">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <svg key={i} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                      </svg>
+                    ))}
+                  </div>
+                  <blockquote className="mt-4 flex-1 t-body text-[#DADADA]">
+                    {t.citation}
+                  </blockquote>
+                  <figcaption className="mt-6 flex items-center gap-3 border-t border-[#282828] pt-4">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#C9A84C]/30 bg-[#C9A84C]/10 font-poppins text-sm font-bold text-[#C9A84C]">
+                      {t.auteur.charAt(0)}
+                    </span>
+                    <span className="flex flex-col">
+                      <span className="t-card-title text-white">{t.auteur}</span>
+                      <span className="t-meta text-[#9A9A9A]">{t.contexte}</span>
+                    </span>
+                  </figcaption>
+                </motion.figure>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Équipe */}
+        <section className="bg-[#0A0A0A] px-6 py-20 md:py-28">
           <div className="mx-auto max-w-4xl">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
