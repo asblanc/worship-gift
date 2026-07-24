@@ -20,8 +20,8 @@ export default function GaleriePage() {
       <main className="flex-1 pt-20">
         {/* HERO */}
         <PageHero
-          image="/img_worship-gift/img_galerie.jpg"
-          alt="Worship Gift Galerie"
+          image="/img_worship-gift/concert-crowd.jpg"
+          alt="Public d'un concert gospel Worship Gift, mains levées"
           eyebrow="Galerie photo"
           title="Galerie"
         >

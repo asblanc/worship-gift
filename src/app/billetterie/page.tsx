@@ -64,8 +64,8 @@ export default function BilletteriePage() {
       <main className="flex-1 pt-20">
         {/* Héro — fond noir avec image d'illustration */}
         <PageHero
-          image="/img_worship-gift/img_billeterie.jpg"
-          alt="Billetterie Worship Gift"
+          image="/img_worship-gift/heros-21.jpg"
+          alt="Salle de concert — billetterie Worship Gift"
           eyebrow="Billetterie"
           title="Billetterie"
         >

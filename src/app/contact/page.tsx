@@ -66,8 +66,8 @@ export default function ContactPage() {
       <main className="flex-1 pt-20">
         {/* Héro — fond noir avec image d'illustration */}
         <PageHero
-          image="/img_worship-gift/img_contact.jpg"
-          alt="Contact Worship Gift"
+          image="/img_worship-gift/worship-arms.jpg"
+          alt="Adorateur mains levées lors d'un concert gospel Worship Gift"
           eyebrow="Contact"
           title="Contact"
         >

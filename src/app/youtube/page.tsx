@@ -55,8 +55,8 @@ export default function MediasPage() {
       <main className="flex-1 pt-20 font-poppins bg-black">
         {/* Héro — fond noir avec image d'illustration */}
         <PageHero
-          image="/img_worship-gift/img_media.jpg"
-          alt="Médias Worship Gift"
+          image="/img_worship-gift/media-mic.jpg"
+          alt="Micro de studio — médias Worship Gift"
           eyebrow="Médias · Worship Gift"
           title="Médias"
         >

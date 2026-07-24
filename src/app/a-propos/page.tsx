@@ -93,8 +93,8 @@ export default function AProposPage() {
       <main className="flex-1 pt-20 font-poppins bg-black">
         {/* Héro — fond noir avec image d'illustration */}
         <PageHero
-          image="/img_worship-gift/img_apropos.jpg"
-          alt="À propos Worship Gift"
+          image="/img_worship-gift/worship-golden.jpg"
+          alt="Foule en adoration lors d'un concert gospel Worship Gift"
           eyebrow="Qui sommes-nous"
           title="À propos"
         >
