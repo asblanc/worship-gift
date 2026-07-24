@@ -11,6 +11,13 @@ interface StatsData {
   totalPaid: number;
   totalTickets: number;
   totalScanned: number;
+  deliveriesToHonor: number;
+}
+
+interface PaymentStatus {
+  provider: string;
+  environment: "test" | "prod";
+  configured: boolean;
 }
 
 interface RecentOrder {
@@ -34,16 +41,23 @@ const stagger = {
 };
 
 export default function AdminDashboardPage() {
-  const [stats, setStats] = useState<StatsData>({ totalOrders: 0, totalPaid: 0, totalTickets: 0, totalScanned: 0 });
+  const [stats, setStats] = useState<StatsData>({ totalOrders: 0, totalPaid: 0, totalTickets: 0, totalScanned: 0, deliveriesToHonor: 0 });
   const [recentOrders, setRecentOrders] = useState<RecentOrder[]>([]);
+  const [payment, setPayment] = useState<PaymentStatus | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // État de configuration du paiement en ligne (n'expose aucun secret)
+    fetch("/api/admin/payment-status")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => d && setPayment(d))
+      .catch(() => {});
+
     const fetchData = async () => {
       try {
         const { count: totalOrders, data: allOrders } = await supabase
           .from("orders")
-          .select("amount, status", { count: "exact" });
+          .select("amount, status, payment_method", { count: "exact" });
 
         const { count: totalTickets } = await supabase
           .from("tickets")
@@ -59,11 +73,20 @@ export default function AdminDashboardPage() {
             ?.filter((o) => o.status === "paid")
             .reduce((sum, o) => sum + (o.amount || 0), 0) || 0;
 
+        // Livraisons à honorer : commandes « à la livraison » pas encore payées
+        const deliveriesToHonor =
+          allOrders?.filter(
+            (o) =>
+              o.payment_method === "delivery" &&
+              (o.status === "pending" || o.status === "reserved"),
+          ).length || 0;
+
         setStats({
           totalOrders: totalOrders || 0,
           totalPaid,
           totalTickets: totalTickets || 0,
           totalScanned: totalScanned || 0,
+          deliveriesToHonor,
         });
 
         const { data: recent } = await supabase
@@ -119,7 +142,7 @@ export default function AdminDashboardPage() {
           <span className="h-6 w-6 animate-spin rounded-full border-2 border-[#C9A84C] border-t-transparent" />
         </div>
       ) : (
-        <motion.div variants={stagger} className="grid gap-4 sm:grid-cols-3">
+        <motion.div variants={stagger} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <motion.div variants={fadeUp} className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6 backdrop-blur-sm">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/[0.03]">
@@ -169,6 +192,144 @@ export default function AdminDashboardPage() {
               </div>
             </div>
           </motion.div>
+
+          {/* Livraisons à honorer */}
+          <motion.div
+            variants={fadeUp}
+            className={`rounded-xl border p-6 backdrop-blur-sm ${
+              stats.deliveriesToHonor > 0
+                ? "border-[#25D366]/25 bg-[#25D366]/[0.06]"
+                : "border-white/[0.06] bg-white/[0.02]"
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${stats.deliveriesToHonor > 0 ? "bg-[#25D366]/15" : "bg-white/[0.03]"}`}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={stats.deliveriesToHonor > 0 ? "#25D366" : "#C9A84C"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="1" y="3" width="15" height="13" rx="1" />
+                  <path d="M16 8h4l3 3v5h-7V8z" />
+                  <circle cx="5.5" cy="18.5" r="2.5" />
+                  <circle cx="18.5" cy="18.5" r="2.5" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-xs text-gray-400">Livraisons à honorer</p>
+                <p className={`font-heading text-2xl font-bold ${stats.deliveriesToHonor > 0 ? "text-[#25D366]" : "text-white"}`}>
+                  {stats.deliveriesToHonor}
+                </p>
+                <p className="mt-0.5 text-[11px] text-gray-400">paiement à la livraison</p>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+
+      {/* Paiement en ligne — état de configuration (code du prestataire) */}
+      {!loading && (
+        <motion.div variants={fadeUp} className="rounded-xl border border-white/[0.06] bg-white/[0.01] p-6">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/[0.03]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="5" width="20" height="14" rx="2" /><line x1="2" y1="10" x2="22" y2="10" />
+                </svg>
+              </div>
+              <div>
+                <p className="t-card-title text-white">Paiement en ligne</p>
+                <p className="text-xs text-gray-400">
+                  {payment
+                    ? `Prestataire ${payment.provider.toUpperCase()} · environnement ${payment.environment === "prod" ? "production" : "test"}`
+                    : "Statut indisponible"}
+                </p>
+              </div>
+            </div>
+            {payment && (
+              <span
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-semibold ${
+                  payment.configured
+                    ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-400"
+                    : "border-yellow-500/20 bg-yellow-500/10 text-yellow-400"
+                }`}
+              >
+                <span className={`h-1.5 w-1.5 rounded-full ${payment.configured ? "bg-emerald-400" : "bg-yellow-400"}`} />
+                {payment.configured
+                  ? payment.environment === "prod"
+                    ? "Connecté (production)"
+                    : "Prêt (sandbox test)"
+                  : "À configurer"}
+              </span>
+            )}
+          </div>
+          {payment && !payment.configured && (
+            <p className="mt-4 rounded-lg border border-yellow-500/15 bg-yellow-500/[0.04] p-3 text-xs leading-relaxed text-gray-300">
+              Pour encaisser en ligne en production, renseignez les clés fournies
+              par le prestataire dans les variables d&rsquo;environnement&nbsp;:
+              <span className="mt-1 block font-mono text-[11px] text-[#C9A84C]">
+                CMI_CLIENT_ID · CMI_STORE_KEY · CMI_CALLBACK_URL · PAYMENT_ENV=prod
+              </span>
+            </p>
+          )}
+        </motion.div>
+      )}
+
+      {/* Mise en route — affiché tant qu'aucune commande n'existe */}
+      {!loading && stats.totalOrders === 0 && (
+        <motion.div variants={fadeUp} className="rounded-xl border border-[#C9A84C]/15 bg-[#C9A84C]/[0.03] p-6">
+          <h2 className="t-card-title text-white">Mise en route</h2>
+          <p className="mt-1 text-xs text-gray-400">
+            Aucune commande pour l&rsquo;instant. Voici les étapes pour être prêt à vendre.
+          </p>
+          <ul className="mt-5 space-y-3">
+            {[
+              {
+                done: upcomingEvents.length > 0,
+                title: "Configurer l'événement",
+                desc: "Chantre, date, salle et catégories de billets sont définis dans events-config.",
+                href: "/admin/events",
+                cta: "Événements",
+              },
+              {
+                done: !!payment?.configured,
+                title: "Activer le paiement en ligne",
+                desc: "Renseigner les clés du prestataire (CMI) pour encaisser par carte. Le paiement à la livraison, lui, fonctionne déjà.",
+                href: undefined,
+                cta: undefined,
+              },
+              {
+                done: false,
+                title: "Recevoir la première commande",
+                desc: "Dès qu'un client réserve, elle apparaît ici et dans « Commandes ».",
+                href: "/billetterie",
+                cta: "Voir la billetterie",
+              },
+            ].map((step) => (
+              <li key={step.title} className="flex items-start gap-3">
+                <span
+                  className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
+                    step.done
+                      ? "border-emerald-500/30 bg-emerald-500/15 text-emerald-400"
+                      : "border-white/15 text-gray-500"
+                  }`}
+                >
+                  {step.done ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                  ) : (
+                    <span className="h-1.5 w-1.5 rounded-full bg-current" />
+                  )}
+                </span>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-white">
+                    {step.title}
+                    {step.href && step.cta && (
+                      <Link href={step.href} className="ml-2 text-xs font-normal text-[#C9A84C] hover:text-[#F0CB6A]">
+                        {step.cta} →
+                      </Link>
+                    )}
+                  </p>
+                  <p className="mt-0.5 text-xs text-gray-400">{step.desc}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
         </motion.div>
       )}
 

@@ -343,6 +343,78 @@ export async function markOrderPaid(
   return { ok: true, tickets };
 }
 
+/**
+ * Prépare les billets d'une commande « à la livraison » AVANT le paiement.
+ *
+ * Logique métier livraison : le client paie en espèces à la réception. On
+ * doit donc pouvoir IMPRIMER le billet (avec son QR) puis le livrer, avant
+ * même d'avoir encaissé. Cette fonction génère les billets (status "valid")
+ * et fait passer la commande en "reserved" (= confirmée, à livrer). Le
+ * paiement sera confirmé plus tard avec markOrderPaid() (encaissement).
+ *
+ * - Réservée aux commandes payment_method = "delivery".
+ * - Idempotente : ne recrée jamais de billets s'ils existent déjà.
+ * - Les billets portent le même ticket_code unique, qu'ils soient remis
+ *   en main propre (imprimés) ou affichés à l'écran : le QR encode ce code,
+ *   scanné à l'entrée pour retrouver le billet en base et le valider.
+ */
+export async function prepareDeliveryTickets(
+  orderId: string,
+): Promise<{ ok: boolean; tickets?: TicketEntry[]; error?: string }> {
+  const supabase = createAdminClient();
+
+  const { data: order, error } = await supabase
+    .from("orders")
+    .select(
+      "id, customer_email, customer_name, quantity, event_id, event_title, event_date, event_time, event_location, ticket_type, status, payment_method",
+    )
+    .eq("id", orderId)
+    .single();
+
+  if (error || !order) {
+    return { ok: false, error: "Commande introuvable" };
+  }
+  if (order.payment_method !== "delivery") {
+    return {
+      ok: false,
+      error: "Action réservée aux commandes à la livraison",
+    };
+  }
+  if (order.status === "cancelled" || order.status === "failed") {
+    return { ok: false, error: "Commande annulée : billets non générables" };
+  }
+
+  // Idempotence : billets déjà générés ? on les renvoie sans doublon.
+  const { data: existing } = await supabase
+    .from("tickets")
+    .select("id, ticket_code, event_title, ticket_type")
+    .eq("order_id", orderId);
+
+  let tickets: TicketEntry[];
+  if (existing && existing.length > 0) {
+    tickets = existing.map((t) => ({
+      id: t.id as string,
+      ticketCode: t.ticket_code as string,
+      eventTitle: (t.event_title as string) ?? "",
+      ticketType: (t.ticket_type as string) ?? "Entrée libre",
+    }));
+  } else {
+    tickets = await insertTicketsForOrder(supabase, order as OrderRowForTickets);
+  }
+
+  // pending -> reserved (à livrer). On ne touche pas à un statut plus avancé.
+  if (order.status === "pending") {
+    const { error: updErr } = await supabase
+      .from("orders")
+      .update({ status: "reserved" })
+      .eq("id", orderId)
+      .eq("status", "pending");
+    if (updErr) return { ok: false, error: updErr.message };
+  }
+
+  return { ok: true, tickets };
+}
+
 /** Met à jour le statut d'une commande (transitions hors "paid", ex: cancelled). */
 export async function updateOrderStatus(
   orderId: string,

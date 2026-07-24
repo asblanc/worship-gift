@@ -280,3 +280,38 @@
     animation: none;
   }
 }
+
+/* ================================================================
+   Impression des billets (admin) — n'imprime que la zone
+   `.print-area`. Masquée à l'écran, isolée du reste au moment de
+   l'impression (compatible multi-pages).
+   ================================================================ */
+@media screen {
+  .print-area {
+    display: none;
+  }
+}
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  .print-area,
+  .print-area * {
+    visibility: visible !important;
+  }
+  .print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: #fff;
+    color: #000;
+  }
+  .print-ticket {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  @page {
+    margin: 12mm;
+  }
+}
