@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
 /* ═══════════════════════════════════════════════════════════
@@ -9,14 +10,29 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const FAQ_ITEMS = [
   {
-    question: "Comment récupérer mon billet de concert ?",
+    question: "Comment commander mes billets ?",
     answer:
-      "Après votre achat, vous recevez un e-mail de confirmation contenant votre billet au format PDF. Vous pouvez le présenter directement sur votre téléphone à l'entrée du concert, ou l'imprimer. Vérifiez vos spams si vous ne le trouvez pas.",
+      "Rendez-vous sur la page Billetterie, choisissez le concert, la catégorie de place (Normale, VIP…) et la quantité, puis validez. Au moment de finaliser, vous choisissez votre mode de paiement : en ligne par carte bancaire, ou paiement à la livraison. C'est simple, rapide et sécurisé.",
   },
   {
-    question: "Que faire si la date ou l'heure du concert change ?",
+    question: "Puis-je payer à la livraison ?",
     answer:
-      "En cas de changement de date ou d'horaire, nous vous informons immédiatement par e-mail. Votre billet reste valable pour la nouvelle date. Si vous ne pouvez pas y assister, contactez-nous via le bouton WhatsApp en bas à droite de l'écran.",
+      "Oui ! En plus du paiement en ligne, nous proposons le paiement à la livraison. Choisissez l'option « Paiement à la livraison », renseignez votre nom et votre numéro de téléphone : nous confirmons votre commande par WhatsApp, votre billet vous est livré, et vous réglez en espèces à la réception. Aucun paiement à l'avance n'est demandé.",
+  },
+  {
+    question: "Quels moyens de paiement acceptez-vous ?",
+    answer:
+      "Deux options : le paiement en ligne par carte bancaire (transaction sécurisée 3D Secure via CMI), ou le paiement en espèces à la livraison de vos billets. Vous choisissez la formule qui vous convient au moment de la commande.",
+  },
+  {
+    question: "Comment récupérer mon billet de concert ?",
+    answer:
+      "Pour un paiement en ligne, vous recevez aussitôt un e-mail de confirmation avec votre billet au format PDF (présentable sur votre téléphone ou imprimé). Pour une commande à la livraison, votre billet vous est remis en main propre lors de la livraison. Dans les deux cas, présentez-le à l'entrée du concert.",
+  },
+  {
+    question: "Combien de temps prend la livraison des billets ?",
+    answer:
+      "Après confirmation de votre commande sur WhatsApp, nous convenons ensemble d'un créneau de livraison. Les billets sont généralement livrés sous 24 à 72 h selon votre zone. Pour les commandes de dernière minute, contactez-nous directement via WhatsApp pour organiser un retrait rapide.",
   },
   {
     question: "Puis-je transférer mon billet à quelqu'un d'autre ?",
@@ -24,7 +40,12 @@ const FAQ_ITEMS = [
       "Oui, vous pouvez transférer votre billet à une autre personne. Le billet n'est pas nominatif. La personne devra simplement présenter le billet (numérique ou imprimé) à l'entrée. Attention : un même billet ne peut être utilisé qu'une seule fois.",
   },
   {
-    question: "Que faire si je n'ai pas reçu mon e-mail de confirmation ?",
+    question: "Que faire si la date ou l'heure du concert change ?",
+    answer:
+      "En cas de changement de date ou d'horaire, nous vous informons immédiatement par e-mail et sur nos réseaux. Votre billet reste valable pour la nouvelle date. Si vous ne pouvez pas y assister, contactez-nous via le bouton WhatsApp en bas à droite de l'écran.",
+  },
+  {
+    question: "Je n'ai pas reçu mon e-mail de confirmation, que faire ?",
     answer:
       "Vérifiez d'abord vos courriers indésirables (spams). Si vous ne trouvez toujours pas l'e-mail, contactez-nous via WhatsApp en précisant votre nom et la date d'achat. Nous vous renverrons votre billet dans les plus brefs délais.",
   },
@@ -72,15 +93,20 @@ export default function FAQ() {
 
   return (
     <section className="w-full border-t border-white/5 bg-[#0A0A0A] px-6 py-16 md:py-24">
-      <div className="mx-auto max-w-2xl">
+      <div className="mx-auto max-w-3xl">
         {/* Titre section */}
-        <div className="mb-12 text-center">
+        <div className="mb-12 flex flex-col items-center text-center">
+          <span className="mb-4 inline-flex items-center gap-3 text-[13px] font-semibold uppercase tracking-[0.2em] text-[#C9A84C]">
+            <span className="h-px w-8 bg-[#C9A84C]/60" aria-hidden />
+            Aide &amp; billetterie
+          </span>
           <h2 className="font-heading text-3xl font-bold text-[#C9A84C] md:text-4xl">
             Foire aux questions
           </h2>
           <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-gray-300">
-            Vous avez une question ? Consultez notre FAQ ou contactez-nous
-            directement via WhatsApp.
+            Commande, paiement à la livraison, retrait de vos billets…
+            Retrouvez ici l&rsquo;essentiel. Une autre question&nbsp;?
+            Écrivez-nous sur WhatsApp.
           </p>
         </div>
 
@@ -91,14 +117,25 @@ export default function FAQ() {
             return (
               <div
                 key={index}
-                className="overflow-hidden rounded-lg border border-white/10 bg-[#111111] transition-colors hover:border-white/15"
+                className={`overflow-hidden rounded-xl border bg-[#111111] transition-colors ${
+                  isOpen
+                    ? "border-[#C9A84C]/40"
+                    : "border-white/10 hover:border-white/20"
+                }`}
               >
                 <button
                   onClick={() => toggle(index)}
-                  className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+                  className="flex w-full items-center gap-4 px-5 py-4 text-left"
                   aria-expanded={isOpen}
                 >
-                  <span className="font-heading text-base font-medium text-white md:text-lg">
+                  <span
+                    className={`font-poppins text-sm font-bold tabular-nums transition-colors ${
+                      isOpen ? "text-[#C9A84C]" : "text-[#C9A84C]/50"
+                    }`}
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="flex-1 font-heading text-base font-medium text-white md:text-lg">
                     {item.question}
                   </span>
                   <ChevronIcon open={isOpen} />
@@ -114,7 +151,7 @@ export default function FAQ() {
                       transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="overflow-hidden"
                     >
-                      <p className="px-5 pb-5 pt-1 text-sm leading-relaxed text-gray-300">
+                      <p className="pb-5 pl-[3.25rem] pr-5 pt-1 text-sm leading-relaxed text-gray-300">
                         {item.answer}
                       </p>
                     </motion.div>
@@ -123,6 +160,31 @@ export default function FAQ() {
               </div>
             );
           })}
+        </div>
+
+        {/* CTA bas de FAQ */}
+        <div className="mt-10 flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-gradient-to-br from-[#141414] to-[#0d0d0d] px-6 py-8 text-center">
+          <p className="font-heading text-lg font-semibold text-white">
+            Prêt à réserver votre place&nbsp;?
+          </p>
+          <p className="max-w-md text-sm leading-relaxed text-gray-300">
+            Commandez en ligne et payez par carte ou à la livraison. Vous
+            hésitez encore&nbsp;? Notre équipe vous répond directement.
+          </p>
+          <div className="mt-1 flex flex-col gap-3 sm:flex-row">
+            <Link
+              href="/billetterie"
+              className="inline-flex h-11 items-center justify-center rounded-full bg-[#C9A84C] px-7 text-[13px] font-semibold uppercase tracking-[0.12em] text-black transition-all hover:bg-[#F0CB6A] hover:shadow-lg hover:shadow-[#C9A84C]/30 active:scale-[0.97]"
+            >
+              Commander des billets
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex h-11 items-center justify-center rounded-full border border-white/15 px-7 text-[13px] font-semibold uppercase tracking-[0.12em] text-gray-200 transition-colors hover:border-[#C9A84C]/50 hover:text-[#C9A84C]"
+            >
+              Nous contacter
+            </Link>
+          </div>
         </div>
       </div>
     </section>

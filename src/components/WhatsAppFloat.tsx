@@ -87,10 +87,10 @@ export default function WhatsAppFloat() {
     return () => document.removeEventListener("keydown", handleKey);
   }, [open]);
 
-  const handleOption = (key: keyof typeof MESSAGES) => {
-    const message = encodeURIComponent(MESSAGES[key]);
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, "_blank", "noopener,noreferrer");
-  };
+  // Lien WhatsApp natif : on privilégie un <a> (pas window.open) pour éviter
+  // le popup « about:blank » qui s'affichait brièvement avant la redirection.
+  const waHref = (key: keyof typeof MESSAGES) =>
+    `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(MESSAGES[key])}`;
 
   return (
     <div
@@ -118,16 +118,19 @@ export default function WhatsAppFloat() {
             {/* Options */}
             <div className="mt-4 flex flex-col gap-2">
               {OPTIONS.map((opt) => (
-                <button
+                <a
                   key={opt.key}
-                  onClick={() => handleOption(opt.key)}
+                  href={waHref(opt.key)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setOpen(false)}
                   className="flex items-center gap-3 rounded-lg border border-white/10 px-3 py-2.5 text-left text-sm text-gray-200 transition-colors hover:border-[#C9A84C]/40 hover:bg-[#C9A84C]/10 hover:text-white active:scale-[0.98]"
                 >
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C9A84C]/15 text-[#C9A84C]">
                     {opt.icon}
                   </span>
                   <span className="font-medium">{opt.label}</span>
-                </button>
+                </a>
               ))}
             </div>
           </motion.div>
