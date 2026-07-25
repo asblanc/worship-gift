@@ -12,7 +12,11 @@ export default function Home() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd()) }}
+        // \u003c empêche toute évasion "</script>" si une donnée venait
+        // un jour à contenir du HTML (durcissement XSS).
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildJsonLd()).replace(/</g, "\\u003c"),
+        }}
       />
       <Navbar />
       <HeroCarousel />

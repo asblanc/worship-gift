@@ -9,11 +9,13 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { confirmFreeReservation } from "@/lib/orders-service.server";
-import { rateLimit } from "@/lib/rate-limit";
+import { rateLimitAsync } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
   try {
-    const limited = rateLimit(request, "orders-confirm", 20, 60_000);
+    // Distribué (Upstash) si configuré : protège réellement contre le
+    // brute-force d'orderId, pas seulement sur une instance chaude.
+    const limited = await rateLimitAsync(request, "orders-confirm", 20, 60_000);
     if (limited) return limited;
 
     const body = await request.json();

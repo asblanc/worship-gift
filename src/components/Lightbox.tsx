@@ -76,6 +76,9 @@ export default function Lightbox({
         onClick={onClose}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Visionneuse de photos — image ${currentIndex + 1} sur ${images.length}`}
       >
         {/* Bouton fermer */}
         <button

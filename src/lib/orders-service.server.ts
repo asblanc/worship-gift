@@ -35,20 +35,32 @@ export interface OrderResult {
 }
 
 /* ------------------------------------------------------------------
-   Identifiants : WG-AAAAMMJJ-XXXX (commande) + codes billets uniques
-   crypto au lieu de Math.random (non devinable, pas de collision)
+   Identifiants : WG-AAAAMMJJ-XXXXXXXXXX (commande) + codes billets
+   uniques. crypto au lieu de Math.random (non devinable, pas de
+   collision).
+
+   L'orderId sert de JETON d'accès à la commande (lecture publique via
+   /api/orders/[id]) : 10 caractères aléatoires ≈ 40 bits d'entropie —
+   le brute-force est irréaliste même avec le rate-limit contourné.
+   Codes billets : 12 caractères ≈ 48 bits.
    ------------------------------------------------------------------ */
+
+function randomToken(length: number): string {
+  let out = "";
+  while (out.length < length) {
+    out += randomUUID().replace(/-/g, "");
+  }
+  return out.slice(0, length).toUpperCase();
+}
 
 function generateOrderId(): string {
   const date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
-  const random = randomUUID().replace(/-/g, "").slice(0, 6).toUpperCase();
-  return `WG-${date}-${random}`;
+  return `WG-${date}-${randomToken(10)}`;
 }
 
 function generateTicketCode(orderId: string, index: number): string {
   const suffix = String(index + 1).padStart(3, "0");
-  const rand = randomUUID().replace(/-/g, "").slice(0, 8).toUpperCase();
-  return `${orderId}-T${suffix}-${rand}`;
+  return `${orderId}-T${suffix}-${randomToken(12)}`;
 }
 
 /* ------------------------------------------------------------------

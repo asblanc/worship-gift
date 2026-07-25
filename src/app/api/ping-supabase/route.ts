@@ -7,15 +7,23 @@
  * - Définir en environnement (Vercel) :
  *   - `SUPABASE_URL` (ex: https://xyz.supabase.co)
  *   - `SUPABASE_SERVICE_ROLE_KEY` (clé serveur - NE PAS exposer côté client)
- * - Appeler `GET /api/ping-supabase` depuis un cron externe (Vercel Cron, UptimeRobot, etc.)
+ *   - `CRON_SECRET` (secret partagé — même valeur que le cron des rappels)
+ * - Appeler `GET /api/ping-supabase` depuis un cron externe (Vercel Cron,
+ *   UptimeRobot, etc.) avec l'en-tête `Authorization: Bearer <CRON_SECRET>`.
  *
  * Recommandation de fréquence: 15-30 minutes. 15 minutes réduit mieux les cold starts;
  * 30 minutes est plus conservateur pour les quotas. Eviter <10 minutes pour ne pas abuser.
  *
- * Pour désactiver: supprimer le cron externe ou retirer/renommer la route.
+ * Sécurité : la route exige le CRON_SECRET — sans lui, n'importe quel
+ * visiteur pourrait déclencher des requêtes service_role à volonté
+ * (abus de quota / amplification). Les messages d'erreur internes ne
+ * sont JAMAIS renvoyés au client.
  */
 
 import { createClient } from "@supabase/supabase-js";
+import { NextRequest } from "next/server";
+import { safeEqual } from "@/lib/security";
+import { rateLimitAsync } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -25,7 +33,7 @@ const SUPABASE_SERVICE_ROLE_KEY =
 
 async function wakeSupabase() {
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-    throw new Error("Supabase URL / service key not configured on server");
+    throw new Error("Supabase non configuré côté serveur");
   }
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
@@ -34,7 +42,6 @@ async function wakeSupabase() {
   });
 
   // Requête très légère: lire uniquement un id d'une table existante, limitée à 1
-  // Remplacez 'orders' par une petite table si vous en avez une plus adaptée.
   const { data, error } = await supabase.from("orders").select("id").limit(1);
 
   if (error) throw error;
@@ -42,28 +49,34 @@ async function wakeSupabase() {
   return { ok: true, rows: Array.isArray(data) ? data.length : 0 };
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  // Anti-abus : quelques appels par minute suffisent largement.
+  const limited = await rateLimitAsync(request, "ping-supabase", 10, 60_000);
+  if (limited) return limited;
+
+  // Authentification par secret partagé (comparaison à temps constant).
+  const secret = process.env.CRON_SECRET;
+  if (!secret) {
+    return Response.json({ status: "error" }, { status: 500 });
+  }
+  const provided = request.headers.get("authorization") || "";
+  if (!safeEqual(provided, `Bearer ${secret}`)) {
+    return Response.json({ status: "unauthorized" }, { status: 401 });
+  }
+
   // Safety: only perform the wake ping in Production environment to avoid
   // consuming quotas for Preview/Development deployments.
-  // Vercel sets `VERCEL_ENV` to 'production' | 'preview' | 'development'.
   const vercelEnv = process.env.VERCEL_ENV || process.env.NODE_ENV || "";
   if (vercelEnv && vercelEnv !== "production") {
-    return new Response(JSON.stringify({ status: "skipped", reason: `env=${vercelEnv}` }), {
-      status: 204,
-      headers: { "content-type": "application/json" },
-    });
+    return Response.json({ status: "skipped", reason: `env=${vercelEnv}` }, { status: 200 });
   }
 
   try {
     const result = await wakeSupabase();
-    return new Response(JSON.stringify({ status: "ok", ...result }), {
-      status: 200,
-      headers: { "content-type": "application/json" },
-    });
-  } catch (err: any) {
-    return new Response(JSON.stringify({ status: "error", message: err.message || String(err) }), {
-      status: 500,
-      headers: { "content-type": "application/json" },
-    });
+    return Response.json({ status: "ok", ...result }, { status: 200 });
+  } catch (err) {
+    // Message générique : ne jamais exposer l'erreur interne au client.
+    console.error("[ping-supabase] Erreur:", err);
+    return Response.json({ status: "error" }, { status: 500 });
   }
 }

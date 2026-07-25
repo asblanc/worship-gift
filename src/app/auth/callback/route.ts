@@ -1,11 +1,15 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { safeRedirectPath } from "@/lib/security";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/account";
+  // Anti open-redirect : n'accepte qu'un chemin interne ("/account"…),
+  // jamais "//evil.com" ni "/\evil.com" (interprétés comme externes par
+  // certains navigateurs une fois concaténés à l'origine).
+  const next = safeRedirectPath(searchParams.get("next"), "/account");
 
   if (code) {
     const cookieStore = await cookies();

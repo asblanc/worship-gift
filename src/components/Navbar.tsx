@@ -49,6 +49,7 @@ export default function Navbar() {
               <li key={link.label}>
                 <Link
                   href={link.href}
+                  aria-current={isActive(link.href) ? "page" : undefined}
                   className={`relative text-sm font-medium transition-colors duration-300 ${
                     isActive(link.href)
                       ? "text-[#C9A84C]"
@@ -92,8 +93,10 @@ export default function Navbar() {
 
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="relative z-10 flex flex-col gap-1.5 md:hidden"
-          aria-label="Menu"
+          className="relative z-10 flex flex-col gap-1.5 p-2 md:hidden"
+          aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
+          aria-expanded={mobileOpen}
+          aria-controls="menu-mobile"
         >
           <motion.span
             animate={mobileOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
@@ -113,6 +116,7 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
+            id="menu-mobile"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -125,6 +129,7 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
+                    aria-current={isActive(link.href) ? "page" : undefined}
                     className={`block rounded-md px-4 py-3 text-base font-medium transition-colors hover:bg-white/[0.08] ${
                       isActive(link.href)
                         ? "text-[#C9A84C] bg-[#C9A84C]/10"

@@ -1,4 +1,10 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
+
+// Page transactionnelle privée : jamais indexée par les moteurs.
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default function CheckoutLayout({
   children,

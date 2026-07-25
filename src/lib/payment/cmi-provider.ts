@@ -29,6 +29,7 @@ import type {
   PaymentVerificationResult,
   Currency,
 } from "./types";
+import { safeEqual } from "@/lib/security";
 
 /* ------------------------------------------------------------------
    Configuration CMI — FAIL-CLOSED
@@ -236,7 +237,9 @@ export class CmiProvider implements PaymentProvider {
 
     const computed = await computeVer3Hash(flat, config.storeKey);
     const received = callback.HASH || "";
-    const hashValid = received.length > 0 && computed === received;
+    // Comparaison à temps constant : empêche un attaquant de deviner le
+    // hash signature octet par octet en mesurant le temps de réponse.
+    const hashValid = received.length > 0 && safeEqual(computed, received);
 
     // CMI renvoie ProcReturnCode "00" et Response "Approved" en cas de succes
     const approved =

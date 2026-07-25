@@ -37,6 +37,9 @@ export default function HeroCarousel() {
   const [current, setCurrent] = useState(0);
   const [prevSlide, setPrevSlide] = useState<number | null>(null);
   const [hideIndicator, setHideIndicator] = useState(false);
+  // Accessibilité (WCAG 2.2.2) : le défilement auto se met en pause au
+  // survol ou à la prise de focus (clavier/lecteur d'écran).
+  const [paused, setPaused] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const goTo = useCallback(
@@ -51,13 +54,14 @@ export default function HeroCarousel() {
     goTo((current + 1) % slides.length);
   }, [current, goTo]);
 
-  // Auto-play
+  // Auto-play (suspendu quand paused = true)
   useEffect(() => {
+    if (paused) return;
     intervalRef.current = setInterval(next, 6000);
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [next]);
+  }, [next, paused]);
 
   // Swipe mobile
   const touchStart = useRef(0);
@@ -98,6 +102,13 @@ export default function HeroCarousel() {
       className="relative h-[80vh] min-h-[500px] w-full overflow-hidden bg-black"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+      role="region"
+      aria-roledescription="carrousel"
+      aria-label="Présentation Worship Gift"
     >
       {/* Couche d'images en crossfade */}
       <div className="absolute inset-0">
@@ -238,7 +249,7 @@ export default function HeroCarousel() {
       </motion.div>
 
       {/* Indicateurs dots */}
-      <div className="absolute bottom-8 right-8 z-20 flex gap-2">
+      <div className="absolute bottom-8 right-8 z-20 flex gap-2" role="group" aria-label="Choix du slide">
         {slides.map((_, i) => (
           <button
             key={i}
@@ -248,7 +259,8 @@ export default function HeroCarousel() {
                 ? "w-8 bg-[#C9A84C]"
                 : "w-1.5 bg-white/40 hover:bg-white/60"
             }`}
-            aria-label={`Aller au slide ${i + 1}`}
+            aria-label={`Aller au slide ${i + 1} sur ${slides.length}`}
+            aria-current={i === current ? "true" : undefined}
           />
         ))}
       </div>

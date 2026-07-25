@@ -94,8 +94,10 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Mettre a jour la commande dans Supabase (signature valide a ce stade)
-    if (result.orderId) {
+    // Mettre a jour la commande dans Supabase (signature valide a ce stade).
+    // On n'accepte que nos references au format WG-AAAAMMJJ-XXXX.
+    const orderIdValid = /^WG-\d{8}-[A-Z0-9]+$/.test(result.orderId);
+    if (result.orderId && orderIdValid) {
       try {
         const supabase = getServiceClient();
 
@@ -144,19 +146,36 @@ export async function POST(request: NextRequest) {
             }
           }
         } else {
-          // Paiement echoue (signature valide mais refus banque)
-          const { error: updateErr } = await supabase
+          // Paiement echoue (signature valide mais refus banque).
+          // Garde-fou : une commande DEJA PAYEE ne doit jamais redevenir
+          // "failed" (un callback d'échec retardé/dupliqué ne doit pas
+          // écraser un paiement confirmé).
+          const { data: currentOrder } = await supabase
             .from("orders")
-            .update({
-              status: "failed",
-              transaction_id: result.transactionId,
-              error_code: result.errorCode,
-              error_message: result.errorMessage,
-            })
-            .eq("id", result.orderId);
+            .select("status")
+            .eq("id", result.orderId)
+            .single();
 
-          if (updateErr) {
-            console.error("[CMI Callback] Erreur update orders:", updateErr);
+          if (!currentOrder) {
+            console.error("[CMI Callback] Commande introuvable (échec):", result.orderId);
+          } else if (currentOrder.status === "paid") {
+            console.log("[CMI Callback] Échec ignoré — commande déjà payée:", result.orderId);
+          } else {
+            const { error: updateErr } = await supabase
+              .from("orders")
+              .update({
+                status: "failed",
+                transaction_id: result.transactionId,
+                error_code: result.errorCode,
+                error_message: result.errorMessage,
+              })
+              .eq("id", result.orderId)
+              // Transition atomique : on n'écrase jamais un statut "paid".
+              .neq("status", "paid");
+
+            if (updateErr) {
+              console.error("[CMI Callback] Erreur update orders:", updateErr);
+            }
           }
         }
       } catch (dbError) {

@@ -39,6 +39,9 @@ export default function VideoLightbox({
         transition={{ duration: 0.2 }}
         className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4 backdrop-blur-sm"
         onClick={onClose}
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Vidéo : ${title}`}
       >
         {/* Bouton fermer */}
         <button
