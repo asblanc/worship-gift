@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
+import PaymentMethods from "@/components/PaymentMethods";
 import { upcomingEvents } from "@/lib/events-config";
 
 const containerVariants = {
@@ -148,6 +149,9 @@ export default function BilletteriePage() {
             </motion.div>
           </div>
         </section>
+
+        {/* 3 moyens de paiement */}
+        <PaymentMethods />
 
         {/* CTA bas de page */}
         <section className="border-t border-white/10 bg-[#0D0D0D] px-6 py-12 sm:py-16 md:py-20">

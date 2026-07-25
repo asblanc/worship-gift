@@ -12,22 +12,22 @@ const FAQ_ITEMS = [
   {
     question: "Comment commander mes billets ?",
     answer:
-      "Rendez-vous sur la page Billetterie, choisissez le concert, la catégorie de place (Normale, VIP…) et la quantité, puis validez. Au moment de finaliser, vous choisissez votre mode de paiement : en ligne par carte bancaire, ou paiement à la livraison. C'est simple, rapide et sécurisé.",
-  },
-  {
-    question: "Puis-je payer à la livraison ?",
-    answer:
-      "Oui ! En plus du paiement en ligne, nous proposons le paiement à la livraison. Choisissez l'option « Paiement à la livraison », renseignez votre nom et votre numéro de téléphone : nous confirmons votre commande par WhatsApp, votre billet vous est livré, et vous réglez en espèces à la réception. Aucun paiement à l'avance n'est demandé.",
+      "En ligne : depuis l'accueil ou la page Billetterie, choisissez vos places directement dans le formulaire de notre billetterie partenaire et payez en quelques clics. À la livraison : envoyez-nous vos informations, nous préparons votre billet et vous réglez en espèces à la remise. C'est simple, rapide et sécurisé.",
   },
   {
     question: "Quels moyens de paiement acceptez-vous ?",
     answer:
-      "Deux options : le paiement en ligne par carte bancaire (transaction sécurisée 3D Secure via CMI), ou le paiement en espèces à la livraison de vos billets. Vous choisissez la formule qui vous convient au moment de la commande.",
+      "Trois moyens de paiement : (1) en ligne par compte / carte sur la plateforme de notre billetterie partenaire ; (2) en espèces via les services de paiement proposés sur cette même plateforme (points de paiement partenaires) ; (3) en espèces à la livraison — nous vous remettons alors votre billet officiel, que nous avons réglé pour vous auprès du prestataire. À vous de choisir la formule la plus pratique.",
+  },
+  {
+    question: "Puis-je payer à la livraison ?",
+    answer:
+      "Oui ! Choisissez « Paiement à la livraison », renseignez votre nom et votre téléphone : nous confirmons par WhatsApp, nous émettons votre billet officiel auprès de notre billetterie partenaire, puis nous vous le livrons. Vous réglez en espèces à la remise du billet — aucun paiement à l'avance n'est demandé.",
   },
   {
     question: "Comment récupérer mon billet de concert ?",
     answer:
-      "Pour un paiement en ligne, vous recevez aussitôt un e-mail de confirmation avec votre billet au format PDF (présentable sur votre téléphone ou imprimé). Pour une commande à la livraison, votre billet vous est remis en main propre lors de la livraison. Dans les deux cas, présentez-le à l'entrée du concert.",
+      "Pour un paiement en ligne, votre billet vous est délivré immédiatement par la plateforme (par e-mail / téléchargement) une fois le paiement validé. Pour une commande à la livraison, votre billet officiel vous est remis en main propre. Dans les deux cas, présentez-le (sur votre téléphone ou imprimé) à l'entrée du concert.",
   },
   {
     question: "Combien de temps prend la livraison des billets ?",
