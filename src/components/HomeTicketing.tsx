@@ -77,8 +77,8 @@ export default function HomeTicketing() {
           <Eyebrow centered>Billetterie officielle</Eyebrow>
           <h2 className="t-h2 text-white">Réservez votre place</h2>
           <p className="mx-auto mt-4 max-w-xl t-body text-gray-400">
-            Choisissez vos billets et réglez en ligne en quelques clics.
-            Le paiement à la livraison reste disponible depuis la billetterie.
+            Choisissez vos billets et réglez en ligne en quelques clics —
+            ou optez pour le paiement à la livraison, juste en dessous.
           </p>
         </motion.div>
 
