@@ -98,20 +98,22 @@ export default function BilletteriesWidget() {
   }, []);
 
   return (
-    <div className="relative min-h-[520px]">
+    // Fond clair : le formulaire billetteries.ma (texte foncé) doit rester
+    // lisible ; overflow-x pour éviter tout débordement horizontal sur mobile.
+    <div className="relative min-h-[70vh] w-full overflow-x-hidden rounded-xl bg-white">
       {/* Conteneur rempli par createss() (iframe billetteries.ma) */}
-      <div id={cfg.formId} className="integrationss" />
+      <div id={cfg.formId} className="integrationss w-full [&_iframe]:!w-full [&_iframe]:!max-w-full" />
 
       {phase === "loading" && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[#0D0D0D] text-center">
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-white px-6 text-center">
           <span className="h-7 w-7 animate-spin rounded-full border-2 border-[#C9A84C] border-t-transparent" />
-          <p className="text-sm text-gray-400">Chargement de la billetterie sécurisée…</p>
+          <p className="text-sm text-gray-600">Chargement de la billetterie sécurisée…</p>
         </div>
       )}
 
       {phase === "fallback" && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-xl border border-white/10 bg-[#0D0D0D] px-6 py-12 text-center">
-          <p className="max-w-md text-sm text-gray-300">
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 rounded-xl bg-white px-6 py-12 text-center">
+          <p className="max-w-md text-sm text-gray-700">
             La billetterie ne s&rsquo;affiche pas ici pour le moment. Vous pouvez
             l&rsquo;ouvrir dans un nouvel onglet pour réserver et payer en toute
             sécurité.

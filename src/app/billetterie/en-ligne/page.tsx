@@ -47,11 +47,14 @@ export default function BilletterieEnLignePage() {
               <span className="text-gray-300">Achat en ligne</span>
             </div>
 
+            {/* Carte blanche : le formulaire billetteries.ma a un texte foncé,
+                il lui faut un fond clair pour être lisible (l'iframe est
+                cross-origin, on ne peut styliser que son conteneur). */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 sm:p-6"
+              className="overflow-hidden rounded-2xl bg-white p-2 shadow-[0_20px_60px_rgba(0,0,0,0.5)] ring-1 ring-black/5 sm:p-4"
             >
               <BilletteriesWidget />
             </motion.div>
