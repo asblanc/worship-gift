@@ -10,9 +10,14 @@ import type { NextConfig } from "next";
    - form-action : self + passerelle CMI (redirection paiement)
    - frame-ancestors 'none' : anti-clickjacking
    ------------------------------------------------------------------ */
+// 'unsafe-eval' est requis uniquement en développement (Turbopack/HMR).
+// En production, on le retire pour durcir la CSP — les builds Next.js
+// n'en ont pas besoin.
+const isProd = process.env.NODE_ENV === "production";
+
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://*.billetteries.ma",
+  `script-src 'self' 'unsafe-inline'${isProd ? "" : " 'unsafe-eval'"} https://www.googletagmanager.com https://*.billetteries.ma`,
   "style-src 'self' 'unsafe-inline' https://*.billetteries.ma",
   "img-src 'self' data: blob: https://img.youtube.com https://*.supabase.co https://www.googletagmanager.com https://*.google-analytics.com https://*.billetteries.ma",
   "font-src 'self' data: https://*.billetteries.ma",
@@ -34,8 +39,10 @@ const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   {
+    // camera=(self) : requis par le scanner de billets (/admin/scan,
+    // html5-qrcode). microphone/geolocation restent bloqués.
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+    value: "camera=(self), microphone=(), geolocation=(), browsing-topics=()",
   },
   // HSTS : force HTTPS (2 ans, sous-domaines, éligible preload). Le site
   // est servi exclusivement en HTTPS par Vercel → aucun risque de lock-out.

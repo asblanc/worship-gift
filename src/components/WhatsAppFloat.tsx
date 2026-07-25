@@ -101,6 +101,7 @@ export default function WhatsAppFloat() {
       <AnimatePresence>
         {open && (
           <motion.div
+            id="whatsapp-menu"
             initial={{ opacity: 0, y: 12, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.95 }}
@@ -140,7 +141,9 @@ export default function WhatsAppFloat() {
       {/* Bouton principal WhatsApp */}
       <button
         onClick={() => setOpen((o) => !o)}
-        aria-label="WhatsApp Worship Gift"
+        aria-label={open ? "Fermer le menu WhatsApp" : "Ouvrir le menu WhatsApp"}
+        aria-expanded={open}
+        aria-controls="whatsapp-menu"
         className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-lg shadow-[#25D366]/25 transition-transform duration-200 hover:scale-105 active:scale-95"
       >
         {/* SVG WhatsApp */}

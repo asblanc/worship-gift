@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Cormorant_Garamond, Poppins } from "next/font/google";
 import "./globals.css";
 
@@ -27,7 +27,9 @@ import ClientLayout from "@/components/ClientLayout";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { defaultMetadata } from "@/lib/seo";
 
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-4NL5SZDDFY";
+// Suivi actif UNIQUEMENT si NEXT_PUBLIC_GA_ID est défini (pas de valeur
+// en dur : sans la variable, aucun script de tracking n'est chargé).
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "";
 
 export const metadata: Metadata = {
   ...defaultMetadata,
@@ -42,6 +44,14 @@ export const metadata: Metadata = {
   },
 };
 
+// Viewport (recommandé séparé de metadata depuis Next.js 14+) :
+// responsive + couleur de thème pour la barre d'adresse mobile.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0D0D0D",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -54,7 +64,17 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-[#000000] overflow-x-hidden">
-        <ClientLayout>{children}</ClientLayout>
+        {/* Lien d'évitement (accessibilité clavier/lecteurs d'écran) :
+            visible uniquement à la prise de focus. */}
+        <a
+          href="#contenu"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-md focus:bg-[#C9A84C] focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-black"
+        >
+          Aller au contenu principal
+        </a>
+        <div id="contenu" tabIndex={-1} className="flex min-h-full flex-1 flex-col outline-none">
+          <ClientLayout>{children}</ClientLayout>
+        </div>
       </body>
       {/* Google Analytics — actif uniquement si NEXT_PUBLIC_GA_ID est défini */}
       {GA_ID && <GoogleAnalytics gaId={GA_ID} />}

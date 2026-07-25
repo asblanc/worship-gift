@@ -21,6 +21,32 @@ import { getOrderForPayment } from "@/lib/orders-service.server";
 import { rateLimitAsync } from "@/lib/rate-limit";
 import type { PaymentInitRequest } from "@/lib/payment/types";
 
+/**
+ * Résout l'origine à utiliser pour les URLs de retour CMI.
+ * 1. NEXT_PUBLIC_SITE_URL (origine canonique, source de vérité).
+ * 2. En développement uniquement : origine de la requête si localhost
+ *    (pratique pour tester sans config).
+ * Tout autre Origin fourni par le client est ignoré.
+ */
+function resolveReturnOrigin(request: NextRequest): string {
+  const canonical = process.env.NEXT_PUBLIC_SITE_URL;
+  if (canonical) return canonical.replace(/\/+$/, "");
+
+  if (process.env.NODE_ENV !== "production") {
+    const reqOrigin = request.headers.get("origin") || "";
+    try {
+      const host = new URL(reqOrigin).hostname;
+      if (host === "localhost" || host === "127.0.0.1" || host.endsWith(".local")) {
+        return reqOrigin.replace(/\/+$/, "");
+      }
+    } catch {
+      // origine invalide → ignorée
+    }
+  }
+
+  return "http://localhost:3000";
+}
+
 export async function POST(request: NextRequest) {
   try {
     const limited = await rateLimitAsync(request, "cmi-init", 15, 60_000);
@@ -62,9 +88,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Construire les URLs de retour basees sur l'origine de la requete
-    // (evite de hardcoder localhost en dev)
-    const origin = request.headers.get("origin") || "http://localhost:3000";
+    // URLs de retour : on utilise l'ORIGINE CANONIQUE du site (env),
+    // jamais l'en-tête Origin brut de la requête. Un attaquant peut
+    // envoyer un Origin arbitraire (curl / serveur tiers) et ferait
+    // sinon pointer okUrl/failUrl vers son domaine → open-redirect /
+    // phishing post-paiement. En dev (pas de NEXT_PUBLIC_SITE_URL), on
+    // retombe sur l'origine de la requête si elle est locale.
+    const origin = resolveReturnOrigin(request);
 
     const initRequest: PaymentInitRequest = {
       orderId: order.id,

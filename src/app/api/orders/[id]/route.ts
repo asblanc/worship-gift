@@ -12,13 +12,15 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { rateLimit } from "@/lib/rate-limit";
+import { rateLimitAsync } from "@/lib/rate-limit";
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const limited = rateLimit(request, "order-read", 30, 60_000);
+  // L'orderId est un jeton d'accès : le rate-limit distribué (Upstash si
+  // configuré) rend le brute-force irréaliste à l'échelle de la flotte.
+  const limited = await rateLimitAsync(request, "order-read", 30, 60_000);
   if (limited) return limited;
 
   const { id } = await params;

@@ -1,4 +1,10 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
+
+// Page de confirmation privée (contient billets/QR) : jamais indexée.
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default function SuccessLayout({
   children,

@@ -14,16 +14,18 @@ import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEventReminder } from "@/lib/email";
 import { upcomingEvents } from "@/lib/events-config";
+import { safeEqual } from "@/lib/security";
 
 const WINDOW_HOURS = 48;
 
 export async function GET(request: NextRequest) {
-  // Authentification du cron
+  // Authentification du cron (comparaison à temps constant du secret)
   const secret = process.env.CRON_SECRET;
   if (!secret) {
     return NextResponse.json({ error: "CRON_SECRET non configuré" }, { status: 500 });
   }
-  if (request.headers.get("authorization") !== `Bearer ${secret}`) {
+  const provided = request.headers.get("authorization") || "";
+  if (!safeEqual(provided, `Bearer ${secret}`)) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
 

@@ -13,11 +13,42 @@ type Bucket = { count: number; resetAt: number };
 
 const buckets = new Map<string, Bucket>();
 
-/** Récupère une IP raisonnable depuis les en-têtes (Vercel/proxy). */
+/** Plafond du nombre d'entrées en mémoire (anti exhaustion mémoire). */
+const MAX_BUCKETS = 20_000;
+let lastSweep = 0;
+
+/** Purge les entrées expirées (au plus toutes les 60 s) et borne la taille. */
+function sweepIfNeeded(now: number) {
+  if (buckets.size < MAX_BUCKETS && now - lastSweep < 60_000) return;
+  lastSweep = now;
+  for (const [key, bucket] of buckets) {
+    if (now > bucket.resetAt) buckets.delete(key);
+  }
+  // Si la carte reste au plafond (rafales massives d'IP distinctes),
+  // on évince arbitrairement les entrées les plus anciennes.
+  if (buckets.size > MAX_BUCKETS) {
+    const excess = buckets.size - MAX_BUCKETS;
+    let removed = 0;
+    for (const key of buckets.keys()) {
+      if (removed++ >= excess) break;
+      buckets.delete(key);
+    }
+  }
+}
+
+/**
+ * Récupère l'IP client de façon fiable.
+ *
+ * Sur Vercel, `x-real-ip` est DÉFINI PAR LA PLATEFORME (non modifiable
+ * par le client) — c'est la source la plus fiable. `x-forwarded-for`
+ * peut être préfixé par le client lui-même : on ne l'utilise qu'en repli.
+ */
 export function getClientIp(request: NextRequest): string {
+  const real = request.headers.get("x-real-ip");
+  if (real) return real.trim();
   const fwd = request.headers.get("x-forwarded-for");
   if (fwd) return fwd.split(",")[0].trim();
-  return request.headers.get("x-real-ip") || "unknown";
+  return "unknown";
 }
 
 /**
@@ -32,6 +63,7 @@ export function isRateLimited(
   windowMs: number,
 ): boolean {
   const now = Date.now();
+  sweepIfNeeded(now);
   const bucket = buckets.get(key);
 
   if (!bucket || now > bucket.resetAt) {
