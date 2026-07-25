@@ -415,6 +415,23 @@ export async function prepareDeliveryTickets(
   return { ok: true, tickets };
 }
 
+/**
+ * Marque une commande PAYÉE sans générer de billet interne.
+ * Nouveau modèle : les billets sont émis par le prestataire (billetteries.ma).
+ * On ne fait que tracer le statut CRM (payée + horodatage).
+ */
+export async function setOrderPaid(
+  orderId: string,
+): Promise<{ ok: boolean; error?: string }> {
+  const supabase = createAdminClient();
+  const { error } = await supabase
+    .from("orders")
+    .update({ status: "paid", paid_at: new Date().toISOString() })
+    .eq("id", orderId);
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
+
 /** Met à jour le statut d'une commande (transitions hors "paid", ex: cancelled). */
 export async function updateOrderStatus(
   orderId: string,

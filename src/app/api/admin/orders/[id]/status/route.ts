@@ -13,7 +13,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isRequestAdmin } from "@/lib/supabase/require-admin";
 import { rateLimitAsync } from "@/lib/rate-limit";
-import { markOrderPaid, updateOrderStatus } from "@/lib/orders-service.server";
+import { setOrderPaid, updateOrderStatus } from "@/lib/orders-service.server";
 
 const ALLOWED = ["pending", "reserved", "paid", "cancelled", "failed", "refunded", "expired"];
 
@@ -42,11 +42,13 @@ export async function POST(
     }
 
     if (status === "paid") {
-      const res = await markOrderPaid(orderId);
+      // Nouveau modèle : le billet est émis par le prestataire (billetteries.ma).
+      // On ne génère plus de billet interne — on trace seulement le paiement.
+      const res = await setOrderPaid(orderId);
       if (!res.ok) {
         return NextResponse.json({ success: false, error: res.error }, { status: 400 });
       }
-      return NextResponse.json({ success: true, status: "paid", tickets: res.tickets });
+      return NextResponse.json({ success: true, status: "paid" });
     }
 
     const res = await updateOrderStatus(orderId, status);

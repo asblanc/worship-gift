@@ -5,7 +5,6 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase/client";
-import TicketQR from "@/components/TicketQR";
 
 interface OrderDetail {
   id: string;
@@ -16,6 +15,10 @@ interface OrderDetail {
   payment_method: string | null;
   ticket_type: string | null;
   quantity: number | null;
+  event_title: string | null;
+  event_date: string | null;
+  event_time: string | null;
+  event_location: string | null;
   description: string;
   amount: number;
   currency: string;
@@ -28,17 +31,6 @@ interface OrderDetail {
   created_at: string;
 }
 
-interface TicketRow {
-  id: string;
-  ticket_code: string;
-  event_title: string;
-  event_date: string;
-  event_time: string;
-  event_location: string;
-  ticket_type: string;
-  status: string;
-}
-
 const ALL_STATUSES = ["pending", "reserved", "paid", "cancelled", "failed"] as const;
 
 const fadeUp = {
@@ -49,15 +41,9 @@ const fadeUp = {
 export default function AdminOrderDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [order, setOrder] = useState<OrderDetail | null>(null);
-  const [tickets, setTickets] = useState<TicketRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
-  const [preparing, setPreparing] = useState(false);
-
-  const reloadTickets = async () => {
-    const { data: t } = await supabase.from("tickets").select("*").eq("order_id", id);
-    if (t) setTickets(t);
-  };
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -69,14 +55,8 @@ export default function AdminOrderDetailPage() {
           .eq("id", id)
           .single();
         if (o) setOrder(o);
-
-        const { data: t } = await supabase
-          .from("tickets")
-          .select("*")
-          .eq("order_id", id);
-        if (t) setTickets(t);
       } catch {
-        // tables inexistantes
+        // table inexistante
       } finally {
         setLoading(false);
       }
@@ -87,8 +67,7 @@ export default function AdminOrderDetailPage() {
   const handleStatusChange = async (newStatus: string) => {
     setUpdating(true);
     try {
-      // Écriture côté serveur (service_role) : les RLS bloquent l'écriture
-      // client. "paid" génère les billets automatiquement.
+      // Écriture côté serveur (service_role) : les RLS bloquent l'écriture client.
       const res = await fetch(`/api/admin/orders/${id}/status`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -107,9 +86,6 @@ export default function AdminOrderDetailPage() {
             }
           : prev,
       );
-      // Recharge les billets (générés au passage "payé")
-      const { data: t } = await supabase.from("tickets").select("*").eq("order_id", id);
-      if (t) setTickets(t);
     } catch (err) {
       console.error("Erreur changement statut:", err);
       alert(err instanceof Error ? err.message : "Erreur lors de la mise à jour du statut");
@@ -118,22 +94,26 @@ export default function AdminOrderDetailPage() {
     }
   };
 
-  // Livraison : génère les billets (QR) AVANT encaissement, pour impression
-  // et remise au client. Le paiement (espèces) sera confirmé ensuite.
-  const handlePrepareTickets = async () => {
-    setPreparing(true);
+  // Copie les infos client à transmettre au prestataire (billetteries.ma)
+  const copyForProvider = async () => {
+    if (!order) return;
+    const lines = [
+      `Commande Worship Gift — ${order.id}`,
+      `Événement : ${order.event_title ?? order.description ?? ""}`,
+      order.event_date ? `Date : ${order.event_date} ${order.event_time ?? ""}` : "",
+      `Catégorie : ${order.ticket_type ?? "—"}`,
+      `Quantité : ${order.quantity ?? 1}`,
+      `Nom : ${order.customer_name ?? "—"}`,
+      `Téléphone : ${order.customer_phone ?? "—"}`,
+      order.customer_email ? `Email : ${order.customer_email}` : "",
+      `Montant : ${order.amount === 0 ? "Gratuit" : `${(order.amount / 100).toFixed(2)} MAD`} (à la livraison)`,
+    ].filter(Boolean);
     try {
-      const res = await fetch(`/api/admin/orders/${id}/prepare-tickets`, { method: "POST" });
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || "Échec de la préparation des billets");
-      }
-      await reloadTickets();
-      setOrder((prev) => (prev && prev.status === "pending" ? { ...prev, status: "reserved" } : prev));
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Erreur lors de la préparation des billets");
-    } finally {
-      setPreparing(false);
+      await navigator.clipboard.writeText(lines.join("\n"));
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      alert("Copie impossible. Sélectionnez les infos manuellement.");
     }
   };
 
@@ -273,8 +253,8 @@ export default function AdminOrderDetailPage() {
 
         {/* Changer statut */}
         <div className="mt-6 border-t border-white/[0.04] pt-6">
-          <p className="text-xs font-medium uppercase tracking-wider text-gray-400 mb-1">Modifier le statut</p>
-          <p className="mb-3 text-[11px] text-gray-500">Passer à « Payée » confirme le paiement et génère automatiquement les billets (QR).</p>
+          <p className="text-xs font-medium uppercase tracking-wider text-gray-400 mb-1">Suivi de la commande</p>
+          <p className="mb-3 text-[11px] text-gray-500">« Confirmée » = infos transmises au prestataire · « Payée » = billet émis / réglé. Aucun billet n&rsquo;est généré ici : c&rsquo;est billetteries.ma qui l&rsquo;émet.</p>
           <div className="flex flex-wrap gap-2">
             {ALL_STATUSES.map((s) => (
               <button
@@ -294,179 +274,61 @@ export default function AdminOrderDetailPage() {
         </div>
       </div>
 
-      {/* Billets */}
+      {/* Traitement de la commande — à transmettre au prestataire (billetteries.ma) */}
       <div className="rounded-xl border border-white/[0.06] bg-white/[0.01] p-6">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#C9A84C]/10">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M15 5v2" /><path d="M15 11v2" /><path d="M15 17v2" />
-                <path d="M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z" />
-              </svg>
-            </div>
-            <h2 className="t-card-title text-white">
-              Billets ({tickets.length})
-            </h2>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            {/* Préparer les billets — commandes livraison sans billet encore généré */}
-            {order.payment_method === "delivery" &&
-              tickets.length === 0 &&
-              order.status !== "cancelled" &&
-              order.status !== "failed" && (
-                <button
-                  onClick={handlePrepareTickets}
-                  disabled={preparing}
-                  className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-xs font-semibold transition-all ${
-                    preparing
-                      ? "cursor-not-allowed border-white/[0.06] text-gray-400"
-                      : "border-[#25D366]/40 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20"
-                  }`}
-                >
-                  {preparing ? (
-                    <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-[#25D366] border-t-transparent" />
-                  ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M12 5v14" /><path d="M5 12h14" />
-                    </svg>
-                  )}
-                  Préparer les billets à livrer
-                </button>
-              )}
-
-            {/* Imprimer — dès qu'il y a des billets */}
-            {tickets.length > 0 && (
-              <button
-                onClick={() => window.print()}
-                className="inline-flex items-center gap-2 rounded-lg border border-[#C9A84C]/40 bg-[#C9A84C]/10 px-4 py-2 text-xs font-semibold text-[#C9A84C] transition-all hover:bg-[#C9A84C]/20"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="6 9 6 2 18 2 18 9" />
-                  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-                  <rect x="6" y="14" width="12" height="8" />
-                </svg>
-                Imprimer les billets
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Explication du flux livraison */}
-        {order.payment_method === "delivery" && (
-          <div className="mt-4 rounded-lg border border-[#25D366]/20 bg-[#25D366]/[0.04] p-4 text-xs leading-relaxed text-gray-300">
-            <p className="font-semibold text-[#25D366]">Commande à la livraison</p>
-            <p className="mt-1">
-              1. <strong className="text-white">Préparez les billets</strong> (génère le QR) →
-              2. <strong className="text-white">Imprimez</strong> et livrez au client →
-              3. <strong className="text-white">Marquez « Payée »</strong> une fois les espèces encaissées.
-              Le QR reste scannable à l&rsquo;entrée, qu&rsquo;il soit imprimé ou affiché.
-            </p>
-          </div>
-        )}
-
-        {tickets.length === 0 ? (
-          <div className="mt-6 flex flex-col items-center gap-2 py-8 text-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M15 5v2" /><path d="M15 11v2" /><path d="M15 17v2" />
-              <path d="M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z" />
+        <div className="flex items-center gap-3">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#25D366]/10">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25D366" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" />
             </svg>
-            <p className="text-sm text-gray-400">
-              {order.payment_method === "delivery"
-                ? "Aucun billet encore généré. Cliquez sur « Préparer les billets à livrer »."
-                : "Aucun billet. Ils seront générés au passage en « Payée »."}
-            </p>
           </div>
-        ) : (
-          <div className="mt-4 space-y-3">
-            {tickets.map((ticket) => (
-              <div key={ticket.id} className="rounded-lg border border-[#C9A84C]/10 bg-[#C9A84C]/[0.02] p-4 transition-all hover:border-[#C9A84C]/20">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="space-y-1">
-                    <p className="text-sm font-semibold text-white">{ticket.event_title || "Événement"}</p>
-                    {(ticket.event_date || ticket.event_time || ticket.event_location) && (
-                      <p className="text-xs text-gray-400">
-                        {[ticket.event_date, ticket.event_time, ticket.event_location].filter(Boolean).join(" — ")}
-                      </p>
-                    )}
-                    <p className="text-xs text-gray-400">{ticket.ticket_type || "Entrée libre"}</p>
-                    <span className={`mt-1 inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold ${
-                      ticket.status === "used"
-                        ? "border-orange-500/20 bg-orange-500/10 text-orange-400"
-                        : ticket.status === "cancelled"
-                          ? "border-red-500/20 bg-red-500/10 text-red-400"
-                          : "border-green-500/20 bg-green-500/10 text-green-400"
-                    }`}>
-                      {ticket.status === "used" ? "Scanné" : ticket.status === "cancelled" ? "Annulé" : "Valide"}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="rounded-lg border border-[#C9A84C]/20 bg-black/30 px-3 py-2 font-mono text-xs text-[#C9A84C]">
-                      {ticket.ticket_code}
-                    </span>
-                    {/* QR scannable à l'entrée */}
-                    <div className="shrink-0 rounded-lg bg-white p-1">
-                      <TicketQR code={ticket.ticket_code} size={72} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* ============================================================
-          Zone d'impression — masquée à l'écran, seule imprimée.
-          Un billet A6 par page avec QR, à découper et remettre.
-          ============================================================ */}
-      {tickets.length > 0 && (
-        <div className="print-area">
-          {tickets.map((ticket, i) => (
-            <div
-              key={`print-${ticket.id}`}
-              className="print-ticket"
-              style={{
-                border: "2px solid #000",
-                borderRadius: "10px",
-                padding: "20px",
-                margin: "0 0 16px 0",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                gap: "16px",
-              }}
-            >
-              <div>
-                <div style={{ fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", color: "#8a6d1f" }}>
-                  Worship Gift · Billet {i + 1}/{tickets.length}
-                </div>
-                <div style={{ fontSize: "20px", fontWeight: 800, marginTop: "6px" }}>
-                  {ticket.event_title || "Événement"}
-                </div>
-                <div style={{ fontSize: "13px", marginTop: "4px", color: "#333" }}>
-                  {[ticket.event_date, ticket.event_time, ticket.event_location].filter(Boolean).join(" — ")}
-                </div>
-                <div style={{ fontSize: "13px", marginTop: "8px" }}>
-                  <strong>Type :</strong> {ticket.ticket_type || "Entrée libre"}
-                </div>
-                <div style={{ fontSize: "13px" }}>
-                  <strong>Titulaire :</strong> {order.customer_name || "—"}
-                </div>
-                <div style={{ fontSize: "11px", marginTop: "10px", fontFamily: "monospace", color: "#555" }}>
-                  {ticket.ticket_code}
-                </div>
-                <div style={{ fontSize: "11px", marginTop: "10px", color: "#777" }}>
-                  Présentez ce QR à l&rsquo;entrée · Réf. {order.id}
-                </div>
-              </div>
-              <div style={{ background: "#fff", padding: "6px" }}>
-                <TicketQR code={ticket.ticket_code} size={140} />
-              </div>
-            </div>
-          ))}
+          <h2 className="t-card-title text-white">Émission du billet</h2>
         </div>
-      )}
+
+        <div className="mt-4 rounded-lg border border-[#25D366]/20 bg-[#25D366]/[0.04] p-4 text-xs leading-relaxed text-gray-300">
+          <p className="font-semibold text-[#25D366]">Le billet est émis par billetteries.ma</p>
+          <p className="mt-1">
+            1. Le client a envoyé ses infos (WhatsApp) →
+            2. <strong className="text-white">Transmettez-les au prestataire</strong> pour l&rsquo;édition du billet →
+            3. Passez la commande en <strong className="text-white">« Confirmée »</strong> (transmise), puis <strong className="text-white">« Payée »</strong> à l&rsquo;encaissement.
+            Le billet officiel (et son contrôle à l&rsquo;entrée) est géré par billetteries.ma — rien à générer ici.
+          </p>
+        </div>
+
+        {/* Bloc infos à transmettre + copie */}
+        <div className="mt-4 rounded-lg border border-white/[0.06] bg-black/20 p-4">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-xs font-medium uppercase tracking-wider text-gray-400">Infos à transmettre</p>
+            <button
+              onClick={copyForProvider}
+              className="inline-flex items-center gap-2 rounded-lg border border-[#C9A84C]/40 bg-[#C9A84C]/10 px-3 py-1.5 text-xs font-semibold text-[#C9A84C] transition-all hover:bg-[#C9A84C]/20"
+            >
+              {copied ? (
+                <>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                  Copié
+                </>
+              ) : (
+                <>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+                  Copier les infos
+                </>
+              )}
+            </button>
+          </div>
+          <dl className="mt-3 grid gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
+            <div className="flex justify-between gap-3 border-b border-white/[0.04] pb-2"><dt className="text-gray-400">Événement</dt><dd className="text-right text-white">{order.event_title || order.description || "—"}</dd></div>
+            <div className="flex justify-between gap-3 border-b border-white/[0.04] pb-2"><dt className="text-gray-400">Date</dt><dd className="text-right text-gray-300">{[order.event_date, order.event_time].filter(Boolean).join(" ") || "—"}</dd></div>
+            <div className="flex justify-between gap-3 border-b border-white/[0.04] pb-2"><dt className="text-gray-400">Catégorie</dt><dd className="text-right text-white">{order.ticket_type || "—"}</dd></div>
+            <div className="flex justify-between gap-3 border-b border-white/[0.04] pb-2"><dt className="text-gray-400">Quantité</dt><dd className="text-right text-white">{order.quantity ?? 1}</dd></div>
+            <div className="flex justify-between gap-3 border-b border-white/[0.04] pb-2"><dt className="text-gray-400">Nom</dt><dd className="text-right text-white">{order.customer_name || "—"}</dd></div>
+            <div className="flex justify-between gap-3 border-b border-white/[0.04] pb-2"><dt className="text-gray-400">Téléphone</dt><dd className="text-right text-white">{order.customer_phone || "—"}</dd></div>
+            {order.customer_email && (
+              <div className="flex justify-between gap-3 border-b border-white/[0.04] pb-2 sm:col-span-2"><dt className="text-gray-400">Email</dt><dd className="text-right text-white">{order.customer_email}</dd></div>
+            )}
+          </dl>
+        </div>
+      </div>
     </motion.div>
   );
 }

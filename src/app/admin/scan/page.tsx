@@ -106,19 +106,15 @@ export default function ScanPage() {
         </p>
       </div>
 
-      {/* Consigne contrôle d'accès — deux billetteries, deux scanners */}
-      <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 text-xs leading-relaxed text-gray-300">
-        <p className="font-semibold text-white">Consigne à l&rsquo;entrée — deux types de billets</p>
-        <ul className="mt-2 space-y-1.5">
-          <li className="flex gap-2">
-            <span className="mt-0.5 inline-flex h-4 shrink-0 items-center rounded bg-[#C9A84C]/15 px-1.5 font-mono text-[10px] font-bold text-[#C9A84C]">WG-</span>
-            <span><strong className="text-white">Billet Worship Gift</strong> (livraison / interne) → se valide <strong className="text-white">ici</strong>.</span>
-          </li>
-          <li className="flex gap-2">
-            <span className="mt-0.5 inline-flex h-4 shrink-0 items-center rounded bg-[#25D366]/15 px-1.5 text-[10px] font-bold text-[#25D366]">web</span>
-            <span><strong className="text-white">Billet acheté en ligne</strong> (billetteries.ma) → se valide dans <strong className="text-white">l&rsquo;app billetteries.ma</strong>, pas ici.</span>
-          </li>
-        </ul>
+      {/* Consigne contrôle d'accès — validation assurée par le prestataire */}
+      <div className="rounded-xl border border-[#25D366]/25 bg-[#25D366]/[0.05] p-4 text-xs leading-relaxed text-gray-300">
+        <p className="font-semibold text-[#25D366]">Contrôle d&rsquo;accès assuré par billetteries.ma</p>
+        <p className="mt-1.5">
+          Tous les billets (achat en ligne <strong className="text-white">et</strong> livraison) sont
+          désormais émis et vérifiés à l&rsquo;entrée par <strong className="text-white">billetteries.ma</strong>,
+          via leur application de contrôle. Ce scanner interne n&rsquo;est plus le point de contrôle
+          officiel — utilisez-le uniquement comme secours.
+        </p>
       </div>
 
       <form

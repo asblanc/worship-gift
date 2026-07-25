@@ -14,11 +14,11 @@ export const billetteriesWidget = {
   /** Script du moteur de rendu fourni par billetteries.ma */
   scriptUrl: "https://www.app.billetteries.ma/files/renderer.js",
   /** Id du conteneur <div> à remplir */
-  formId: "form_350d29",
+  formId: "form_4bc23c",
   /** URL de la billetterie (mode iframe) passée à createss() */
   iframeUrl:
-    "https://www.billetteries.ma/billetterie/concert-de-jonathan-gambela-worship-gift-qsyy?InIframe=1",
+    "https://www.billetteries.ma/billetterie/concert-de-jonathan-gambela-worship-gift?InIframe=1",
   /** Lien direct (nouvel onglet) — secours si le script est bloqué */
   directUrl:
-    "https://www.billetteries.ma/billetterie/concert-de-jonathan-gambela-worship-gift-qsyy",
+    "https://www.billetteries.ma/billetterie/concert-de-jonathan-gambela-worship-gift",
 } as const;

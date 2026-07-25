@@ -274,7 +274,7 @@ function ConfirmationPanel({
 
       {method === "delivery" ? (
         <div className="space-y-3 text-sm text-gray-300">
-          <p>WhatsApp s'est ouvert avec ta référence. <strong className="text-white">Envoie le message</strong> pour organiser la <strong className="text-white">livraison</strong> et le paiement à la remise du billet.</p>
+          <p>WhatsApp s'est ouvert avec ta référence. <strong className="text-white">Envoie le message</strong> : nous transmettons tes infos à notre <strong className="text-white">billetterie partenaire</strong> qui édite ton billet officiel. <strong className="text-white">Livraison et paiement</strong> à la remise du billet.</p>
           <button onClick={onReopenWhatsApp} className="inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#1ebe5d] transition-colors">
             Rouvrir WhatsApp
           </button>

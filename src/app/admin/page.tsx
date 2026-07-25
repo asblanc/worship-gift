@@ -14,12 +14,6 @@ interface StatsData {
   deliveriesToHonor: number;
 }
 
-interface PaymentStatus {
-  provider: string;
-  environment: "test" | "prod";
-  configured: boolean;
-}
-
 interface RecentOrder {
   id: string;
   customer_email: string;
@@ -43,16 +37,9 @@ const stagger = {
 export default function AdminDashboardPage() {
   const [stats, setStats] = useState<StatsData>({ totalOrders: 0, totalPaid: 0, totalTickets: 0, totalScanned: 0, deliveriesToHonor: 0 });
   const [recentOrders, setRecentOrders] = useState<RecentOrder[]>([]);
-  const [payment, setPayment] = useState<PaymentStatus | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // État de configuration du paiement en ligne (n'expose aucun secret)
-    fetch("/api/admin/payment-status")
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d) => d && setPayment(d))
-      .catch(() => {});
-
     const fetchData = async () => {
       try {
         const { count: totalOrders, data: allOrders } = await supabase
@@ -142,7 +129,7 @@ export default function AdminDashboardPage() {
           <span className="h-6 w-6 animate-spin rounded-full border-2 border-[#C9A84C] border-t-transparent" />
         </div>
       ) : (
-        <motion.div variants={stagger} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <motion.div variants={stagger} className="grid gap-4 sm:grid-cols-3">
           <motion.div variants={fadeUp} className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6 backdrop-blur-sm">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/[0.03]">
@@ -173,27 +160,7 @@ export default function AdminDashboardPage() {
             </div>
           </motion.div>
 
-          <motion.div variants={fadeUp} className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-6 backdrop-blur-sm">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/[0.03]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M15 5v2" />
-                  <path d="M15 11v2" />
-                  <path d="M15 17v2" />
-                  <path d="M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z" />
-                </svg>
-              </div>
-              <div>
-                <p className="text-xs text-gray-400">Billets émis</p>
-                <p className="font-heading text-2xl font-bold text-white">{stats.totalTickets}</p>
-                <p className="mt-0.5 text-[11px] text-gray-400">
-                  {stats.totalScanned} scanné{stats.totalScanned > 1 ? "s" : ""} à l&rsquo;entrée
-                </p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Livraisons à honorer */}
+          {/* Commandes à transmettre au prestataire (livraison non traitée) */}
           <motion.div
             variants={fadeUp}
             className={`rounded-xl border p-6 backdrop-blur-sm ${
@@ -205,25 +172,22 @@ export default function AdminDashboardPage() {
             <div className="flex items-center gap-3">
               <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${stats.deliveriesToHonor > 0 ? "bg-[#25D366]/15" : "bg-white/[0.03]"}`}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={stats.deliveriesToHonor > 0 ? "#25D366" : "#C9A84C"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="1" y="3" width="15" height="13" rx="1" />
-                  <path d="M16 8h4l3 3v5h-7V8z" />
-                  <circle cx="5.5" cy="18.5" r="2.5" />
-                  <circle cx="18.5" cy="18.5" r="2.5" />
+                  <line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" />
                 </svg>
               </div>
               <div>
-                <p className="text-xs text-gray-400">Livraisons à honorer</p>
+                <p className="text-xs text-gray-400">À transmettre au prestataire</p>
                 <p className={`font-heading text-2xl font-bold ${stats.deliveriesToHonor > 0 ? "text-[#25D366]" : "text-white"}`}>
                   {stats.deliveriesToHonor}
                 </p>
-                <p className="mt-0.5 text-[11px] text-gray-400">paiement à la livraison</p>
+                <p className="mt-0.5 text-[11px] text-gray-400">commandes livraison à traiter</p>
               </div>
             </div>
           </motion.div>
         </motion.div>
       )}
 
-      {/* Paiement en ligne — état de configuration (code du prestataire) */}
+      {/* Billetterie & paiement — géré par le prestataire billetteries.ma */}
       {!loading && (
         <motion.div variants={fadeUp} className="rounded-xl border border-white/[0.06] bg-white/[0.01] p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -234,40 +198,25 @@ export default function AdminDashboardPage() {
                 </svg>
               </div>
               <div>
-                <p className="t-card-title text-white">Paiement en ligne</p>
+                <p className="t-card-title text-white">Billetterie & paiement en ligne</p>
                 <p className="text-xs text-gray-400">
-                  {payment
-                    ? `Prestataire ${payment.provider.toUpperCase()} · environnement ${payment.environment === "prod" ? "production" : "test"}`
-                    : "Statut indisponible"}
+                  Vente, paiement et émission des billets gérés par billetteries.ma
                 </p>
               </div>
             </div>
-            {payment && (
-              <span
-                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-semibold ${
-                  payment.configured
-                    ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-400"
-                    : "border-yellow-500/20 bg-yellow-500/10 text-yellow-400"
-                }`}
-              >
-                <span className={`h-1.5 w-1.5 rounded-full ${payment.configured ? "bg-emerald-400" : "bg-yellow-400"}`} />
-                {payment.configured
-                  ? payment.environment === "prod"
-                    ? "Connecté (production)"
-                    : "Prêt (sandbox test)"
-                  : "À configurer"}
-              </span>
-            )}
+            <Link
+              href="/billetterie/en-ligne"
+              target="_blank"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#C9A84C]/30 bg-[#C9A84C]/10 px-3 py-1 text-[11px] font-semibold text-[#C9A84C] transition-colors hover:bg-[#C9A84C]/20"
+            >
+              Voir la page d&rsquo;achat →
+            </Link>
           </div>
-          {payment && !payment.configured && (
-            <p className="mt-4 rounded-lg border border-yellow-500/15 bg-yellow-500/[0.04] p-3 text-xs leading-relaxed text-gray-300">
-              Pour encaisser en ligne en production, renseignez les clés fournies
-              par le prestataire dans les variables d&rsquo;environnement&nbsp;:
-              <span className="mt-1 block font-mono text-[11px] text-[#C9A84C]">
-                CMI_CLIENT_ID · CMI_STORE_KEY · CMI_CALLBACK_URL · PAYMENT_ENV=prod
-              </span>
-            </p>
-          )}
+          <p className="mt-4 rounded-lg border border-white/[0.06] bg-black/20 p-3 text-xs leading-relaxed text-gray-300">
+            Les billets (en ligne <strong className="text-white">et</strong> livraison) sont émis et
+            contrôlés à l&rsquo;entrée par billetteries.ma. Pour changer d&rsquo;événement, mets à jour le
+            code d&rsquo;intégration dans <span className="font-mono text-[11px] text-[#C9A84C]">src/lib/ticketing-config.ts</span>.
+          </p>
         </motion.div>
       )}
 
@@ -288,16 +237,16 @@ export default function AdminDashboardPage() {
                 cta: "Événements",
               },
               {
-                done: !!payment?.configured,
-                title: "Activer le paiement en ligne",
-                desc: "Renseigner les clés du prestataire (CMI) pour encaisser par carte. Le paiement à la livraison, lui, fonctionne déjà.",
-                href: undefined,
-                cta: undefined,
+                done: true,
+                title: "Billetterie en ligne connectée",
+                desc: "Vente et paiement gérés par billetteries.ma (widget intégré). Le lien est configuré dans ticketing-config.ts.",
+                href: "/billetterie/en-ligne",
+                cta: "Voir la page d'achat",
               },
               {
                 done: false,
-                title: "Recevoir la première commande",
-                desc: "Dès qu'un client réserve, elle apparaît ici et dans « Commandes ».",
+                title: "Recevoir la première commande à la livraison",
+                desc: "Le client envoie ses infos par WhatsApp ; elles apparaissent ici pour être transmises au prestataire.",
                 href: "/billetterie",
                 cta: "Voir la billetterie",
               },
