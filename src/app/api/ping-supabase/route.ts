@@ -9,7 +9,10 @@
  *   - `SUPABASE_SERVICE_ROLE_KEY` (clé serveur - NE PAS exposer côté client)
  *   - `CRON_SECRET` (secret partagé — même valeur que le cron des rappels)
  * - Appeler `GET /api/ping-supabase` depuis un cron externe (Vercel Cron,
- *   UptimeRobot, etc.) avec l'en-tête `Authorization: Bearer <CRON_SECRET>`.
+ *   UptimeRobot, etc.). Deux façons de fournir le secret :
+ *     • en-tête   `Authorization: Bearer <CRON_SECRET>`  (Vercel Cron, clients HTTP)
+ *     • paramètre d'URL `?token=<CRON_SECRET>`  (moniteurs sans en-têtes
+ *       personnalisés, ex: UptimeRobot plan gratuit)
  *
  * Recommandation de fréquence: 15-30 minutes. 15 minutes réduit mieux les cold starts;
  * 30 minutes est plus conservateur pour les quotas. Eviter <10 minutes pour ne pas abuser.
@@ -59,8 +62,14 @@ export async function GET(request: NextRequest) {
   if (!secret) {
     return Response.json({ status: "error" }, { status: 500 });
   }
+  // Secret accepté via en-tête Authorization OU paramètre d'URL ?token=
+  // (les moniteurs sans en-têtes personnalisés, ex: UptimeRobot gratuit,
+  // ne peuvent passer le secret que dans l'URL).
   const provided = request.headers.get("authorization") || "";
-  if (!safeEqual(provided, `Bearer ${secret}`)) {
+  const token = new URL(request.url).searchParams.get("token") || "";
+  const authorized =
+    safeEqual(provided, `Bearer ${secret}`) || safeEqual(token, secret);
+  if (!authorized) {
     return Response.json({ status: "unauthorized" }, { status: 401 });
   }
 

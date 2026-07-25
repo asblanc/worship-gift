@@ -72,17 +72,17 @@ export const upcomingEvents: EventData[] = [
   {
     id: "concert-gospel-2026",
     // 🏷️ Nom du concert
-    title: "Concert Gospel Worship Gift", // ✏️ à compléter
+    title: "Concert Gospel Worship Gift",
     // 🎤 Le chantre invité
-    artist: "[NOM DU CHANTRE]", // ✏️ à compléter
+    artist: "Jonathan Gambela",
     // 🔗 slug URL (minuscules, tirets) — évite de le changer une fois partagé
     slug: "concert-gospel-2026",
-    date: "[JJ mois AAAA]", // ✏️ ex: "20 décembre 2026"
-    time: "[HHhMM]", // ✏️ ex: "19h00"
-    isoDate: "2026-12-20T19:00:00", // ✏️ date/heure réelle (pour les rappels)
-    location: "[Ville — Salle]", // ✏️ ex: "Casablanca — Complexe Al Hamra"
+    date: "11 octobre 2026",
+    time: "15h00",
+    isoDate: "2026-10-11T15:00:00", // date/heure réelle (pour les rappels)
+    location: "Casablanca",
     description:
-      "Une soirée exceptionnelle de gospel et d'adoration. Réserve ta place dès maintenant.", // ✏️
+      "Une soirée exceptionnelle de gospel et d'adoration avec le chantre Jonathan Gambela. Réserve ta place dès maintenant.",
     // « à partir de » = tarif le plus bas ci-dessous
     priceValue: 10000,
     price: "À partir de 100 MAD",
@@ -128,14 +128,14 @@ export const upcomingEvents: EventData[] = [
 // 🏠 Bloc « prochain événement » mis en avant sur l'accueil (home).
 // Garde-le aligné avec le concert ci-dessus.
 export const nextEvent = {
-  title: "Concert Gospel Worship Gift", // ✏️ à compléter
-  subtitle: "Une soirée Gospel avec [NOM DU CHANTRE]", // ✏️
-  date: new Date("2026-12-20T19:00:00"), // ✏️ date réelle
-  dateLabel: "[JJ mois AAAA]", // ✏️ ex: "20 décembre 2026"
-  time: "[HHhMM]", // ✏️ ex: "19h00"
-  location: "[Ville — Salle]", // ✏️
+  title: "Concert Gospel Worship Gift",
+  subtitle: "Une soirée Gospel avec Jonathan Gambela",
+  date: new Date("2026-10-11T15:00:00"), // date réelle (compte à rebours)
+  dateLabel: "11 octobre 2026",
+  time: "15h00",
+  location: "Casablanca",
   description:
-    "Viens vivre un moment unique de Gospel au cœur du mouvement Worship Gift.", // ✏️
+    "Viens vivre un moment unique de Gospel avec le chantre Jonathan Gambela, au cœur du mouvement Worship Gift.",
   // 🖼️ Affiche du prochain concert — même image que ci-dessus idéalement
   coverImage: "/img_worship-gift/img_m16.jpg",
 };
