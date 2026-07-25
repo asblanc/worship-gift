@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import Eyebrow from "@/components/Eyebrow";
 import { upcomingEvents } from "@/lib/events-config";
@@ -159,6 +160,39 @@ export default function HomeTicketing() {
             <BilletteriesWidget />
           </motion.div>
         </div>
+
+        {/* Paiement à la livraison */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5 }}
+          className="mt-8 flex flex-col items-start gap-5 rounded-2xl border border-[#25D366]/25 bg-[#25D366]/[0.06] p-6 sm:flex-row sm:items-center sm:justify-between md:p-8"
+        >
+          <div className="flex items-start gap-4">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[#25D366]/30 bg-[#25D366]/10 text-[#25D366]">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="1" y="3" width="15" height="13" rx="1" />
+                <path d="M16 8h4l3 3v5h-7V8z" />
+                <circle cx="5.5" cy="18.5" r="2.5" />
+                <circle cx="18.5" cy="18.5" r="2.5" />
+              </svg>
+            </span>
+            <div>
+              <h3 className="t-card-title text-white">Vous préférez payer à la livraison&nbsp;?</h3>
+              <p className="mt-1.5 max-w-xl t-meta text-gray-300">
+                Commandez sans payer en ligne : nous préparons votre billet
+                officiel et vous le livrons. Vous réglez en <strong className="text-white">espèces à la remise</strong>.
+              </p>
+            </div>
+          </div>
+          <Link
+            href={`/billetterie/${event.slug}/reserver`}
+            className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-[#25D366] px-7 text-[13px] font-semibold uppercase tracking-[0.1em] text-white shadow-lg shadow-[#25D366]/20 transition-all hover:bg-[#1ebe5d] active:scale-[0.97]"
+          >
+            Commander à la livraison
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
