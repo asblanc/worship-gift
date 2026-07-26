@@ -74,7 +74,7 @@ export const upcomingEvents: EventData[] = [
   {
     id: "concert-gospel-2026",
     // 🏷️ Nom du concert
-    title: "Concert Gospel Worship Gift",
+    title: "Concert de Jonathan Gambela",
     // 🎤 Le chantre invité
     artist: "Jonathan Gambela",
     // 🔗 slug URL (minuscules, tirets) — évite de le changer une fois partagé
@@ -168,8 +168,8 @@ export const upcomingEvents: EventData[] = [
 // 🏠 Bloc « prochain événement » mis en avant sur l'accueil (home).
 // Garde-le aligné avec le concert ci-dessus.
 export const nextEvent = {
-  title: "Concert Gospel Worship Gift",
-  subtitle: "Une soirée Gospel avec Jonathan Gambela",
+  title: "Concert de Jonathan Gambela",
+  subtitle: "Une soirée de gospel et d'adoration · Worship Gift",
   date: new Date("2026-10-11T15:00:00"), // date réelle (compte à rebours)
   dateLabel: "11 octobre 2026",
   time: "15h00",
@@ -182,10 +182,10 @@ export const nextEvent = {
 
 // 🎟️ Textes du bandeau défilant (Marquee)
 export const marqueeTexts = [
+  "JONATHAN GAMBELA",
+  "11 OCTOBRE 2026 · CASABLANCA",
+  "BILLETS EN VENTE",
   "WORSHIP GIFT",
   "GOSPEL EXPÉRIENCE",
-  "GOSPEL & COMMUNION",
-  "UNITÉ & CÉLÉBRATION",
-  "CONCERT GOSPEL",
-  "GOSPEL EN DIRECT",
+  "PLACES LIMITÉES",
 ];

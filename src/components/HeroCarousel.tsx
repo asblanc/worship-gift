@@ -13,7 +13,7 @@ const slides = [
   },
   {
     src: "/img_worship-gift/hero-1.jpg",
-    alt: "Concert Gospel Worship Gift",
+    alt: "Concert de Jonathan Gambela — Worship Gift",
     position: "center",
   },
   {

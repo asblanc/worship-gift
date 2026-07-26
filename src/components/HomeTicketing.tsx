@@ -26,7 +26,7 @@ export default function HomeTicketing() {
   const event = upcomingEvents[0];
   if (!event) return null;
 
-  const title = real(event.title) || "Concert Gospel Worship Gift";
+  const title = real(event.title) || "Concert de Jonathan Gambela";
   const artist = real(event.artist);
   const date = real(event.date);
   const time = real(event.time);
