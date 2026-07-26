@@ -181,8 +181,9 @@ export default function HomeTicketing() {
             <div>
               <h3 className="t-card-title text-white">Vous préférez payer à la livraison&nbsp;?</h3>
               <p className="mt-1.5 max-w-xl t-meta text-gray-300">
-                Commandez sans payer en ligne : nous préparons votre billet
-                officiel et vous le livrons. Vous réglez en <strong className="text-white">espèces à la remise</strong>.
+                Commandez sans payer en ligne : un livreur ou un agent passe
+                encaisser en <strong className="text-white">espèces</strong>, puis votre
+                <strong className="text-white"> billet numérique</strong> vous est envoyé (e-mail / WhatsApp).
               </p>
             </div>
           </div>

@@ -36,7 +36,7 @@ const METHODS = [
   {
     tag: "Livraison",
     title: "Cash à la livraison",
-    desc: "Commandez, nous émettons votre billet officiel auprès du prestataire et vous le livrons. Vous payez en espèces à la remise.",
+    desc: "Commandez, nous émettons votre billet officiel auprès du prestataire. Un livreur ou un agent passe encaisser en espèces, puis votre billet numérique vous est envoyé.",
     icon: (
       <>
         <rect x="1" y="3" width="15" height="13" rx="1" />

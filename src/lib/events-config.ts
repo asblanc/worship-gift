@@ -18,8 +18,10 @@ export interface TicketType {
   priceValue: number;
   /** Libellé prix affiché. Ex: "200 MAD" */
   price: string;
-  /** Petite description facultative (ce que la catégorie inclut). */
+  /** Petite description facultative (résumé court affiché sous le libellé). */
   description?: string;
+  /** Avantages détaillés de la catégorie (liste à puces). */
+  perks?: string[];
   /**
    * 🔗 Lien de paiement du prestataire pour CETTE catégorie (facultatif).
    * Si vide, on utilise le paymentUrl de l'événement.
@@ -84,38 +86,76 @@ export const upcomingEvents: EventData[] = [
     description:
       "Une soirée exceptionnelle de gospel et d'adoration avec le chantre Jonathan Gambela. Réserve ta place dès maintenant.",
     // « à partir de » = tarif le plus bas ci-dessous
-    priceValue: 10000,
-    price: "À partir de 100 MAD",
+    priceValue: 20000,
+    price: "À partir de 200 MAD",
     ticketLink: "#",
     // 🔗 Colle ici le lien/code du prestataire (paiement en ligne). Vide pour l'instant.
     paymentUrl: "",
     // 🚚 Paiement à la livraison activé
     deliveryAvailable: true,
-    // 🎟️ Catégories de billets — ajuste libellés et PRIX (en centimes MAD)
+    // 🎟️ Catégories de billets (prix en centimes MAD)
     ticketTypes: [
       {
         id: "standard",
         label: "Standard",
-        priceValue: 10000, // 100 MAD ✏️
-        price: "100 MAD",
-        description: "Accès général",
-        paymentUrl: "", // 🔗 lien prestataire pour cette catégorie (facultatif)
+        priceValue: 20000, // 200 MAD
+        price: "200 MAD",
+        description: "Gradin — place confortable",
+        perks: ["Accès standard", "Place confortable (gradin)"],
       },
       {
         id: "vip",
         label: "VIP",
-        priceValue: 20000, // 200 MAD ✏️
-        price: "200 MAD",
-        description: "Placement privilégié",
-        paymentUrl: "",
+        priceValue: 50000, // 500 MAD
+        price: "500 MAD",
+        description: "Devant la scène + snacks & boissons",
+        perks: [
+          "Accès VIP",
+          "Place VIP située devant la scène",
+          "Snacks et boissons offerts",
+        ],
       },
       {
-        id: "carre-or",
-        label: "Carré Or",
-        priceValue: 30000, // 300 MAD ✏️
-        price: "300 MAD",
-        description: "Premiers rangs + accueil privilégié",
-        paymentUrl: "",
+        id: "vip-duo",
+        label: "Duo VIP",
+        priceValue: 80000, // 800 MAD
+        price: "800 MAD",
+        description: "Expérience VIP pour 2 personnes",
+        perks: [
+          "Pour 2 personnes",
+          "Accès VIP",
+          "Place VIP située devant la scène",
+          "Snacks et boissons offerts",
+        ],
+      },
+      {
+        id: "gold",
+        label: "Gold",
+        priceValue: 100000, // 1000 MAD
+        price: "1000 MAD",
+        description: "VVIP 1er rang · Meet & Greet · photo",
+        perks: [
+          "Accès VVIP et place réservée",
+          "Meet & Greet (rencontre avec Jonathan Gambela)",
+          "Place VVIP au premier rang, devant la scène",
+          "Collation premium et boissons offertes",
+          "Photo souvenir avec Jonathan Gambela",
+        ],
+      },
+      {
+        id: "gold-duo",
+        label: "Duo Gold",
+        priceValue: 160000, // 1600 MAD
+        price: "1600 MAD",
+        description: "Expérience Gold pour 2 personnes",
+        perks: [
+          "Pour 2 personnes",
+          "Accès VVIP et place réservée",
+          "Meet & Greet (rencontre avec Jonathan Gambela)",
+          "Place VVIP au premier rang, devant la scène",
+          "Collation premium et boissons offertes",
+          "Photo souvenir avec Jonathan Gambela",
+        ],
       },
     ],
     color: "#C9A84C",

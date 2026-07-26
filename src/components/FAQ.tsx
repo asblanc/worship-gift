@@ -12,7 +12,7 @@ const FAQ_ITEMS = [
   {
     question: "Comment commander mes billets ?",
     answer:
-      "En ligne : depuis l'accueil ou la page Billetterie, choisissez vos places directement dans le formulaire de notre billetterie partenaire et payez en quelques clics. À la livraison : envoyez-nous vos informations, nous préparons votre billet et vous réglez en espèces à la remise. C'est simple, rapide et sécurisé.",
+      "En ligne : depuis l'accueil ou la page Billetterie, choisissez vos places directement dans le formulaire de notre billetterie partenaire et payez en quelques clics. À la livraison : envoyez-nous vos informations ; un livreur ou un agent passe encaisser en espèces, puis votre billet numérique vous est envoyé. C'est simple, rapide et sécurisé.",
   },
   {
     question: "Quels moyens de paiement acceptez-vous ?",
@@ -22,7 +22,7 @@ const FAQ_ITEMS = [
   {
     question: "Puis-je payer à la livraison ?",
     answer:
-      "Oui ! Choisissez « Paiement à la livraison », renseignez votre nom et votre téléphone : nous confirmons par WhatsApp, nous émettons votre billet officiel auprès de notre billetterie partenaire, puis nous vous le livrons. Vous réglez en espèces à la remise du billet — aucun paiement à l'avance n'est demandé.",
+      "Oui ! Choisissez « Paiement à la livraison », renseignez votre nom et votre téléphone : nous confirmons par WhatsApp et émettons votre billet officiel auprès de notre billetterie partenaire. Un livreur ou un agent passe ensuite encaisser le montant en espèces, puis votre billet numérique vous est envoyé (e-mail / WhatsApp). Aucun paiement à l'avance n'est demandé.",
   },
   {
     question: "Comment récupérer mon billet de concert ?",

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
+import TicketTiers from "@/components/TicketTiers";
 import PaymentMethods from "@/components/PaymentMethods";
 import { upcomingEvents } from "@/lib/events-config";
 
@@ -149,6 +150,9 @@ export default function BilletteriePage() {
             </motion.div>
           </div>
         </section>
+
+        {/* Catégories de billets */}
+        <TicketTiers />
 
         {/* 3 moyens de paiement */}
         <PaymentMethods />

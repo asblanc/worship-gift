@@ -233,7 +233,7 @@ function ReservationForm({ event }: { event: EventData }) {
                       )}
                     </div>
                     <p className="mt-3 text-xs text-gray-400">
-                      Ta commande est enregistrée avec une référence. En ligne : règlement sur la page sécurisée du prestataire. À la livraison : règlement à la remise du billet. Ta place est confirmée une fois le paiement reçu.
+                      Ta commande est enregistrée avec une référence. En ligne : règlement sur la page sécurisée du prestataire. À la livraison : un livreur ou un agent passe encaisser en espèces, puis ton billet numérique t&rsquo;est envoyé. Ta place est confirmée une fois le paiement reçu.
                     </p>
                   </div>
                 </div>
@@ -274,7 +274,7 @@ function ConfirmationPanel({
 
       {method === "delivery" ? (
         <div className="space-y-3 text-sm text-gray-300">
-          <p>WhatsApp s'est ouvert avec ta référence. <strong className="text-white">Envoie le message</strong> : nous transmettons tes infos à notre <strong className="text-white">billetterie partenaire</strong> qui édite ton billet officiel. <strong className="text-white">Livraison et paiement</strong> à la remise du billet.</p>
+          <p>WhatsApp s'est ouvert avec ta référence. <strong className="text-white">Envoie le message</strong> : nous transmettons tes infos à notre <strong className="text-white">billetterie partenaire</strong> qui édite ton billet officiel. Un <strong className="text-white">livreur ou un agent</strong> passe encaisser en espèces, puis ton <strong className="text-white">billet numérique</strong> t&rsquo;est envoyé (e-mail / WhatsApp).</p>
           <button onClick={onReopenWhatsApp} className="inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#1ebe5d] transition-colors">
             Rouvrir WhatsApp
           </button>
