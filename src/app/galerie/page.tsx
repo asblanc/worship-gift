@@ -48,8 +48,6 @@ export default function GaleriePage() {
     [highlights.length],
   );
 
-  const totalPhotos = albums.reduce((n, a) => n + a.images.length, 0);
-
   return (
     <>
       <Navbar />
@@ -78,7 +76,7 @@ export default function GaleriePage() {
               <Eyebrow centered>En mouvement</Eyebrow>
               <h2 className="t-h2 text-white">Un aperçu en images</h2>
               <p className="mx-auto mt-4 max-w-xl t-body text-gray-300">
-                {totalPhotos} photos capturées au cœur de nos soirées.
+                Des instants capturés au cœur de nos soirées.
                 <span className="hidden sm:inline">
                   {" "}
                   Survolez pour ralentir,
@@ -141,14 +139,6 @@ export default function GaleriePage() {
                         sizes="(max-width: 640px) 100vw, 50vw"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-black/20 to-transparent" />
-
-                      {/* Badge dossier */}
-                      <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-black/60 px-3 py-1 text-xs font-semibold text-[#C9A84C] backdrop-blur-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z" />
-                        </svg>
-                        {album.images.length} photos
-                      </span>
 
                       {/* Icône ouvrir au survol */}
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
