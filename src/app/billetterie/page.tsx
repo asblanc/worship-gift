@@ -66,7 +66,7 @@ export default function BilletteriePage() {
       <main className="flex-1 pt-20">
         {/* Héro — fond noir avec image d'illustration */}
         <PageHero
-          image="/img_worship-gift/img_billeterie1.jpg"
+          image="/img_worship-gift/img_billeterie2.webp"
           alt="Billetterie Worship Gift"
           eyebrow="Billetterie"
           title="Billetterie"
