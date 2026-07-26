@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,6 +30,19 @@ function ReservationForm({ event }: { event: EventData }) {
   const [loading, setLoading] = useState<Method | null>(null);
   const [error, setError] = useState("");
   const [confirmation, setConfirmation] = useState<{ orderId: string; method: Method } | null>(null);
+  const formRef = useRef<HTMLDivElement>(null);
+
+  // Pré-sélection de la formule depuis l'URL (?tier=…) : l'utilisateur
+  // arrive avec sa catégorie déjà choisie, prêt à saisir ses infos.
+  useEffect(() => {
+    const requested = new URLSearchParams(window.location.search).get("tier");
+    if (requested && (event.ticketTypes ?? []).some((t) => t.id === requested)) {
+      setTierId(requested);
+      requestAnimationFrame(() =>
+        formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }),
+      );
+    }
+  }, []);
 
   const selectedTier = hasTiers ? tiers.find((t) => t.id === tierId) ?? tiers[0] : undefined;
   const unitValue = selectedTier ? selectedTier.priceValue : event.priceValue;
@@ -141,7 +154,7 @@ function ReservationForm({ event }: { event: EventData }) {
                   onReopenWhatsApp={() => openWhatsApp(confirmation.orderId)}
                 />
               ) : (
-                <div className="rounded-xl border border-white/10 bg-white/[0.08] p-6 md:p-8 space-y-6">
+                <div ref={formRef} className="scroll-mt-24 rounded-xl border border-white/10 bg-white/[0.08] p-6 md:p-8 space-y-6">
                   {/* Catégories de billets */}
                   {hasTiers && (
                     <div className="space-y-2.5">

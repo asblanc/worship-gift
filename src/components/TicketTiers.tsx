@@ -69,10 +69,15 @@ const DEFAULT_THEME: Theme = {
 // Duo -> catégorie simple équivalente (pour calculer l'économie)
 const DUO_BASE: Record<string, string> = { "vip-duo": "vip", "gold-duo": "gold" };
 
-export default function TicketTiers({ href = "/billetterie" }: { href?: string }) {
+export default function TicketTiers() {
   const event = upcomingEvents[0];
   const tiers = event?.ticketTypes ?? [];
   if (tiers.length === 0) return null;
+
+  // Clic sur une formule -> page de réservation avec la catégorie déjà
+  // sélectionnée (l'utilisateur enchaîne directement sur ses infos).
+  const tierHref = (id: string) =>
+    `/billetterie/${event.slug}/reserver?tier=${id}`;
 
   const savingsFor = (id: string): number => {
     const baseId = DUO_BASE[id];
@@ -96,8 +101,10 @@ export default function TicketTiers({ href = "/billetterie" }: { href?: string }
           <Eyebrow centered>Billetterie · 11 octobre 2026</Eyebrow>
           <h2 className="t-h2 text-white">Choisissez votre formule</h2>
           <p className="mx-auto mt-4 max-w-xl t-body text-gray-400">
-            Concert de <span className="font-semibold text-[#C9A84C]">Jonathan Gambela</span> à
-            Casablanca. Places limitées — réservez la vôtre avant qu&rsquo;il ne soit trop tard.
+            Concert de{" "}
+            <span className="font-semibold text-[#C9A84C]">Jonathan Gambela</span>{" "}
+            à Casablanca. Places limitées — réservez la vôtre avant qu&rsquo;il ne
+            soit trop tard.
           </p>
         </motion.div>
 
@@ -126,7 +133,7 @@ export default function TicketTiers({ href = "/billetterie" }: { href?: string }
                 transition={{ duration: 0.5, delay: i * 0.06 }}
               >
                 <Link
-                  href={href}
+                  href={tierHref(t.id)}
                   aria-label={`Réserver la formule ${t.label} (${t.price})`}
                   className={`group relative flex h-full flex-col rounded-2xl border bg-gradient-to-b p-6 shadow-[0_10px_40px_rgba(0,0,0,0.35)] outline-none transition-all duration-300 hover:-translate-y-1.5 focus-visible:ring-2 focus-visible:ring-[#C9A84C] ${theme.border} ${theme.bg} ${theme.featured ? "sm:shadow-[0_16px_50px_rgba(201,168,76,0.12)]" : ""}`}
                 >

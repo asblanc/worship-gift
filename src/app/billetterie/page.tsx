@@ -152,7 +152,7 @@ export default function BilletteriePage() {
         </section>
 
         {/* Catégories de billets */}
-        <TicketTiers href="/billetterie/en-ligne" />
+        <TicketTiers />
 
         {/* 3 moyens de paiement */}
         <PaymentMethods />
