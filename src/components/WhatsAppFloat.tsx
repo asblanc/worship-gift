@@ -15,7 +15,7 @@ const MESSAGES = {
   billet:
     "Bonjour, j'ai un problème avec mon billet.",
   concert:
-    "Bonjour, j'aimerais plus d'informations sur le concert.",
+    "Bonjour, j'aimerais plus d'informations sur le concert live.",
   agent:
     "Bonjour, je souhaite parler à un agent.",
 } as const;

@@ -26,7 +26,7 @@ export default function HomeTicketing() {
   const event = upcomingEvents[0];
   if (!event) return null;
 
-  const title = real(event.title) || "Concert de Jonathan Gambela";
+  const title = real(event.title) || "Concert Live de Jonathan Gambela";
   const artist = real(event.artist);
   const date = real(event.date);
   const time = real(event.time);
@@ -53,7 +53,7 @@ export default function HomeTicketing() {
         </>
       ),
       t: "Contrôle rapide à l'entrée",
-      d: "QR code scanné en un instant le jour du concert.",
+      d: "QR code scanné en un instant le jour du concert live.",
     },
   ];
 

@@ -101,7 +101,7 @@ export default function TicketTiers() {
           <Eyebrow centered>Billetterie · 11 octobre 2026</Eyebrow>
           <h2 className="t-h2 text-white">Choisissez votre formule</h2>
           <p className="mx-auto mt-4 max-w-xl t-body text-gray-400">
-            Concert de{" "}
+            Concert live de{" "}
             <span className="font-semibold text-[#C9A84C]">Jonathan Gambela</span>{" "}
             à Casablanca. Places limitées — réservez la vôtre avant qu&rsquo;il ne
             soit trop tard.

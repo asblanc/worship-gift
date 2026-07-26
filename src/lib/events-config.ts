@@ -74,7 +74,7 @@ export const upcomingEvents: EventData[] = [
   {
     id: "concert-gospel-2026",
     // 🏷️ Nom du concert
-    title: "Concert de Jonathan Gambela",
+    title: "Concert Live de Jonathan Gambela",
     // 🎤 Le chantre invité
     artist: "Jonathan Gambela",
     // 🔗 slug URL (minuscules, tirets) — évite de le changer une fois partagé
@@ -84,7 +84,7 @@ export const upcomingEvents: EventData[] = [
     isoDate: "2026-10-11T15:00:00", // date/heure réelle (pour les rappels)
     location: "Casablanca",
     description:
-      "Une soirée exceptionnelle de gospel et d'adoration avec le chantre Jonathan Gambela. Réserve ta place dès maintenant.",
+      "Un concert live exceptionnel de gospel et d'adoration avec le chantre Jonathan Gambela. Réserve ta place dès maintenant.",
     // « à partir de » = tarif le plus bas ci-dessous
     priceValue: 20000,
     price: "À partir de 200 MAD",
@@ -101,8 +101,6 @@ export const upcomingEvents: EventData[] = [
         priceValue: 20000, // 200 MAD
         price: "200 MAD",
         description: "Gradin — place confortable",
-        paymentUrl:
-          "https://www.billetteries.ma/ords/soireesympa/r/publicapp/app-donneesclients?p2_panier=jeFu9iJekMVxje4&cs=3iCO8rEJ69znJgL8jkPxhYV_LIEMdml9nPmQKBrf6LzG7SYfqlR_BwEz1NxTwOCVeFs4agvTukGwQV-BT20SudA&session=16764739849963",
         perks: ["Accès standard", "Place confortable (gradin)"],
       },
       {
@@ -111,8 +109,6 @@ export const upcomingEvents: EventData[] = [
         priceValue: 50000, // 500 MAD
         price: "500 MAD",
         description: "Devant la scène + snacks & boissons",
-        paymentUrl:
-          "https://www.billetteries.ma/ords/soireesympa/r/publicapp/app-donneesclients?p2_panier=rjooQq8v8a9rvgr&cs=3PDZEhY87mhovhYc19PCTQVROXnIXuwS7YIsn_Wzqlb769isu1tNAnpbF9NA05jZw07wc5Pm_5y_BCMmXVhUu3Q&session=8730314676446",
         perks: [
           "Accès VIP",
           "Place VIP située devant la scène",
@@ -125,8 +121,6 @@ export const upcomingEvents: EventData[] = [
         priceValue: 80000, // 800 MAD
         price: "800 MAD",
         description: "Expérience VIP pour 2 personnes",
-        paymentUrl:
-          "https://www.billetteries.ma/ords/soireesympa/r/publicapp/app-donneesclients?p2_panier=rOtvspjdWx3ycXd&cs=3wxEIu7ppigxw6xVLFxY92jLOMl05loyf6bEs5X7Fq0y3cMI3A5dn8dwDce8yV0YyXE0Iif8FVU8GYJL6OZ8V_A&session=13907861011168",
         perks: [
           "Pour 2 personnes",
           "Accès VIP",
@@ -140,8 +134,6 @@ export const upcomingEvents: EventData[] = [
         priceValue: 100000, // 1000 MAD
         price: "1000 MAD",
         description: "VVIP 1er rang · Meet & Greet · photo",
-        paymentUrl:
-          "https://www.billetteries.ma/ords/soireesympa/r/publicapp/app-donneesclients?p2_panier=vcnvbkxhSrKv0xe&cs=3s8aR4SldZ90OT0r9W7qWYrZ7GWDXEYCK8jjNKL58bCy9kG_Y2gfjMUbSAA1ghPniu0v36Cr3vR17gtRSkFSJ1g&session=15697543211116",
         perks: [
           "Accès VVIP et place réservée",
           "Meet & Greet (rencontre avec Jonathan Gambela)",
@@ -156,8 +148,6 @@ export const upcomingEvents: EventData[] = [
         priceValue: 160000, // 1600 MAD
         price: "1600 MAD",
         description: "Expérience Gold pour 2 personnes",
-        paymentUrl:
-          "https://www.billetteries.ma/ords/soireesympa/r/publicapp/app-donneesclients?p2_panier=5vvNv7cchNGcNzN&cs=3YFKJoM9pazOM4020ncd21qZmAyTIQqBZFDVe7-ghHAonb0z8o2EDGMDckpBbHSDiuXgEtNjxvIN7N4HcLXXXDQ&session=17235724590041",
         perks: [
           "Pour 2 personnes",
           "Accès VVIP et place réservée",
@@ -178,21 +168,21 @@ export const upcomingEvents: EventData[] = [
 // 🏠 Bloc « prochain événement » mis en avant sur l'accueil (home).
 // Garde-le aligné avec le concert ci-dessus.
 export const nextEvent = {
-  title: "Concert de Jonathan Gambela",
-  subtitle: "Une soirée de gospel et d'adoration · Worship Gift",
+  title: "Concert Live de Jonathan Gambela",
+  subtitle: "Concert live de gospel et d'adoration · Worship Gift",
   date: new Date("2026-10-11T15:00:00"), // date réelle (compte à rebours)
   dateLabel: "11 octobre 2026",
   time: "15h00",
   location: "Casablanca",
   description:
-    "Viens vivre un moment unique de Gospel avec le chantre Jonathan Gambela, au cœur du mouvement Worship Gift.",
+    "Viens vivre un concert live unique de Gospel avec le chantre Jonathan Gambela, au cœur du mouvement Worship Gift.",
   // 🖼️ Affiche du prochain concert — même image que ci-dessus idéalement
   coverImage: "/img_worship-gift/img_silouette.jpeg",
 };
 
 // 🎟️ Textes du bandeau défilant (Marquee)
 export const marqueeTexts = [
-  "JONATHAN GAMBELA",
+  "CONCERT LIVE · JONATHAN GAMBELA",
   "11 OCTOBRE 2026 · CASABLANCA",
   "BILLETS EN VENTE",
   "WORSHIP GIFT",

@@ -27,7 +27,7 @@ const FAQ_ITEMS = [
   {
     question: "Comment récupérer mon billet de concert ?",
     answer:
-      "Pour un paiement en ligne, votre billet vous est délivré immédiatement par la plateforme (par e-mail / téléchargement) une fois le paiement validé. Pour une commande à la livraison, votre billet officiel vous est également envoyé sous forme numérique — par e-mail ou sur votre téléphone (WhatsApp), une fois le paiement reçu. Dans les deux cas, présentez-le (sur votre téléphone ou imprimé) à l'entrée du concert.",
+      "Pour un paiement en ligne, votre billet vous est délivré immédiatement par la plateforme (par e-mail / téléchargement) une fois le paiement validé. Pour une commande à la livraison, votre billet officiel vous est également envoyé sous forme numérique — par e-mail ou sur votre téléphone (WhatsApp), une fois le paiement reçu. Dans les deux cas, présentez-le (sur votre téléphone ou imprimé) à l'entrée du concert live.",
   },
   {
     question: "Combien de temps prend la livraison des billets ?",

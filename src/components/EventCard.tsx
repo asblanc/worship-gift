@@ -39,7 +39,7 @@ export default function EventCard() {
           <div className="flex flex-1 flex-col justify-center">
             <span className="t-eyebrow inline-flex items-center gap-3 text-[#C9A84C]">
               <span className="h-px w-8 bg-[#C9A84C]/60" aria-hidden />
-              Prochain concert
+              Prochain concert live
             </span>
             <h2 className="mt-4 t-h2 text-white">{event.title}</h2>
             {event.artist && (
