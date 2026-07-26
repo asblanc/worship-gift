@@ -219,6 +219,34 @@ export default function TicketTiers() {
             );
           })}
         </div>
+
+        {/* Réassurance + info panier (technique de vente : lever les freins) */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mx-auto mt-10 flex max-w-3xl flex-col items-center gap-3 text-center"
+        >
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-medium text-gray-300">
+            <span className="inline-flex items-center gap-1.5">
+              <svg className="h-3.5 w-3.5 text-[#C9A84C]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+              Paiement 100 % sécurisé
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <svg className="h-3.5 w-3.5 text-[#C9A84C]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+              Billet reçu immédiatement
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <svg className="h-3.5 w-3.5 text-[#C9A84C]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><circle cx="12" cy="12" r="9" /><path strokeLinecap="round" strokeLinejoin="round" d="M12 7v5l3 2" /></svg>
+              Panier valable 25 min
+            </span>
+          </div>
+          <p className="text-xs text-gray-500">
+            Votre panier réserve votre place 25 minutes. Le délai est écoulé&nbsp;?
+            Revenez ici et recliquez sur votre formule&nbsp;: c&rsquo;est instantané.
+          </p>
+        </motion.div>
       </div>
     </section>
   );

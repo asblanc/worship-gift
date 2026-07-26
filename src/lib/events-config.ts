@@ -101,6 +101,8 @@ export const upcomingEvents: EventData[] = [
         priceValue: 20000, // 200 MAD
         price: "200 MAD",
         description: "Gradin — place confortable",
+        paymentUrl:
+          "https://www.billetteries.ma/ords/soireesympa/r/publicapp/app-donneesclients?p2_panier=jeFu9iJekMVxje4&cs=3iCO8rEJ69znJgL8jkPxhYV_LIEMdml9nPmQKBrf6LzG7SYfqlR_BwEz1NxTwOCVeFs4agvTukGwQV-BT20SudA&session=16764739849963",
         perks: ["Accès standard", "Place confortable (gradin)"],
       },
       {
@@ -109,6 +111,8 @@ export const upcomingEvents: EventData[] = [
         priceValue: 50000, // 500 MAD
         price: "500 MAD",
         description: "Devant la scène + snacks & boissons",
+        paymentUrl:
+          "https://www.billetteries.ma/ords/soireesympa/r/publicapp/app-donneesclients?p2_panier=rjooQq8v8a9rvgr&cs=3PDZEhY87mhovhYc19PCTQVROXnIXuwS7YIsn_Wzqlb769isu1tNAnpbF9NA05jZw07wc5Pm_5y_BCMmXVhUu3Q&session=8730314676446",
         perks: [
           "Accès VIP",
           "Place VIP située devant la scène",
@@ -121,6 +125,8 @@ export const upcomingEvents: EventData[] = [
         priceValue: 80000, // 800 MAD
         price: "800 MAD",
         description: "Expérience VIP pour 2 personnes",
+        paymentUrl:
+          "https://www.billetteries.ma/ords/soireesympa/r/publicapp/app-donneesclients?p2_panier=rOtvspjdWx3ycXd&cs=3wxEIu7ppigxw6xVLFxY92jLOMl05loyf6bEs5X7Fq0y3cMI3A5dn8dwDce8yV0YyXE0Iif8FVU8GYJL6OZ8V_A&session=13907861011168",
         perks: [
           "Pour 2 personnes",
           "Accès VIP",
@@ -134,6 +140,8 @@ export const upcomingEvents: EventData[] = [
         priceValue: 100000, // 1000 MAD
         price: "1000 MAD",
         description: "VVIP 1er rang · Meet & Greet · photo",
+        paymentUrl:
+          "https://www.billetteries.ma/ords/soireesympa/r/publicapp/app-donneesclients?p2_panier=vcnvbkxhSrKv0xe&cs=3s8aR4SldZ90OT0r9W7qWYrZ7GWDXEYCK8jjNKL58bCy9kG_Y2gfjMUbSAA1ghPniu0v36Cr3vR17gtRSkFSJ1g&session=15697543211116",
         perks: [
           "Accès VVIP et place réservée",
           "Meet & Greet (rencontre avec Jonathan Gambela)",
@@ -148,6 +156,8 @@ export const upcomingEvents: EventData[] = [
         priceValue: 160000, // 1600 MAD
         price: "1600 MAD",
         description: "Expérience Gold pour 2 personnes",
+        paymentUrl:
+          "https://www.billetteries.ma/ords/soireesympa/r/publicapp/app-donneesclients?p2_panier=5vvNv7cchNGcNzN&cs=3YFKJoM9pazOM4020ncd21qZmAyTIQqBZFDVe7-ghHAonb0z8o2EDGMDckpBbHSDiuXgEtNjxvIN7N4HcLXXXDQ&session=17235724590041",
         perks: [
           "Pour 2 personnes",
           "Accès VVIP et place réservée",

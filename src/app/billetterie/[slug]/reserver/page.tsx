@@ -257,7 +257,7 @@ function ReservationForm({ event }: { event: EventData }) {
                       )}
                     </div>
                     <p className="mt-3 text-xs text-gray-400">
-                      Ta commande est enregistrée avec une référence. En ligne : règlement sur la page sécurisée du prestataire. À la livraison : un livreur ou un agent passe encaisser en espèces, puis ton billet numérique t&rsquo;est envoyé. Ta place est confirmée une fois le paiement reçu.
+                      Ta commande est enregistrée avec une référence. En ligne : règlement sur la page sécurisée du prestataire (panier valable 25 min — expiré ? recliquez sur « Payer en ligne »). À la livraison : un livreur ou un agent passe encaisser en espèces, puis ton billet numérique t&rsquo;est envoyé. Ta place est confirmée une fois le paiement reçu.
                     </p>
                   </div>
                 </div>
