@@ -92,15 +92,15 @@ export default function HomeTicketing() {
             className="flex flex-col gap-6"
           >
             <div className="overflow-hidden rounded-2xl border border-[#282828] bg-[#121212] shadow-[0_12px_50px_rgba(0,0,0,0.4)]">
-              <div className="relative aspect-[16/10] w-full">
+              <div className="relative aspect-[4/5] w-full">
                 <Image
                   src={event.coverImage}
                   alt={title}
                   fill
-                  className="object-cover"
+                  className="object-cover object-top"
                   sizes="(max-width: 1024px) 100vw, 480px"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-black/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent" />
                 <span className="absolute top-3 left-3 inline-block rounded-full border border-[#C9A84C]/60 bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#C9A84C] backdrop-blur-sm">
                   À l&rsquo;affiche
                 </span>
