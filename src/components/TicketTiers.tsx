@@ -124,6 +124,12 @@ export default function TicketTiers() {
           {tiers.map((t, i) => {
             const theme = THEMES[t.id] ?? DEFAULT_THEME;
             const savings = savingsFor(t.id);
+            // Paiement en ligne : lien DIRECT de la catégorie chez le
+            // prestataire s'il est fourni (pré-sélection de la formule),
+            // sinon repli vers le formulaire partenaire général.
+            const onlineLink = t.paymentUrl || event.paymentUrl || "";
+            const onlineExternal = /^https?:\/\//.test(onlineLink);
+            const onlineHref = onlineLink || "/billetterie/en-ligne";
             return (
               <motion.div
                 key={t.id}
@@ -132,10 +138,8 @@ export default function TicketTiers() {
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.5, delay: i * 0.06 }}
               >
-                <Link
-                  href={tierHref(t.id)}
-                  aria-label={`Réserver la formule ${t.label} (${t.price})`}
-                  className={`group relative flex h-full flex-col rounded-2xl border bg-gradient-to-b p-6 shadow-[0_10px_40px_rgba(0,0,0,0.35)] outline-none transition-all duration-300 hover:-translate-y-1.5 focus-visible:ring-2 focus-visible:ring-[#C9A84C] ${theme.border} ${theme.bg} ${theme.featured ? "sm:shadow-[0_16px_50px_rgba(201,168,76,0.12)]" : ""}`}
+                <div
+                  className={`group relative flex h-full flex-col rounded-2xl border bg-gradient-to-b p-6 shadow-[0_10px_40px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1.5 ${theme.border} ${theme.bg} ${theme.featured ? "sm:shadow-[0_16px_50px_rgba(201,168,76,0.12)]" : ""}`}
                 >
                   {/* Badges */}
                   <div className="flex items-center justify-between gap-2">
@@ -178,18 +182,39 @@ export default function TicketTiers() {
                     ))}
                   </ul>
 
-                  {/* CTA */}
-                  <span className={`mt-6 inline-flex items-center justify-center gap-2 rounded-full py-3 text-[13px] font-bold uppercase tracking-[0.1em] transition-all ${
-                    theme.featured
-                      ? "bg-[#C9A84C] text-black group-hover:bg-[#F0CB6A]"
-                      : "border border-white/15 text-white group-hover:border-[#C9A84C]/60 group-hover:text-[#C9A84C]"
-                  }`}>
-                    Réserver ma place
-                    <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
-                    </svg>
-                  </span>
-                </Link>
+                  {/* CTA : choisir le mode de paiement pour CETTE formule */}
+                  <div className="mt-6 flex flex-col gap-2.5">
+                    {onlineExternal ? (
+                      <a
+                        href={onlineHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Payer en ligne la formule ${t.label}`}
+                        className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#C9A84C] text-[12px] font-bold uppercase tracking-[0.08em] text-black transition-all hover:bg-[#F0CB6A] active:scale-[0.97]"
+                      >
+                        Paiement en ligne
+                        <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+                      </a>
+                    ) : (
+                      <Link
+                        href={onlineHref}
+                        aria-label={`Payer en ligne la formule ${t.label}`}
+                        className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#C9A84C] text-[12px] font-bold uppercase tracking-[0.08em] text-black transition-all hover:bg-[#F0CB6A] active:scale-[0.97]"
+                      >
+                        Paiement en ligne
+                        <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+                      </Link>
+                    )}
+                    <Link
+                      href={tierHref(t.id)}
+                      aria-label={`Commander à la livraison la formule ${t.label}`}
+                      className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#25D366]/40 bg-[#25D366]/5 text-[12px] font-bold uppercase tracking-[0.08em] text-[#25D366] transition-all hover:bg-[#25D366]/15 active:scale-[0.97]"
+                    >
+                      <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13" rx="1" /><path d="M16 8h4l3 3v5h-7V8z" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" /></svg>
+                      À la livraison
+                    </Link>
+                  </div>
+                </div>
               </motion.div>
             );
           })}
