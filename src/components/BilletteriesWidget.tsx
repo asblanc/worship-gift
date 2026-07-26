@@ -5,15 +5,16 @@ import { billetteriesWidget as cfg } from "@/lib/ticketing-config";
 
 /* ================================================================
    Worship Gift — Widget billetterie externe (billetteries.ma)
-   Charge le script renderer.js une seule fois, puis appelle
-   window.createss(formId, iframeUrl) : leur script injecte un
-   spinner puis une iframe dont la HAUTEUR est fixée via postMessage
-   par la page cible.
 
-   Watchdog : si la page cible n'envoie pas sa hauteur en ~10 s
-   (lien invalide, événement non publié, framing bloqué…), on bascule
-   sur un secours « Ouvrir la billetterie » (nouvel onglet) au lieu
-   de laisser un spinner tourner indéfiniment.
+   Optimisations UX :
+   - Chargement PARESSEUX : l'iframe n'est initialisée que lorsque le
+     bloc entre dans le champ de vision (IntersectionObserver) — pas à
+     chaque rendu de page.
+   - Preconnect vers billetteries.ma pour accélérer le premier chargement.
+   - Squelette discret (pas de spinner) pendant le chargement, révélé
+     dès que l'iframe a reçu sa hauteur (poll rapide au lieu d'un délai
+     fixe) → temps de chargement quasi invisible.
+   - Secours « Ouvrir la billetterie » si l'embed échoue.
    ================================================================ */
 
 declare global {
@@ -30,9 +31,7 @@ function loadRenderer(src: string): Promise<void> {
   if (scriptPromise) return scriptPromise;
 
   scriptPromise = new Promise<void>((resolve, reject) => {
-    const existing = document.querySelector<HTMLScriptElement>(
-      `script[src="${src}"]`,
-    );
+    const existing = document.querySelector<HTMLScriptElement>(`script[src="${src}"]`);
     if (existing) {
       existing.addEventListener("load", () => resolve());
       existing.addEventListener("error", () => reject(new Error("renderer")));
@@ -51,17 +50,38 @@ function loadRenderer(src: string): Promise<void> {
   return scriptPromise;
 }
 
-const WATCHDOG_MS = 10_000;
+const MAX_WAIT_MS = 12_000;
+const POLL_MS = 350;
 
 export default function BilletteriesWidget() {
-  // loading : script + iframe en cours ; embedded : iframe affichée ;
-  // fallback : échec -> on propose le lien direct
-  const [phase, setPhase] = useState<"loading" | "embedded" | "fallback">("loading");
+  // idle : pas encore visible ; loading : en cours ; embedded : iframe ok ;
+  // fallback : échec -> lien direct
+  const [phase, setPhase] = useState<"idle" | "loading" | "embedded" | "fallback">("idle");
+  const rootRef = useRef<HTMLDivElement>(null);
   const injected = useRef(false);
 
+  // 1) Déclenche le chargement uniquement quand le bloc approche du viewport
   useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setPhase((p) => (p === "idle" ? "loading" : p));
+          io.disconnect();
+        }
+      },
+      { rootMargin: "400px 0px" }, // précharge un peu avant d'arriver
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // 2) Charge le script + injecte l'iframe quand phase === "loading"
+  useEffect(() => {
+    if (phase !== "loading" || injected.current) return;
     let active = true;
-    let watchdog: ReturnType<typeof setTimeout> | undefined;
+    let poll: ReturnType<typeof setInterval> | undefined;
 
     loadRenderer(cfg.scriptUrl)
       .then(() => {
@@ -74,15 +94,22 @@ export default function BilletteriesWidget() {
           injected.current = true;
           window.createss(cfg.formId, cfg.iframeUrl);
 
-          // Vérifie que l'iframe a bien reçu une hauteur exploitable.
-          watchdog = setTimeout(() => {
+          // Révèle l'iframe DÈS qu'elle a une hauteur exploitable
+          const start = Date.now();
+          poll = setInterval(() => {
             if (!active) return;
             const container = document.getElementById(cfg.formId);
             const stillLoading = !!container?.querySelector("#ticketingloading");
             const iframe = container?.querySelector("iframe");
             const height = iframe ? iframe.getBoundingClientRect().height : 0;
-            setPhase(!stillLoading && height >= 60 ? "embedded" : "fallback");
-          }, WATCHDOG_MS);
+            if (!stillLoading && height >= 60) {
+              if (poll) clearInterval(poll);
+              setPhase("embedded");
+            } else if (Date.now() - start >= MAX_WAIT_MS) {
+              if (poll) clearInterval(poll);
+              setPhase("fallback");
+            }
+          }, POLL_MS);
         } catch {
           setPhase("fallback");
         }
@@ -93,21 +120,42 @@ export default function BilletteriesWidget() {
 
     return () => {
       active = false;
-      if (watchdog) clearTimeout(watchdog);
+      if (poll) clearInterval(poll);
     };
-  }, []);
+  }, [phase]);
+
+  const showSkeleton = phase === "idle" || phase === "loading";
 
   return (
-    // Fond clair : le formulaire billetteries.ma (texte foncé) doit rester
-    // lisible ; overflow-x pour éviter tout débordement horizontal sur mobile.
-    <div className="relative min-h-[70vh] w-full overflow-x-hidden rounded-xl bg-white">
-      {/* Conteneur rempli par createss() (iframe billetteries.ma) */}
-      <div id={cfg.formId} className="integrationss w-full [&_iframe]:!w-full [&_iframe]:!max-w-full" />
+    <div
+      ref={rootRef}
+      className="relative min-h-[70vh] w-full overflow-x-hidden rounded-xl bg-white"
+    >
+      {/* Preconnect : accélère le 1er chargement de billetteries.ma */}
+      <link rel="preconnect" href="https://www.billetteries.ma" crossOrigin="" />
+      <link rel="preconnect" href="https://www.app.billetteries.ma" crossOrigin="" />
 
-      {phase === "loading" && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-white px-6 text-center">
-          <span className="h-7 w-7 animate-spin rounded-full border-2 border-[#C9A84C] border-t-transparent" />
-          <p className="text-sm text-gray-600">Chargement de la billetterie sécurisée…</p>
+      {/* Conteneur rempli par createss() (iframe billetteries.ma) */}
+      <div
+        id={cfg.formId}
+        className="integrationss w-full [&_iframe]:!w-full [&_iframe]:!max-w-full"
+      />
+
+      {/* Squelette discret pendant le chargement (couvre le spinner tiers) */}
+      {showSkeleton && (
+        <div className="absolute inset-0 flex flex-col gap-4 rounded-xl bg-white p-6">
+          <div className="h-6 w-2/3 animate-pulse rounded-md bg-gray-200" />
+          <div className="h-4 w-1/2 animate-pulse rounded bg-gray-100" />
+          <div className="mt-2 space-y-3">
+            {[0, 1, 2].map((k) => (
+              <div key={k} className="flex items-center gap-3">
+                <div className="h-11 flex-1 animate-pulse rounded-lg bg-gray-100" />
+                <div className="h-11 w-20 animate-pulse rounded-lg bg-gray-200" />
+              </div>
+            ))}
+          </div>
+          <div className="mt-2 h-12 w-full animate-pulse rounded-lg bg-gray-200" />
+          <div className="mt-auto h-12 w-40 animate-pulse self-end rounded-full bg-[#C9A84C]/30" />
         </div>
       )}
 
