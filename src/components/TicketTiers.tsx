@@ -237,14 +237,11 @@ export default function TicketTiers() {
               <svg className="h-3.5 w-3.5 text-[#C9A84C]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
               Billet reçu immédiatement
             </span>
-            <span className="inline-flex items-center gap-1.5">
-              <svg className="h-3.5 w-3.5 text-[#C9A84C]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><circle cx="12" cy="12" r="9" /><path strokeLinecap="round" strokeLinejoin="round" d="M12 7v5l3 2" /></svg>
-              Panier valable 25 min
-            </span>
           </div>
           <p className="text-xs text-gray-500">
-            Votre panier réserve votre place 25 minutes. Le délai est écoulé&nbsp;?
-            Revenez ici et recliquez sur votre formule&nbsp;: c&rsquo;est instantané.
+            « Paiement en ligne » vous amène à la billetterie de notre partenaire, où
+            vous choisissez et confirmez votre catégorie. « À la livraison »&nbsp;: votre
+            formule est déjà pré-remplie, il ne reste qu&rsquo;à indiquer vos coordonnées.
           </p>
         </motion.div>
       </div>
