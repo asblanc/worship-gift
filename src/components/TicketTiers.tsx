@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Eyebrow from "@/components/Eyebrow";
 import { upcomingEvents } from "@/lib/events-config";
+import { billetteriesWidget as ticketing } from "@/lib/ticketing-config";
 
 /* ================================================================
    Worship Gift — Formules de billets (cartes marketing)
@@ -124,12 +125,10 @@ export default function TicketTiers() {
           {tiers.map((t, i) => {
             const theme = THEMES[t.id] ?? DEFAULT_THEME;
             const savings = savingsFor(t.id);
-            // Paiement en ligne : lien DIRECT de la catégorie chez le
-            // prestataire s'il est fourni (pré-sélection de la formule),
-            // sinon repli vers le formulaire partenaire général.
-            const onlineLink = t.paymentUrl || event.paymentUrl || "";
-            const onlineExternal = /^https?:\/\//.test(onlineLink);
-            const onlineHref = onlineLink || "/billetterie/en-ligne";
+            // Paiement en ligne : on OUVRE la billetterie du prestataire en
+            // pleine page (nouvel onglet). Pas d'iframe : le tunnel de paiement
+            // bancaire (3-D Secure) refuse d'être affiché en iframe.
+            const onlineHref = t.paymentUrl || event.paymentUrl || ticketing.directUrl;
             return (
               <motion.div
                 key={t.id}
@@ -184,27 +183,16 @@ export default function TicketTiers() {
 
                   {/* CTA : choisir le mode de paiement pour CETTE formule */}
                   <div className="mt-6 flex flex-col gap-2.5">
-                    {onlineExternal ? (
-                      <a
-                        href={onlineHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`Payer en ligne la formule ${t.label}`}
-                        className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#C9A84C] text-[12px] font-bold uppercase tracking-[0.08em] text-black transition-all hover:bg-[#F0CB6A] active:scale-[0.97]"
-                      >
-                        Paiement en ligne
-                        <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
-                      </a>
-                    ) : (
-                      <Link
-                        href={onlineHref}
-                        aria-label={`Payer en ligne la formule ${t.label}`}
-                        className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#C9A84C] text-[12px] font-bold uppercase tracking-[0.08em] text-black transition-all hover:bg-[#F0CB6A] active:scale-[0.97]"
-                      >
-                        Paiement en ligne
-                        <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
-                      </Link>
-                    )}
+                    <a
+                      href={onlineHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Payer en ligne la formule ${t.label}`}
+                      className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#C9A84C] text-[12px] font-bold uppercase tracking-[0.08em] text-black transition-all hover:bg-[#F0CB6A] active:scale-[0.97]"
+                    >
+                      Paiement en ligne
+                      <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+                    </a>
                     <Link
                       href={tierHref(t.id)}
                       aria-label={`Commander à la livraison la formule ${t.label}`}

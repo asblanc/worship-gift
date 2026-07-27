@@ -7,6 +7,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import { upcomingEvents, WHATSAPP_NUMBER, type EventData } from "@/lib/events-config";
+import { billetteriesWidget as ticketing } from "@/lib/ticketing-config";
 
 type Method = "online" | "delivery";
 
@@ -228,23 +229,14 @@ function ReservationForm({ event }: { event: EventData }) {
                   <div className="border-t border-white/10 pt-4">
                     <p className="mb-4 text-sm font-medium text-gray-300">Mode de paiement :</p>
                     <div className="flex flex-col gap-3 sm:flex-row">
-                      {payUrl ? (
-                        <a
-                          href={payUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-[#C9A84C] px-6 py-3 text-sm font-semibold text-black shadow-sm hover:bg-[#F0CB6A] transition-colors"
-                        >
-                          Payer en ligne
-                        </a>
-                      ) : (
-                        <Link
-                          href="/billetterie/en-ligne"
-                          className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-[#C9A84C] px-6 py-3 text-sm font-semibold text-black shadow-sm hover:bg-[#F0CB6A] transition-colors"
-                        >
-                          Payer en ligne
-                        </Link>
-                      )}
+                      <a
+                        href={payUrl || ticketing.directUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-[#C9A84C] px-6 py-3 text-sm font-semibold text-black shadow-sm hover:bg-[#F0CB6A] transition-colors"
+                      >
+                        Payer en ligne
+                      </a>
                       {event.deliveryAvailable && (
                         <button
                           onClick={() => submitOrder("delivery")}

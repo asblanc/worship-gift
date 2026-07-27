@@ -8,6 +8,7 @@ import PageHero from "@/components/PageHero";
 import TicketTiers from "@/components/TicketTiers";
 import PaymentMethods from "@/components/PaymentMethods";
 import { upcomingEvents } from "@/lib/events-config";
+import { billetteriesWidget as ticketing } from "@/lib/ticketing-config";
 
 const containerVariants = {
   hidden: {},
@@ -128,13 +129,15 @@ export default function BilletteriePage() {
                         {event.price}
                       </span>
                       <div className="flex flex-wrap gap-2">
-                        {/* Paiement en ligne — widget prestataire billetteries.ma */}
-                        <Link
-                          href="/billetterie/en-ligne"
+                        {/* Paiement en ligne — billetterie du prestataire (pleine page) */}
+                        <a
+                          href={ticketing.directUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="inline-flex h-10 items-center justify-center rounded-md bg-[#C9A84C] px-5 text-sm font-semibold text-black transition-all hover:bg-[#F0CB6A] hover:shadow-md hover:shadow-[#C9A84C]/30 active:scale-[0.97]"
                         >
                           Payer en ligne
-                        </Link>
+                        </a>
                         {/* Paiement à la livraison — flux interne (billet + QR) */}
                         <Link
                           href={`/billetterie/${event.slug}/reserver`}

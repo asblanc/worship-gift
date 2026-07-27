@@ -1,23 +1,19 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Eyebrow from "@/components/Eyebrow";
 import { upcomingEvents } from "@/lib/events-config";
+import { billetteriesWidget as ticketing } from "@/lib/ticketing-config";
 
 /* ================================================================
    Worship Gift — Section billetterie sur l'accueil
-   Présentation pro de l'événement + widget de vente/paiement
-   billetteries.ma (carte blanche lisible). Les valeurs encore en
+   Présentation pro de l'événement + accès à la billetterie du
+   prestataire (ouverture pleine page, pas d'iframe : le paiement
+   bancaire refuse d'être affiché en iframe). Les valeurs encore en
    placeholder ([ … ]) sont masquées automatiquement.
    ================================================================ */
-
-const BilletteriesWidget = dynamic(
-  () => import("@/components/BilletteriesWidget"),
-  { ssr: false },
-);
 
 // Masque les champs encore en placeholder (ex: "[NOM DU CHANTRE]")
 const real = (v?: string | null) => (v && !v.includes("[") ? v : "");
@@ -142,22 +138,39 @@ export default function HomeTicketing() {
             </ul>
           </motion.div>
 
-          {/* Formulaire billetteries.ma (carte blanche lisible) */}
+          {/* Achat en ligne — ouverture de la billetterie du prestataire */}
           <motion.div
             initial={{ opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="overflow-hidden rounded-2xl bg-white p-2 shadow-[0_20px_60px_rgba(0,0,0,0.5)] ring-1 ring-black/5 sm:p-3"
+            className="flex flex-col justify-center rounded-2xl border border-[#C9A84C]/25 bg-gradient-to-b from-[#1e1a10] to-[#121212] p-8 text-center shadow-[0_20px_60px_rgba(0,0,0,0.45)] md:p-10"
           >
-            <div className="flex items-center justify-between px-2 pb-2 pt-1">
-              <p className="text-sm font-bold text-gray-800">Choisissez vos places</p>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#25D366]/10 px-2.5 py-0.5 text-[11px] font-semibold text-[#1a9d4b]">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#25D366]" />
-                Paiement sécurisé
-              </span>
-            </div>
-            <BilletteriesWidget />
+            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#C9A84C]/15 text-[#C9A84C]">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M15 5v2" /><path d="M15 11v2" /><path d="M15 17v2" />
+                <path d="M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z" />
+              </svg>
+            </span>
+            <h3 className="mt-5 t-h3 text-white">Billets en ligne</h3>
+            <p className="mx-auto mt-3 max-w-sm t-body text-sm text-gray-400">
+              Réservez sur la billetterie sécurisée de notre partenaire :
+              choisissez votre catégorie et réglez par carte ou en espèces
+              (points partenaires). Billet reçu immédiatement.
+            </p>
+            <a
+              href={ticketing.directUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mx-auto mt-7 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#C9A84C] px-8 text-[13px] font-semibold uppercase tracking-[0.12em] text-black transition-all hover:bg-[#F0CB6A] hover:shadow-lg hover:shadow-[#C9A84C]/30 active:scale-[0.97]"
+            >
+              Acheter en ligne
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg>
+            </a>
+            <p className="mt-4 inline-flex items-center justify-center gap-1.5 text-xs text-gray-500">
+              <svg className="h-3.5 w-3.5 text-[#C9A84C]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+              Paiement 100 % sécurisé · billetteries.ma
+            </p>
           </motion.div>
         </div>
 
