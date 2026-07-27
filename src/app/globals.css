@@ -125,13 +125,39 @@
   * {
     @apply border-border outline-ring/50;
   }
+  /* ── Garde-fous mobile (anti zoom / anti débordement horizontal) ──
+     - overflow-x: clip empêche tout scroll horizontal accidentel (ombres,
+       ring, halos) SANS casser position: sticky (contrairement à hidden).
+     - overflow-wrap: les longues chaînes (e-mails, références WG-…, URLs)
+       ne débordent jamais leur conteneur.
+     - text-size-adjust: empêche iOS d'agrandir le texte en paysage. */
+  html {
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: clip;
+    overflow-wrap: break-word;
+  }
+  /* Les médias ne dépassent jamais la largeur de leur conteneur */
+  img, svg, video, canvas, iframe {
+    max-width: 100%;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     letter-spacing: 0.02em;
+  }
+  /* iOS Safari zoome automatiquement au focus d'un champ dont la police
+     fait < 16px. On force 16px sur mobile -> plus de zoom intempestif. */
+  @media (max-width: 640px) {
+    input,
+    select,
+    textarea {
+      font-size: 16px;
+    }
   }
 }
 
