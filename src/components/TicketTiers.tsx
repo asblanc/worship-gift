@@ -24,23 +24,23 @@ type Theme = {
 
 const THEMES: Record<string, Theme> = {
   standard: {
-    border: "border-slate-400/25 hover:border-slate-300/60",
+    border: "border-white/15 hover:border-white/30",
     bg: "from-[#1b1f26] to-[#121212]",
     price: "text-slate-100",
     check: "text-slate-300",
   },
   vip: {
-    border: "border-teal-400/40 hover:border-teal-300/70",
-    bg: "from-[#0d2320] to-[#111]",
-    price: "text-teal-300",
-    check: "text-teal-400",
-    badge: { label: "Populaire", cls: "bg-teal-400/20 text-teal-200 ring-1 ring-teal-400/30" },
+    border: "border-[#0F7A3D]/50 hover:border-[#0F7A3D]/80",
+    bg: "from-[#0c2015] to-[#111]",
+    price: "text-[#3ad674]",
+    check: "text-[#3ad674]",
+    badge: { label: "Populaire", cls: "bg-[#0F7A3D]/25 text-[#5be08d] ring-1 ring-[#0F7A3D]/40" },
   },
   "vip-duo": {
-    border: "border-cyan-400/40 hover:border-cyan-300/70",
-    bg: "from-[#0d1f2b] to-[#111]",
-    price: "text-cyan-300",
-    check: "text-cyan-400",
+    border: "border-emerald-400/45 hover:border-emerald-300/75",
+    bg: "from-[#0b241a] to-[#111]",
+    price: "text-emerald-300",
+    check: "text-emerald-400",
   },
   gold: {
     border: "border-[#C9A84C]/60 hover:border-[#C9A84C]",
@@ -51,11 +51,11 @@ const THEMES: Record<string, Theme> = {
     featured: true,
   },
   "gold-duo": {
-    border: "border-amber-400/55 hover:border-amber-300/80",
-    bg: "from-[#2a2109] to-[#141414]",
-    price: "text-amber-300",
-    check: "text-amber-300",
-    badge: { label: "Meilleure offre", cls: "bg-amber-400/20 text-amber-200 ring-1 ring-amber-400/30" },
+    border: "border-[#C4161C]/55 hover:border-[#C4161C]/90",
+    bg: "from-[#2a0c0e] to-[#141414]",
+    price: "text-[#ef4444]",
+    check: "text-[#ef4444]",
+    badge: { label: "Meilleure offre", cls: "bg-[#C4161C]/25 text-[#f87171] ring-1 ring-[#C4161C]/40" },
     featured: true,
   },
 };
@@ -121,7 +121,7 @@ export default function TicketTiers() {
           Formules Gold : Meet &amp; Greet + photo souvenir avec Jonathan Gambela
         </motion.p>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="flex flex-wrap justify-center gap-6">
           {tiers.map((t, i) => {
             const theme = THEMES[t.id] ?? DEFAULT_THEME;
             const savings = savingsFor(t.id);
@@ -136,6 +136,7 @@ export default function TicketTiers() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.5, delay: i * 0.06 }}
+                className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
               >
                 <div
                   className={`group relative flex h-full flex-col rounded-2xl border bg-gradient-to-b p-6 shadow-[0_10px_40px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1.5 ${theme.border} ${theme.bg} ${theme.featured ? "sm:shadow-[0_16px_50px_rgba(201,168,76,0.12)]" : ""}`}
@@ -188,7 +189,7 @@ export default function TicketTiers() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`Payer en ligne la formule ${t.label}`}
-                      className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#C9A84C] text-[12px] font-bold uppercase tracking-[0.08em] text-black transition-all hover:bg-[#F0CB6A] active:scale-[0.97]"
+                      className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#C4161C] text-[12px] font-bold uppercase tracking-[0.08em] text-white transition-all hover:bg-[#e0272d] active:scale-[0.97]"
                     >
                       Paiement en ligne
                       <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
