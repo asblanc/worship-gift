@@ -38,6 +38,33 @@ export default function AdminOrdersPage() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [notifying, setNotifying] = useState(false);
   const [notifyMsg, setNotifyMsg] = useState("");
+  const [testEmail, setTestEmail] = useState("");
+  const [testing, setTesting] = useState(false);
+  const [testMsg, setTestMsg] = useState("");
+
+  // Test de configuration Resend : envoie un e-mail à l'adresse saisie
+  const sendTest = async () => {
+    if (!testEmail.trim()) return;
+    setTesting(true);
+    setTestMsg("");
+    try {
+      const res = await fetch("/api/admin/test-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ to: testEmail.trim() }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setTestMsg(`✅ E-mail de test envoyé à ${testEmail.trim()} — vérifie la boîte (et les spams).`);
+      } else {
+        setTestMsg(`⚠️ Échec : ${data.error || "erreur inconnue"}`);
+      }
+    } catch {
+      setTestMsg("⚠️ Erreur réseau.");
+    } finally {
+      setTesting(false);
+    }
+  };
 
   // Envoi groupé de l'e-mail « commande reçue » (hors commandes de test)
   const notifyClients = async () => {
@@ -221,6 +248,33 @@ export default function AdminOrdersPage() {
           {notifyMsg}
         </div>
       )}
+
+      {/* Testeur de configuration e-mail (Resend) */}
+      <div className="rounded-xl border border-white/[0.06] bg-white/[0.01] p-4">
+        <p className="text-xs font-medium uppercase tracking-wider text-gray-400">Tester l&rsquo;envoi d&rsquo;e-mail</p>
+        <div className="mt-2 flex flex-col gap-2 sm:flex-row">
+          <input
+            type="email"
+            value={testEmail}
+            onChange={(e) => setTestEmail(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && sendTest()}
+            placeholder="adresse@exemple.com"
+            className="flex-1 rounded-md border border-white/10 bg-black/40 px-3 py-2 text-sm text-white placeholder-gray-500 outline-none focus:border-[#C9A84C]"
+          />
+          <button
+            onClick={sendTest}
+            disabled={testing || !testEmail.trim()}
+            className={`inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-xs font-semibold transition-all ${
+              testing || !testEmail.trim()
+                ? "cursor-not-allowed bg-gray-700 text-gray-400"
+                : "bg-[#C9A84C] text-black hover:bg-[#F0CB6A]"
+            }`}
+          >
+            {testing ? <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-black/40 border-t-transparent" /> : "Envoyer le test"}
+          </button>
+        </div>
+        {testMsg && <p className="mt-2 text-xs text-gray-300">{testMsg}</p>}
+      </div>
 
       {/* Récap */}
       {!loading && orders.length > 0 && (

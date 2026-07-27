@@ -282,6 +282,43 @@ export async function sendOrderReceived(orderId: string): Promise<boolean> {
   }
 }
 
+/**
+ * Envoie un e-mail de TEST (même design que la confirmation) à une adresse.
+ * Renvoie l'erreur détaillée de Resend pour diagnostiquer (clé manquante,
+ * domaine non vérifié, expéditeur invalide…).
+ */
+export async function sendTestEmail(to: string): Promise<{ ok: boolean; error?: string }> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return { ok: false, error: "RESEND_API_KEY manquante dans l'environnement." };
+
+  try {
+    const html = orderReceivedHtml({
+      customerName: "Test",
+      orderId: "WG-TEST-0000",
+      ticketType: "VIP",
+      quantity: 2,
+      amount: 100000,
+    });
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: process.env.RESEND_FROM || "Worship Gift <onboarding@resend.dev>",
+        to,
+        subject: "Test — E-mail Worship Gift ✅",
+        html,
+      }),
+    });
+    if (!res.ok) {
+      const detail = await res.text();
+      return { ok: false, error: `Resend ${res.status} : ${detail.slice(0, 300)}` };
+    }
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : "Erreur réseau" };
+  }
+}
+
 /* ------------------------------------------------------------------
    Email de rappel avant l'événement
    ------------------------------------------------------------------ */
