@@ -95,7 +95,7 @@ export default function WhatsAppFloat() {
   return (
     <div
       ref={containerRef}
-      className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3"
+      className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-3 sm:bottom-6 sm:right-6"
     >
       {/* Mini-menu */}
       <AnimatePresence>
@@ -106,7 +106,7 @@ export default function WhatsAppFloat() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.95 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="w-64 rounded-xl border border-[#2A2A2A] bg-[#111111] p-4 shadow-lg shadow-black/40 backdrop-blur-lg"
+            className="w-[min(18rem,calc(100vw-2rem))] rounded-2xl border border-[#2A2A2A] bg-[#111111] p-4 shadow-lg shadow-black/40 backdrop-blur-lg"
           >
             {/* En-tête */}
             <p className="font-heading text-lg font-semibold text-white">
@@ -125,7 +125,7 @@ export default function WhatsAppFloat() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setOpen(false)}
-                  className="flex items-center gap-3 rounded-lg border border-white/10 px-3 py-2.5 text-left text-sm text-gray-200 transition-colors hover:border-[#C9A84C]/40 hover:bg-[#C9A84C]/10 hover:text-white active:scale-[0.98]"
+                  className="flex min-h-11 items-center gap-3 rounded-lg border border-white/10 px-3 py-2.5 text-left text-sm text-gray-200 transition-colors hover:border-[#C9A84C]/40 hover:bg-[#C9A84C]/10 hover:text-white active:scale-[0.98] focus-ring"
                 >
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C9A84C]/15 text-[#C9A84C]">
                     {opt.icon}
@@ -140,11 +140,12 @@ export default function WhatsAppFloat() {
 
       {/* Bouton principal WhatsApp */}
       <button
+        type="button"
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Fermer le menu WhatsApp" : "Ouvrir le menu WhatsApp"}
         aria-expanded={open}
         aria-controls="whatsapp-menu"
-        className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-lg shadow-[#25D366]/25 transition-transform duration-200 hover:scale-105 active:scale-95"
+        className="relative flex h-14 w-14 touch-target items-center justify-center rounded-full bg-[#25D366] shadow-lg shadow-[#25D366]/25 transition-transform duration-200 hover:scale-105 active:scale-95 focus-ring"
       >
         {/* SVG WhatsApp */}
         <svg

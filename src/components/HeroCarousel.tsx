@@ -37,6 +37,7 @@ export default function HeroCarousel() {
   const [current, setCurrent] = useState(0);
   const [prevSlide, setPrevSlide] = useState<number | null>(null);
   const [hideIndicator, setHideIndicator] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   // Accessibilité (WCAG 2.2.2) : le défilement auto se met en pause au
   // survol ou à la prise de focus (clavier/lecteur d'écran).
   const [paused, setPaused] = useState(false);
@@ -54,14 +55,23 @@ export default function HeroCarousel() {
     goTo((current + 1) % slides.length);
   }, [current, goTo]);
 
-  // Auto-play (suspendu quand paused = true)
   useEffect(() => {
-    if (paused) return;
+    if (typeof window === "undefined") return;
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
+    updatePreference();
+    mediaQuery.addEventListener("change", updatePreference);
+    return () => mediaQuery.removeEventListener("change", updatePreference);
+  }, []);
+
+  // Auto-play (suspendu quand paused = true ou si le visiteur préfère moins de mouvement)
+  useEffect(() => {
+    if (paused || prefersReducedMotion) return;
     intervalRef.current = setInterval(next, 6000);
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [next, paused]);
+  }, [next, paused, prefersReducedMotion]);
 
   // Swipe mobile
   const touchStart = useRef(0);
@@ -120,7 +130,7 @@ export default function HeroCarousel() {
               initial={{ opacity: 1 }}
               animate={{ opacity: 0 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 1.2, ease: "easeInOut" }}
+              transition={{ duration: prefersReducedMotion ? 0 : 1.2, ease: "easeInOut" }}
               className="absolute inset-0"
             >
               <Image
@@ -165,7 +175,7 @@ export default function HeroCarousel() {
           key={`zoom-${current}`}
           initial={{ scale: 1.02 }}
           animate={{ scale: 1 }}
-          transition={{ duration: 6, ease: "easeOut" }}
+          transition={{ duration: prefersReducedMotion ? 0 : 6, ease: "easeOut" }}
           className="absolute inset-0 pointer-events-none"
         />
       </div>
@@ -250,7 +260,8 @@ export default function HeroCarousel() {
             }
             (nextSection as HTMLElement).scrollIntoView({ behavior: "smooth" });
           }}
-          className="flex flex-col items-center gap-2 text-[#C9A84C] hover:text-[#F0CB6A] transition-colors"
+          type="button"
+          className="flex flex-col items-center gap-2 rounded-full p-2 text-[#C9A84C] transition-colors hover:text-[#F0CB6A] focus-ring"
           aria-label="Découvrir le contenu"
         >
           <motion.span
@@ -270,8 +281,9 @@ export default function HeroCarousel() {
         {slides.map((_, i) => (
           <button
             key={i}
+            type="button"
             onClick={() => goTo(i)}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
+            className={`h-1.5 rounded-full transition-all duration-300 focus-ring ${
               i === current
                 ? "w-8 bg-[#C9A84C]"
                 : "w-1.5 bg-white/40 hover:bg-white/60"

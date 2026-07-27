@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
@@ -20,8 +20,23 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
   const { user, loading } = useAuth();
+  const toggleButtonRef = useRef<HTMLButtonElement>(null);
 
   const isActive = (href: string) => pathname === href;
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMobileOpen(false);
+        toggleButtonRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [mobileOpen]);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
@@ -101,8 +116,10 @@ export default function Navbar() {
         </div>
 
         <button
+          ref={toggleButtonRef}
+          type="button"
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="relative z-10 flex flex-col gap-1.5 p-2 md:hidden"
+          className="relative z-10 flex touch-target flex-col items-center justify-center gap-1.5 rounded-md p-2 focus-ring md:hidden"
           aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
           aria-expanded={mobileOpen}
           aria-controls="menu-mobile"
@@ -126,18 +143,20 @@ export default function Navbar() {
         {mobileOpen && (
           <motion.div
             id="menu-mobile"
+            role="dialog"
+            aria-label="Menu principal"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
             className="border-b border-white/10 bg-black/95 backdrop-blur-lg md:hidden"
           >
-            <ul className="flex flex-col gap-2 px-4 pb-6 pt-2">
+            <ul className="flex flex-col gap-2 px-4 pb-6 pt-2" aria-label="Navigation principale">
               <li>
                 <Link
                   href="/billetterie"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-center gap-2 rounded-md bg-[#C4161C] px-4 py-3 text-center text-base font-bold text-white transition-all hover:bg-[#e0272d]"
+                  className="flex min-h-11 items-center justify-center gap-2 rounded-md bg-[#C4161C] px-4 py-3 text-center text-base font-bold text-white transition-all hover:bg-[#e0272d] focus-ring"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" /><path d="M13 5v14" /></svg>
                   Billets — Concert Live
@@ -149,7 +168,7 @@ export default function Navbar() {
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
                     aria-current={isActive(link.href) ? "page" : undefined}
-                    className={`block rounded-md px-4 py-3 text-base font-medium transition-colors hover:bg-white/[0.08] ${
+                    className={`flex min-h-11 items-center rounded-md px-4 py-3 text-base font-medium transition-colors hover:bg-white/[0.08] focus-ring ${
                       isActive(link.href)
                         ? "text-[#C9A84C] bg-[#C9A84C]/10"
                         : "text-gray-300 hover:text-[#C9A84C]"
@@ -167,7 +186,7 @@ export default function Navbar() {
                       <Link
                         href="/account"
                         onClick={() => setMobileOpen(false)}
-                        className="flex items-center gap-3 rounded-md px-4 py-3 text-base font-medium text-[#C9A84C] transition-colors hover:bg-white/[0.08]"
+                        className="flex min-h-11 items-center gap-3 rounded-md px-4 py-3 text-base font-medium text-[#C9A84C] transition-colors hover:bg-white/[0.08] focus-ring"
                       >
                         <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#C9A84C]/40 bg-[#C9A84C]/10 text-sm font-bold">
                           {(user.email?.charAt(0) || "?").toUpperCase()}
@@ -178,7 +197,7 @@ export default function Navbar() {
                       <Link
                         href="/auth/login"
                         onClick={() => setMobileOpen(false)}
-                        className="block rounded-md border border-[#C9A84C] bg-[#C9A84C]/10 px-4 py-3 text-center text-base font-semibold text-[#C9A84C] transition-all hover:bg-[#C9A84C] hover:text-black"
+                        className="flex min-h-11 items-center justify-center rounded-md border border-[#C9A84C] bg-[#C9A84C]/10 px-4 py-3 text-center text-base font-semibold text-[#C9A84C] transition-all hover:bg-[#C9A84C] hover:text-black focus-ring"
                       >
                         Connexion
                       </Link>

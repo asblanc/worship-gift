@@ -161,6 +161,17 @@
   }
 }
 
+@layer utilities {
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A84C] focus-visible:ring-offset-2 focus-visible:ring-offset-black;
+  }
+
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
 /* ================================================================
    SYSTÈME TYPOGRAPHIQUE — source de vérité unique
    Rôles sémantiques (taille/graisse/police/interligne uniquement ;
