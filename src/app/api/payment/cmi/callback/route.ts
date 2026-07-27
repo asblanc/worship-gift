@@ -19,6 +19,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { CmiProvider } from "@/lib/payment/cmi-provider";
 import { sendOrderConfirmation } from "@/lib/email";
+import { rateLimitAsync } from "@/lib/rate-limit";
 import type { PaymentCallback } from "@/lib/payment/types";
 
 /* ------------------------------------------------------------------
@@ -53,6 +54,12 @@ async function parseCmiBody(request: NextRequest): Promise<Record<string, string
 }
 
 export async function POST(request: NextRequest) {
+  // Anti-flood : la signature HASH protège déjà la BDD, mais on borne
+  // le débit pour éviter l'épuisement CPU (calcul de hash) / logs.
+  // Généreux car CMI peut réessayer un callback légitime.
+  const limited = await rateLimitAsync(request, "cmi-callback", 30, 60_000);
+  if (limited) return limited;
+
   console.log("[CMI Callback] Recu");
 
   try {

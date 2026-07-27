@@ -15,10 +15,16 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEventReminder } from "@/lib/email";
 import { upcomingEvents } from "@/lib/events-config";
 import { safeEqual } from "@/lib/security";
+import { rateLimitAsync } from "@/lib/rate-limit";
 
 const WINDOW_HOURS = 48;
 
 export async function GET(request: NextRequest) {
+  // Anti-flood (défense en profondeur, avant même la vérif du secret) :
+  // le cron légitime n'appelle qu'une fois par jour.
+  const limited = await rateLimitAsync(request, "cron-reminders", 20, 60_000);
+  if (limited) return limited;
+
   // Authentification du cron (comparaison à temps constant du secret)
   const secret = process.env.CRON_SECRET;
   if (!secret) {
