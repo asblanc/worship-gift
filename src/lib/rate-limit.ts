@@ -108,8 +108,11 @@ export function rateLimit(
      un visiteur légitime à cause d'une panne d'infra) puis repli mémoire.
    ================================================================ */
 
-const UPSTASH_URL = process.env.UPSTASH_REDIS_REST_URL;
-const UPSTASH_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
+// Accepte les deux conventions : Upstash direct (UPSTASH_REDIS_REST_*) ou
+// l'intégration Vercel Marketplace / Vercel KV (KV_REST_API_*). L'API REST
+// est identique dans les deux cas → aucun autre changement nécessaire.
+const UPSTASH_URL = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
+const UPSTASH_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
 const upstashEnabled = Boolean(UPSTASH_URL && UPSTASH_TOKEN);
 
 /** INCR + EXPIRE(NX) atomiques via le pipeline REST. Renvoie le compteur, ou null si indisponible. */
