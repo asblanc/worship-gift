@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase/client";
@@ -40,10 +40,27 @@ const fadeUp = {
 
 export default function AdminOrderDetailPage() {
   const { id } = useParams<{ id: string }>();
+  const router = useRouter();
   const [order, setOrder] = useState<OrderDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
+  // Suppression définitive (nettoyage des commandes de test)
+  const handleDelete = async () => {
+    if (!confirm("Supprimer définitivement cette commande ? Cette action est irréversible.")) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/orders/${id}/delete`, { method: "POST" });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || "Échec de la suppression");
+      router.push("/admin/orders");
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Erreur lors de la suppression");
+      setDeleting(false);
+    }
+  };
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -328,6 +345,28 @@ export default function AdminOrderDetailPage() {
             )}
           </dl>
         </div>
+      </div>
+
+      {/* Zone de suppression (nettoyage des commandes de test) */}
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-red-500/20 bg-red-500/[0.04] p-5">
+        <div>
+          <p className="text-sm font-semibold text-red-300">Supprimer cette commande</p>
+          <p className="mt-0.5 text-xs text-gray-400">Action irréversible — à réserver aux commandes de test.</p>
+        </div>
+        <button
+          onClick={handleDelete}
+          disabled={deleting}
+          className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-semibold transition-all ${
+            deleting ? "cursor-not-allowed bg-gray-700 text-gray-400" : "border border-red-500/40 bg-red-500/10 text-red-300 hover:bg-red-500/20"
+          }`}
+        >
+          {deleting ? (
+            <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-red-400 border-t-transparent" />
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>
+          )}
+          Supprimer définitivement
+        </button>
       </div>
     </motion.div>
   );

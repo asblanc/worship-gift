@@ -9,7 +9,7 @@
 
 import { randomUUID } from "crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { sendOrderConfirmation } from "@/lib/email";
+import { sendOrderConfirmation, sendOrderReceived } from "@/lib/email";
 import type { EventData } from "@/lib/events-config";
 
 export interface CreateOrderParams {
@@ -246,6 +246,9 @@ export async function createPendingOrder(
   if (error) {
     throw new Error(`Création commande échouée: ${error.message}`);
   }
+
+  // Confirmation automatique « commande reçue » (no-op si pas d'email/clé Resend).
+  await sendOrderReceived(orderId);
 
   return { orderId, amount };
 }
