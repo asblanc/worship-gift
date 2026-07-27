@@ -134,6 +134,18 @@ export default function AdminOrderDetailPage() {
     }
   };
 
+  // Lien WhatsApp pré-rempli vers le client (normalise le numéro au format
+  // international marocain : 0X… -> 212X…, 9 chiffres -> 212…).
+  const waHref = (): string => {
+    if (!order?.customer_phone) return "";
+    const digits = order.customer_phone.replace(/\D/g, "");
+    let intl = digits;
+    if (digits.startsWith("0")) intl = "212" + digits.slice(1);
+    else if (digits.length === 9) intl = "212" + digits;
+    const msg = `Bonjour ${order.customer_name || ""}, ici l'équipe Worship Gift. Nous avons bien reçu votre commande ${order.id} (${order.quantity ?? 1} billet(s)${order.ticket_type ? " · " + order.ticket_type : ""}) pour le Concert Live de Jonathan Gambela — 11 octobre 2026 à Casablanca. Votre commande est en cours de traitement, nous revenons vers vous très vite. Merci !`;
+    return `https://wa.me/${intl}?text=${encodeURIComponent(msg)}`;
+  };
+
   const formatMAD = (cents: number) =>
     new Intl.NumberFormat("fr-MA", { style: "currency", currency: "MAD" }).format(cents / 100);
 
@@ -314,24 +326,37 @@ export default function AdminOrderDetailPage() {
 
         {/* Bloc infos à transmettre + copie */}
         <div className="mt-4 rounded-lg border border-white/[0.06] bg-black/20 p-4">
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <p className="text-xs font-medium uppercase tracking-wider text-gray-400">Infos à transmettre</p>
-            <button
-              onClick={copyForProvider}
-              className="inline-flex items-center gap-2 rounded-lg border border-[#C9A84C]/40 bg-[#C9A84C]/10 px-3 py-1.5 text-xs font-semibold text-[#C9A84C] transition-all hover:bg-[#C9A84C]/20"
-            >
-              {copied ? (
-                <>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                  Copié
-                </>
-              ) : (
-                <>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
-                  Copier les infos
-                </>
+            <div className="flex flex-wrap gap-2">
+              {order.customer_phone && (
+                <a
+                  href={waHref()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-lg border border-[#25D366]/40 bg-[#25D366]/10 px-3 py-1.5 text-xs font-semibold text-[#25D366] transition-all hover:bg-[#25D366]/20"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893C23.945 5.335 18.61.001 12.05 0" /></svg>
+                  Contacter (WhatsApp)
+                </a>
               )}
-            </button>
+              <button
+                onClick={copyForProvider}
+                className="inline-flex items-center gap-2 rounded-lg border border-[#C9A84C]/40 bg-[#C9A84C]/10 px-3 py-1.5 text-xs font-semibold text-[#C9A84C] transition-all hover:bg-[#C9A84C]/20"
+              >
+                {copied ? (
+                  <>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                    Copié
+                  </>
+                ) : (
+                  <>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+                    Copier les infos
+                  </>
+                )}
+              </button>
+            </div>
           </div>
           <dl className="mt-3 grid gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
             <div className="flex justify-between gap-3 border-b border-white/[0.04] pb-2"><dt className="text-gray-400">Événement</dt><dd className="text-right text-white">{order.event_title || order.description || "—"}</dd></div>
