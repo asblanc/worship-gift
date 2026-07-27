@@ -7,25 +7,18 @@
  * - Définir en environnement (Vercel) :
  *   - `SUPABASE_URL` (ex: https://xyz.supabase.co)
  *   - `SUPABASE_SERVICE_ROLE_KEY` (clé serveur - NE PAS exposer côté client)
- *   - `CRON_SECRET` (secret partagé — même valeur que le cron des rappels)
- * - Appeler `GET /api/ping-supabase` depuis un cron externe (Vercel Cron,
- *   UptimeRobot, etc.). Deux façons de fournir le secret :
- *     • en-tête   `Authorization: Bearer <CRON_SECRET>`  (Vercel Cron, clients HTTP)
- *     • paramètre d'URL `?token=<CRON_SECRET>`  (moniteurs sans en-têtes
- *       personnalisés, ex: UptimeRobot plan gratuit)
+ * - Appeler `GET /api/ping-supabase` depuis un moniteur externe (UptimeRobot,
+ *   cron-job.org…) toutes les 15–30 min. AUCUN secret requis : l'endpoint est
+ *   volontairement public pour fonctionner avec n'importe quel moniteur.
  *
- * Recommandation de fréquence: 15-30 minutes. 15 minutes réduit mieux les cold starts;
- * 30 minutes est plus conservateur pour les quotas. Eviter <10 minutes pour ne pas abuser.
- *
- * Sécurité : la route exige le CRON_SECRET — sans lui, n'importe quel
- * visiteur pourrait déclencher des requêtes service_role à volonté
- * (abus de quota / amplification). Les messages d'erreur internes ne
- * sont JAMAIS renvoyés au client.
+ * Sécurité : endpoint anodin — il ne renvoie AUCUNE donnée (juste { ok, rows })
+ * et ne s'exécute qu'en production. Protégé contre l'abus par un rate-limit
+ * (distribué si Upstash configuré). Les erreurs internes ne sont jamais
+ * exposées au client.
  */
 
 import { createClient } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
-import { safeEqual } from "@/lib/security";
 import { rateLimitAsync } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
@@ -53,25 +46,10 @@ async function wakeSupabase() {
 }
 
 export async function GET(request: NextRequest) {
-  // Anti-abus : quelques appels par minute suffisent largement.
+  // Anti-abus : quelques appels par minute suffisent largement pour un
+  // keep-warm. Rate-limit distribué si Upstash est configuré.
   const limited = await rateLimitAsync(request, "ping-supabase", 10, 60_000);
   if (limited) return limited;
-
-  // Authentification par secret partagé (comparaison à temps constant).
-  const secret = process.env.CRON_SECRET;
-  if (!secret) {
-    return Response.json({ status: "error" }, { status: 500 });
-  }
-  // Secret accepté via en-tête Authorization OU paramètre d'URL ?token=
-  // (les moniteurs sans en-têtes personnalisés, ex: UptimeRobot gratuit,
-  // ne peuvent passer le secret que dans l'URL).
-  const provided = request.headers.get("authorization") || "";
-  const token = new URL(request.url).searchParams.get("token") || "";
-  const authorized =
-    safeEqual(provided, `Bearer ${secret}`) || safeEqual(token, secret);
-  if (!authorized) {
-    return Response.json({ status: "unauthorized" }, { status: 401 });
-  }
 
   // Safety: only perform the wake ping in Production environment to avoid
   // consuming quotas for Preview/Development deployments.
