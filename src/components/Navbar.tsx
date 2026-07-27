@@ -67,6 +67,15 @@ export default function Navbar() {
             ))}
           </ul>
 
+          {/* CTA billets — couleurs de l'événement */}
+          <Link
+            href="/billetterie"
+            className="inline-flex items-center gap-1.5 rounded-full bg-[#C4161C] px-4 py-2 text-sm font-bold text-white shadow-sm shadow-[#C4161C]/30 transition-all hover:bg-[#e0272d] active:scale-[0.97]"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" /><path d="M13 5v14" /></svg>
+            Billets
+          </Link>
+
           {/* Auth sur desktop */}
           {!loading && (
             <>
@@ -124,6 +133,16 @@ export default function Navbar() {
             className="border-b border-white/10 bg-black/95 backdrop-blur-lg md:hidden"
           >
             <ul className="flex flex-col gap-2 px-4 pb-6 pt-2">
+              <li>
+                <Link
+                  href="/billetterie"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center justify-center gap-2 rounded-md bg-[#C4161C] px-4 py-3 text-center text-base font-bold text-white transition-all hover:bg-[#e0272d]"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" /><path d="M13 5v14" /></svg>
+                  Billets — Concert Live
+                </Link>
+              </li>
               {navLinks.map((link) => (
                 <li key={link.label}>
                   <Link

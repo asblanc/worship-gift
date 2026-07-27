@@ -175,6 +175,22 @@ export default function HeroCarousel() {
 
       {/* Contenu centré */}
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 pt-16 text-center md:pt-20">
+        {/* Annonce de l'événement */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/50 px-4 py-1.5 backdrop-blur-sm"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#C4161C] opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#C4161C]" />
+          </span>
+          <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-white sm:text-[11px]">
+            Africa Tour 2026 · Concert Live · 11 Oct · Casablanca
+          </span>
+        </motion.div>
+
         <motion.h1
           key={`title-${current}`}
           initial={{ opacity: 0, y: 25 }}
@@ -192,8 +208,8 @@ export default function HeroCarousel() {
           transition={{ duration: 0.7, delay: 0.35 }}
           className="mt-6 max-w-2xl t-lead text-gray-200"
         >
-          Une expérience unique de Gospel. Laissez la musique
-          gospel vous transporter dans la présence de Dieu.
+          <strong className="font-semibold text-white">Jonathan C. Gambela</strong> en concert
+          live à Casablanca. Vis une expérience unique de Gospel et d&rsquo;adoration.
         </motion.p>
 
         <motion.div
@@ -203,16 +219,17 @@ export default function HeroCarousel() {
           className="mt-10 flex flex-wrap justify-center gap-4"
         >
           <Link
-            href="/a-propos"
-            className="inline-flex h-12 items-center justify-center rounded-md bg-[#C9A84C] px-8 text-sm font-medium text-black transition-colors hover:bg-[#F0CB6A]"
+            href="/billetterie"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-[#C4161C] px-8 text-sm font-bold text-white shadow-lg shadow-[#C4161C]/30 transition-all hover:bg-[#e0272d] active:scale-[0.98]"
           >
-            Découvrir le mouvement
+            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" /><path d="M13 5v14" /></svg>
+            Réserver mes billets
           </Link>
           <Link
-            href="/billetterie"
+            href="/a-propos"
             className="inline-flex h-12 items-center justify-center rounded-md border border-white/20 px-8 text-sm font-medium text-white transition-colors hover:bg-white/10"
           >
-            Réserver ta place
+            Découvrir le mouvement
           </Link>
         </motion.div>
       </div>

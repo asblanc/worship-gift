@@ -161,7 +161,7 @@ export const upcomingEvents: EventData[] = [
     color: "#C9A84C",
     // 🖼️ AFFICHE : dépose la vraie affiche dans public/img_worship-gift/ et mets son chemin ici.
     // (placeholder existant en attendant la vraie affiche)
-    coverImage: "/img_worship-gift/img_silouette.jpeg",
+    coverImage: "/img_worship-gift/affiche-jonathan-gambela.png",
   },
 ];
 
@@ -177,7 +177,7 @@ export const nextEvent = {
   description:
     "Viens vivre un concert live unique de Gospel avec le chantre Jonathan Gambela, au cœur du mouvement Worship Gift.",
   // 🖼️ Affiche du prochain concert — même image que ci-dessus idéalement
-  coverImage: "/img_worship-gift/img_silouette.jpeg",
+  coverImage: "/img_worship-gift/affiche-jonathan-gambela.png",
 };
 
 // 🎟️ Textes du bandeau défilant (Marquee)

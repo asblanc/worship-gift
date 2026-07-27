@@ -31,6 +31,11 @@ export default function PageHero({
 }) {
   return (
     <section className="grain-overlay relative isolate overflow-hidden border-b border-[#282828] bg-black px-6 py-28 md:py-36">
+      {/* Liseré aux couleurs de l'événement (rouge · or · vert) */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 z-20 h-1 bg-gradient-to-r from-[#C4161C] via-[#C9A84C] to-[#0F7A3D]"
+      />
       {/* Image de fond — léger zoom lent (Ken Burns) */}
       <motion.div
         initial={{ scale: 1.08 }}

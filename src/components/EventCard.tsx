@@ -19,26 +19,22 @@ export default function EventCard() {
       className="bg-[#0A0A0A] px-6 py-20 md:py-28"
     >
       <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl border border-[#282828] bg-[#121212] shadow-[0_12px_50px_rgba(0,0,0,0.4)]">
-        <div className="flex flex-col gap-8 p-6 md:flex-row md:items-stretch md:gap-10 md:p-10">
-          {/* Affiche */}
-          <div className="relative aspect-[2/3] w-full shrink-0 overflow-hidden rounded-xl md:w-64">
+        <div className="flex flex-col gap-8 p-6 md:flex-row md:items-center md:gap-10 md:p-10">
+          {/* Affiche officielle (ratio 4:5 natif -> affichée entière) */}
+          <div className="relative aspect-[4/5] w-full shrink-0 overflow-hidden rounded-xl border border-[#C4161C]/30 ring-1 ring-white/5 md:w-72">
             <Image
               src={event.coverImage}
-              alt={event.title}
+              alt={`Affiche officielle — ${event.title}`}
               fill
               className="object-cover"
-              sizes="(max-width: 768px) 100vw, 256px"
+              sizes="(max-width: 768px) 100vw, 288px"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-            <span className="absolute top-3 left-3 inline-block rounded-full border border-[#C9A84C]/60 bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#C9A84C] backdrop-blur-sm">
-              À l&rsquo;affiche
-            </span>
           </div>
 
           {/* Contenu */}
           <div className="flex flex-1 flex-col justify-center">
-            <span className="t-eyebrow inline-flex items-center gap-3 text-[#C9A84C]">
-              <span className="h-px w-8 bg-[#C9A84C]/60" aria-hidden />
+            <span className="t-eyebrow inline-flex items-center gap-3 text-[#C4161C]">
+              <span className="h-px w-8 bg-[#C4161C]/70" aria-hidden />
               Prochain concert live
             </span>
             <h2 className="mt-4 t-h2 text-white">{event.title}</h2>
@@ -72,13 +68,13 @@ export default function EventCard() {
             <div className="mt-7 flex flex-wrap items-center gap-4">
               <Link
                 href={`/billetterie/${event.slug}/reserver`}
-                className="inline-flex h-12 items-center justify-center rounded-full bg-[#C9A84C] px-8 text-[13px] font-semibold uppercase tracking-[0.12em] text-black shadow-lg shadow-[#C9A84C]/20 transition-all hover:bg-[#F0CB6A] hover:shadow-[#C9A84C]/40 active:scale-[0.97]"
+                className="inline-flex h-12 items-center justify-center rounded-full bg-[#C4161C] px-8 text-[13px] font-semibold uppercase tracking-[0.12em] text-white shadow-lg shadow-[#C4161C]/25 transition-all hover:bg-[#e0272d] hover:shadow-[#C4161C]/40 active:scale-[0.97]"
               >
                 Réserver ma place
               </Link>
               <Link
                 href="/billetterie"
-                className="inline-flex h-12 items-center justify-center rounded-full border border-[#282828] px-8 text-[13px] font-medium uppercase tracking-[0.12em] text-gray-300 transition-all hover:border-[#C9A84C]/50 hover:text-[#C9A84C] active:scale-[0.97]"
+                className="inline-flex h-12 items-center justify-center rounded-full border border-[#0F7A3D]/50 px-8 text-[13px] font-medium uppercase tracking-[0.12em] text-[#3ad674] transition-all hover:border-[#0F7A3D] hover:bg-[#0F7A3D]/10 active:scale-[0.97]"
               >
                 Voir la billetterie
               </Link>
