@@ -174,7 +174,7 @@ export default function FAQ() {
           <div className="mt-1 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/billetterie"
-              className="inline-flex h-11 items-center justify-center rounded-full bg-[#C9A84C] px-7 text-[13px] font-semibold uppercase tracking-[0.12em] text-black transition-all hover:bg-[#F0CB6A] hover:shadow-lg hover:shadow-[#C9A84C]/30 active:scale-[0.97]"
+              className="inline-flex h-11 items-center justify-center rounded-full bg-[#C4161C] px-7 text-[13px] font-semibold uppercase tracking-[0.12em] text-white transition-all hover:bg-[#e0272d] hover:shadow-lg hover:shadow-[#C4161C]/30 active:scale-[0.97]"
             >
               Commander des billets
             </Link>

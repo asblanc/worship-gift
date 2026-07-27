@@ -109,7 +109,7 @@ export default function EventsList() {
                   </span>
                   <Link
                     href={`/billetterie/${event.slug}/reserver`}
-                    className="inline-flex h-9 items-center justify-center rounded-md bg-[#C9A84C] px-5 text-xs font-semibold text-black transition-all hover:bg-[#F0CB6A] hover:shadow-sm active:scale-[0.97]"
+                    className="inline-flex h-9 items-center justify-center rounded-md bg-[#C4161C] px-5 text-xs font-semibold text-white transition-all hover:bg-[#e0272d] hover:shadow-sm active:scale-[0.97]"
                   >
                     Réserver
                   </Link>

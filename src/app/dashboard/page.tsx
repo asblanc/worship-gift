@@ -105,7 +105,7 @@ export default function DashboardPage() {
           </p>
           <Link
             href="/billetterie"
-            className="mt-4 inline-flex h-10 items-center justify-center rounded-md bg-[#C9A84C] px-5 text-xs font-semibold text-black transition-all hover:bg-[#F0CB6A] hover:shadow-lg hover:shadow-[#C9A84C]/20 active:scale-[0.97] sm:mt-5 sm:px-6 sm:text-sm"
+            className="mt-4 inline-flex h-10 items-center justify-center rounded-md bg-[#C4161C] px-5 text-xs font-semibold text-white transition-all hover:bg-[#e0272d] hover:shadow-lg hover:shadow-[#C4161C]/20 active:scale-[0.97] sm:mt-5 sm:px-6 sm:text-sm"
           >
             Voir la billetterie
           </Link>

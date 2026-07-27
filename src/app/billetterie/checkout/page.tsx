@@ -165,7 +165,7 @@ export default function CheckoutPage() {
                     {user ? (
                       <Link
                         href="/dashboard"
-                        className="inline-flex h-11 items-center justify-center rounded-md bg-[#C9A84C] px-6 text-sm font-semibold text-black transition-colors hover:bg-[#F0CB6A]"
+                        className="inline-flex h-11 items-center justify-center rounded-md bg-[#C4161C] px-6 text-sm font-semibold text-white transition-colors hover:bg-[#e0272d]"
                       >
                         Voir mes billets
                       </Link>
@@ -286,7 +286,7 @@ export default function CheckoutPage() {
                         className={`flex w-full items-center justify-center gap-2 rounded-lg p-4 text-sm font-semibold transition-all ${
                           confirming
                             ? "cursor-not-allowed bg-gray-700 text-gray-300"
-                            : "bg-[#C9A84C] text-black hover:bg-[#F0CB6A] hover:shadow-md hover:shadow-[#C9A84C]/30 active:scale-[0.98]"
+                            : "bg-[#C4161C] text-white hover:bg-[#e0272d] hover:shadow-md hover:shadow-[#C4161C]/30 active:scale-[0.98]"
                         }`}
                       >
                         {confirming ? (
@@ -306,7 +306,7 @@ export default function CheckoutPage() {
                         className={`flex w-full items-center justify-center gap-2 rounded-lg p-4 text-sm font-semibold transition-all ${
                           paying
                             ? "cursor-not-allowed bg-gray-700 text-gray-300"
-                            : "bg-[#C9A84C] text-black hover:bg-[#F0CB6A] hover:shadow-md hover:shadow-[#C9A84C]/30 active:scale-[0.98]"
+                            : "bg-[#C4161C] text-white hover:bg-[#e0272d] hover:shadow-md hover:shadow-[#C4161C]/30 active:scale-[0.98]"
                         }`}
                       >
                         {paying ? (

@@ -191,7 +191,7 @@ export default function GaleriePage() {
               </p>
               <Link
                 href="/contact"
-                className="mt-2 inline-flex h-12 items-center justify-center rounded-full bg-[#C9A84C] px-8 text-[13px] font-semibold uppercase tracking-[0.12em] text-black transition-all hover:bg-[#F0CB6A] hover:shadow-lg hover:shadow-[#C9A84C]/30 active:scale-[0.97]"
+                className="mt-2 inline-flex h-12 items-center justify-center rounded-full bg-[#C4161C] px-8 text-[13px] font-semibold uppercase tracking-[0.12em] text-white transition-all hover:bg-[#e0272d] hover:shadow-lg hover:shadow-[#C4161C]/30 active:scale-[0.97]"
               >
                 Nous contacter
               </Link>

@@ -66,7 +66,7 @@ export default function BilletterieEnLignePage() {
                 href={ticketing.directUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-7 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#C9A84C] px-8 text-[13px] font-semibold uppercase tracking-[0.12em] text-black transition-all hover:bg-[#F0CB6A] hover:shadow-lg hover:shadow-[#C9A84C]/30 active:scale-[0.97]"
+                className="mt-7 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#C4161C] px-8 text-[13px] font-semibold uppercase tracking-[0.12em] text-white transition-all hover:bg-[#e0272d] hover:shadow-lg hover:shadow-[#C4161C]/30 active:scale-[0.97]"
               >
                 Ouvrir la billetterie
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7" /><path d="M7 7h10v10" /></svg>

@@ -170,7 +170,7 @@ export default function BilletteriesWidget() {
             href={cfg.directUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-11 items-center justify-center rounded-full bg-[#C9A84C] px-8 text-[13px] font-semibold uppercase tracking-[0.12em] text-black transition-all hover:bg-[#F0CB6A] active:scale-[0.97]"
+            className="inline-flex h-11 items-center justify-center rounded-full bg-[#C4161C] px-8 text-[13px] font-semibold uppercase tracking-[0.12em] text-white transition-all hover:bg-[#e0272d] active:scale-[0.97]"
           >
             Ouvrir la billetterie
           </a>

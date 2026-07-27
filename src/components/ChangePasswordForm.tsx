@@ -114,7 +114,7 @@ export default function ChangePasswordForm() {
           className={`inline-flex h-10 items-center justify-center rounded-md px-5 text-sm font-semibold transition-colors ${
             loading
               ? "cursor-not-allowed bg-gray-700 text-gray-300"
-              : "bg-[#C9A84C] text-black hover:bg-[#F0CB6A]"
+              : "bg-[#C4161C] text-white hover:bg-[#e0272d]"
           }`}
         >
           {loading ? "Enregistrement…" : "Mettre à jour"}

@@ -137,7 +137,7 @@ export default function ScanPage() {
           type="submit"
           disabled={loading}
           className={`rounded-md px-5 text-sm font-semibold transition-colors ${
-            loading ? "cursor-not-allowed bg-gray-700 text-gray-400" : "bg-[#C9A84C] text-black hover:bg-[#F0CB6A]"
+            loading ? "cursor-not-allowed bg-gray-700 text-gray-400" : "bg-[#C4161C] text-white hover:bg-[#e0272d]"
           }`}
         >
           {loading ? "…" : "Valider"}

@@ -50,7 +50,7 @@ export default function AlbumPage() {
           <p className="text-gray-300">Cet album est introuvable.</p>
           <Link
             href="/galerie"
-            className="rounded-md bg-[#C9A84C] px-5 py-2.5 text-sm font-semibold text-black hover:bg-[#F0CB6A]"
+            className="rounded-md bg-[#C4161C] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#e0272d]"
           >
             ← Retour à la galerie
           </Link>

@@ -67,7 +67,7 @@ export default function Countdown() {
                 className="flex flex-col items-center"
                 style={{ animationDelay: `${i * 0.1}s` }}
               >
-                <div className="flex h-20 w-20 flex-col items-center justify-center rounded-lg border border-[#C9A84C]/20 bg-[#C9A84C]/5 backdrop-blur-sm md:h-28 md:w-28">
+                <div className="flex h-20 w-20 flex-col items-center justify-center rounded-lg border border-[#C4161C]/30 bg-[#C4161C]/10 backdrop-blur-sm md:h-28 md:w-28">
                   <span className="font-heading text-3xl font-bold text-white md:text-5xl">
                     --
                   </span>
@@ -99,7 +99,7 @@ export default function Countdown() {
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className="flex flex-col items-center"
             >
-              <div className="flex h-20 w-20 flex-col items-center justify-center rounded-lg border border-[#C9A84C]/20 bg-[#C9A84C]/5 backdrop-blur-sm md:h-28 md:w-28">
+              <div className="flex h-20 w-20 flex-col items-center justify-center rounded-lg border border-[#C4161C]/30 bg-[#C4161C]/10 backdrop-blur-sm md:h-28 md:w-28">
                 <motion.span
                   key={timeLeft[unit.key]}
                   initial={{ opacity: 0, y: -8 }}

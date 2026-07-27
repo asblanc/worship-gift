@@ -233,7 +233,7 @@ function ReservationForm({ event }: { event: EventData }) {
                         href={payUrl || ticketing.directUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-[#C9A84C] px-6 py-3 text-sm font-semibold text-black shadow-sm hover:bg-[#F0CB6A] transition-colors"
+                        className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-[#C4161C] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#e0272d] transition-colors"
                       >
                         Payer en ligne
                       </a>
@@ -298,7 +298,7 @@ function ConfirmationPanel({
       ) : payUrl ? (
         <div className="space-y-3 text-sm text-gray-300">
           <p>Dernière étape : règle ta commande sur la page sécurisée de notre prestataire. Ta place est confirmée dès réception du paiement.</p>
-          <a href={payUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#C9A84C] px-6 py-3 text-sm font-semibold text-black hover:bg-[#F0CB6A] transition-colors">
+          <a href={payUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#C4161C] px-6 py-3 text-sm font-semibold text-white hover:bg-[#e0272d] transition-colors">
             Payer maintenant →
           </a>
         </div>

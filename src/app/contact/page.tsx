@@ -267,7 +267,7 @@ export default function ContactPage() {
                       className={`inline-flex h-12 items-center justify-center gap-2 rounded-md px-8 text-sm font-medium transition-all ${
                         status === "loading"
                           ? "cursor-not-allowed bg-gray-700 text-gray-300"
-                          : "bg-[#C9A84C] text-black hover:bg-[#F0CB6A] hover:shadow-lg hover:shadow-[#C9A84C]/30 active:scale-[0.97]"
+                          : "bg-[#C4161C] text-white hover:bg-[#e0272d] hover:shadow-lg hover:shadow-[#C4161C]/30 active:scale-[0.97]"
                       }`}
                     >
                       {status === "loading" ? (

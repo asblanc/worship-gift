@@ -99,7 +99,7 @@ export default function OrdersPage() {
           <p className="text-gray-300">Aucune commande trouvée.</p>
           <Link
             href="/billetterie"
-            className="mt-4 inline-flex h-10 items-center rounded-md bg-[#C9A84C] px-5 text-sm font-semibold text-black hover:bg-[#F0CB6A]"
+            className="mt-4 inline-flex h-10 items-center rounded-md bg-[#C4161C] px-5 text-sm font-semibold text-white hover:bg-[#e0272d]"
           >
             Réserver des billets
           </Link>

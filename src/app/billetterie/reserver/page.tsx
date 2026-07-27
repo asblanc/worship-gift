@@ -539,7 +539,7 @@ export default function ReserverPage() {
                       className={`inline-flex h-11 items-center justify-center rounded-md px-6 text-sm font-semibold transition-all ${
                         submitting
                           ? "cursor-not-allowed bg-gray-700 text-white"
-                          : "bg-[#C9A84C] text-black hover:bg-[#F0CB6A] hover:shadow-md hover:shadow-[#C9A84C]/30 active:scale-[0.97]"
+                          : "bg-[#C4161C] text-white hover:bg-[#e0272d] hover:shadow-md hover:shadow-[#C4161C]/30 active:scale-[0.97]"
                       }`}
                     >
                       {submitting
