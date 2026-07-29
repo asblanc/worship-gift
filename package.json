@@ -41,5 +41,20 @@
     "sharp": "^0.32.0",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "last 4 versions",
+      "not dead",
+      "Android >= 8",
+      "iOS >= 13",
+      "Samsung >= 11"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
