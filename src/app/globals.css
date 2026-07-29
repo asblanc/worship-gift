@@ -159,6 +159,19 @@
       font-size: 16px;
     }
   }
+
+  /* Filet de sécurité anti « PAGE BLANCHE » :
+     framer-motion rend beaucoup d'éléments en opacity:0 (côté serveur) en
+     attendant que le JS lance l'animation d'apparition. Sur un très vieux
+     WebView Android où le JS échoue, l'animation ne part jamais -> tout reste
+     invisible. Si l'app ne s'hydrate pas (classe posée par un script après un
+     délai), on force l'affichage du contenu. Sans effet sur les appareils OK. */
+  html.reveal-fallback * {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    visibility: visible !important;
+  }
 }
 
 @layer utilities {

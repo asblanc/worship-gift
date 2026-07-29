@@ -64,6 +64,15 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-[#000000] overflow-x-hidden">
+        {/* Filet anti page-blanche : si l'app n'est pas hydratée après un
+            délai (JS en échec sur vieux WebView), on révèle le contenu que
+            framer-motion garde masqué. Script ES5 pour compat maximale. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{setTimeout(function(){var d=document.documentElement;if(!d.getAttribute('data-hydrated')){d.className+=' reveal-fallback';}},4500);}catch(e){}})();",
+          }}
+        />
         {/* Lien d'évitement (accessibilité clavier/lecteurs d'écran) :
             visible uniquement à la prise de focus. */}
         <a
