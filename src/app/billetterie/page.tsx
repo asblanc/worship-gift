@@ -9,6 +9,7 @@ import TicketTiers from "@/components/TicketTiers";
 import PaymentMethods from "@/components/PaymentMethods";
 import { upcomingEvents } from "@/lib/events-config";
 import { billetteriesWidget as ticketing } from "@/lib/ticketing-config";
+import { trackMeta, metaContentParams } from "@/lib/meta-pixel";
 
 const containerVariants = {
   hidden: {},
@@ -134,6 +135,16 @@ export default function BilletteriePage() {
                           href={ticketing.directUrl}
                           target="_blank"
                           rel="noopener noreferrer"
+                          onClick={() =>
+                            trackMeta("InitiateCheckout", {
+                              ...metaContentParams({
+                                eventId: event.id,
+                                eventTitle: event.title,
+                                unitPriceValue: event.priceValue,
+                              }),
+                              payment_method: "online",
+                            })
+                          }
                           className="inline-flex h-10 items-center justify-center rounded-md bg-[#C4161C] px-5 text-sm font-semibold text-white transition-all hover:bg-[#e0272d] hover:shadow-md hover:shadow-[#C4161C]/30 active:scale-[0.97]"
                         >
                           Payer en ligne

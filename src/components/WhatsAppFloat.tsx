@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { WHATSAPP_NUMBER } from "@/lib/events-config";
+import { trackMeta } from "@/lib/meta-pixel";
 
 /* ═══════════════════════════════════════════════════════════
    CONFIGURATION — le numéro WhatsApp est centralisé dans
@@ -124,7 +125,11 @@ export default function WhatsAppFloat() {
                   href={waHref(opt.key)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    // Meta Pixel — Contact : prise de contact WhatsApp.
+                    trackMeta("Contact", { content_name: opt.label, source: "whatsapp-float" });
+                    setOpen(false);
+                  }}
                   className="flex min-h-11 items-center gap-3 rounded-lg border border-white/10 px-3 py-2.5 text-left text-sm text-gray-200 transition-colors hover:border-[#C9A84C]/40 hover:bg-[#C9A84C]/10 hover:text-white active:scale-[0.98] focus-ring"
                 >
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C9A84C]/15 text-[#C9A84C]">

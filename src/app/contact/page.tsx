@@ -13,6 +13,7 @@ import {
   emailAddress,
   phoneNumber,
 } from "@/lib/youtube-videos";
+import { trackMeta } from "@/lib/meta-pixel";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -47,6 +48,8 @@ export default function ContactPage() {
       });
       const data = await res.json();
       if (res.ok && data.success) {
+        // Meta Pixel — message envoyé depuis le formulaire de contact.
+        trackMeta("Contact", { content_name: "Formulaire de contact" });
         setStatus("success");
         setName("");
         setEmail("");

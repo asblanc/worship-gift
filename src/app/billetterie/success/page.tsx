@@ -7,6 +7,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { useAuth } from "@/lib/supabase/auth-context";
 import TicketQR from "@/components/TicketQR";
+import { trackMeta, META_CURRENCY } from "@/lib/meta-pixel";
 
 /* ================================================================
    Worship Gift — Page Success (retour CMI OK)
@@ -46,6 +47,25 @@ export default function SuccessPage() {
           const data = await res.json();
           if (data.order?.status) setOrderStatus(data.order.status);
           if (Array.isArray(data.tickets)) setTickets(data.tickets);
+
+          // Meta Pixel — Purchase : la conversion la plus forte pour
+          // l'algorithme. event_id = référence de commande, ce qui évite
+          // les doublons si l'utilisateur recharge la page de confirmation.
+          if (data.order?.status === "paid") {
+            const amount = Number(data.order.amount ?? 0);
+            trackMeta(
+              "Purchase",
+              {
+                value: amount > 0 ? amount / 100 : 0,
+                currency: META_CURRENCY,
+                content_type: "product",
+                content_name: data.tickets?.[0]?.event_title ?? "Billet Worship Gift",
+                num_items: Array.isArray(data.tickets) ? data.tickets.length : 1,
+                order_id: orderId,
+              },
+              `purchase-${orderId}`,
+            );
+          }
         }
       } catch {
         // Erreur réseau — on affiche quand même la confirmation

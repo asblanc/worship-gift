@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import { upcomingEvents, WHATSAPP_NUMBER, type EventData } from "@/lib/events-config";
 import { billetteriesWidget as ticketing } from "@/lib/ticketing-config";
+import { trackMeta, metaContentParams, newMetaEventId } from "@/lib/meta-pixel";
 
 type Method = "online" | "delivery";
 
@@ -51,6 +52,42 @@ function ReservationForm({ event }: { event: EventData }) {
   const isFree = unitValue === 0;
   const payUrl = selectedTier?.paymentUrl || event.paymentUrl || "";
 
+  /* ── Meta Pixel ────────────────────────────────────────────────
+     Paramètres e-commerce (contenu, quantité, valeur) recalculés à
+     chaque appel pour refléter la formule et la quantité en cours. */
+  const metaParams = () =>
+    metaContentParams({
+      eventId: event.id,
+      eventTitle: event.title,
+      tierId: selectedTier?.id,
+      tierLabel: selectedTier?.label,
+      unitPriceValue: unitValue,
+      quantity: qty,
+    });
+
+  // ViewContent : l'internaute ouvre la page de réservation.
+  // Une seule fois au montage (comme l'effet de pré-sélection ci-dessus).
+  useEffect(() => {
+    trackMeta("ViewContent", metaParams());
+  }, []);
+
+  const selectTier = (id: string) => {
+    setTierId(id);
+    const tier = tiers.find((t) => t.id === id);
+    // AddToCart : signal fort pour l'algorithme (intention d'achat).
+    trackMeta(
+      "AddToCart",
+      metaContentParams({
+        eventId: event.id,
+        eventTitle: event.title,
+        tierId: tier?.id,
+        tierLabel: tier?.label,
+        unitPriceValue: tier?.priceValue ?? event.priceValue,
+        quantity: qty,
+      }),
+    );
+  };
+
   const openWhatsApp = (reference: string) => {
     const tierLabel = selectedTier ? ` (${selectedTier.label})` : "";
     const message = `Bonjour, je souhaite commander ${qty} billet${qty > 1 ? "s" : ""}${tierLabel} pour "${event.title}" le ${event.date} à ${event.location}.\nRéférence : ${reference}\nNom : ${name}${phone ? `\nTél : ${phone}` : ""}${!isFree ? `\nMontant : ${totalMAD} MAD (paiement à la livraison)` : ""}\nMerci de me confirmer la livraison.`;
@@ -76,6 +113,8 @@ function ReservationForm({ event }: { event: EventData }) {
     }
     setError("");
     setLoading(method);
+    // Identifiant partagé pixel navigateur ↔ Conversions API (déduplication).
+    const metaEventId = newMetaEventId();
     try {
       const res = await fetch("/api/orders", {
         method: "POST",
@@ -88,6 +127,7 @@ function ReservationForm({ event }: { event: EventData }) {
           customerEmail: email || undefined,
           telephone: phone || undefined,
           paymentMethod: method,
+          metaEventId,
         }),
       });
       const data = await res.json();
@@ -96,6 +136,13 @@ function ReservationForm({ event }: { event: EventData }) {
         setLoading(null);
         return;
       }
+      // Conversion : commande enregistrée. C'est CET évènement qu'il faut
+      // choisir comme objectif d'optimisation dans le gestionnaire de pubs.
+      trackMeta(
+        method === "delivery" ? "Lead" : "InitiateCheckout",
+        { ...metaParams(), order_id: data.orderId, payment_method: method },
+        metaEventId,
+      );
       if (method === "delivery") openWhatsApp(data.orderId);
       setConfirmation({ orderId: data.orderId, method });
     } catch {
@@ -168,7 +215,7 @@ function ReservationForm({ event }: { event: EventData }) {
                               key={t.id}
                               type="button"
                               disabled={t.soldOut}
-                              onClick={() => setTierId(t.id)}
+                              onClick={() => selectTier(t.id)}
                               className={`flex items-center justify-between rounded-lg border px-4 py-3 text-left transition-all ${
                                 active
                                   ? "border-[#C9A84C] bg-[#C9A84C]/10"
@@ -233,6 +280,14 @@ function ReservationForm({ event }: { event: EventData }) {
                         href={payUrl || ticketing.directUrl}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() =>
+                          // Départ vers la billetterie externe : dernier
+                          // évènement mesurable de notre côté.
+                          trackMeta("InitiateCheckout", {
+                            ...metaParams(),
+                            payment_method: "online",
+                          })
+                        }
                         className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-[#C4161C] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#e0272d] transition-colors"
                       >
                         Payer en ligne

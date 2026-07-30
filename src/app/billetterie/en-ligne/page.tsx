@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import PageHero from "@/components/PageHero";
 import { billetteriesWidget as ticketing } from "@/lib/ticketing-config";
+import { upcomingEvents } from "@/lib/events-config";
+import { trackMeta, metaContentParams } from "@/lib/meta-pixel";
 
 /* ================================================================
    Worship Gift — Achat en ligne
@@ -66,6 +68,19 @@ export default function BilletterieEnLignePage() {
                 href={ticketing.directUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  const ev = upcomingEvents[0];
+                  if (!ev) return;
+                  trackMeta("InitiateCheckout", {
+                    ...metaContentParams({
+                      eventId: ev.id,
+                      eventTitle: ev.title,
+                      unitPriceValue: ev.priceValue,
+                    }),
+                    payment_method: "online",
+                    source: "page-en-ligne",
+                  });
+                }}
                 className="mt-7 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#C4161C] px-8 text-[13px] font-semibold uppercase tracking-[0.12em] text-white transition-all hover:bg-[#e0272d] hover:shadow-lg hover:shadow-[#C4161C]/30 active:scale-[0.97]"
               >
                 Ouvrir la billetterie

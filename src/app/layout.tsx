@@ -25,14 +25,22 @@ const poppins = Poppins({
 
 import ClientLayout from "@/components/ClientLayout";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import MetaPixel from "@/components/MetaPixel";
 import { defaultMetadata } from "@/lib/seo";
 
 // Suivi actif UNIQUEMENT si NEXT_PUBLIC_GA_ID est défini (pas de valeur
 // en dur : sans la variable, aucun script de tracking n'est chargé).
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "";
 
+// Vérification de domaine Meta (Business Manager > Sécurité de la marque
+// > Domaines). Requise pour configurer les 8 évènements agrégés (iOS).
+const META_DOMAIN_VERIFICATION = process.env.NEXT_PUBLIC_META_DOMAIN_VERIFICATION || "";
+
 export const metadata: Metadata = {
   ...defaultMetadata,
+  ...(META_DOMAIN_VERIFICATION
+    ? { verification: { other: { "facebook-domain-verification": META_DOMAIN_VERIFICATION } } }
+    : {}),
   // Favicon rond (disque noir + logo or) — affichage circulaire propre
   icons: {
     icon: [
@@ -84,6 +92,8 @@ export default function RootLayout({
         <div id="contenu" tabIndex={-1} className="flex min-h-full flex-1 flex-col outline-none">
           <ClientLayout>{children}</ClientLayout>
         </div>
+        {/* Meta Pixel — actif uniquement si NEXT_PUBLIC_META_PIXEL_ID est défini */}
+        <MetaPixel />
       </body>
       {/* Google Analytics — actif uniquement si NEXT_PUBLIC_GA_ID est défini */}
       {GA_ID && <GoogleAnalytics gaId={GA_ID} />}

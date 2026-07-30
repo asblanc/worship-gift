@@ -4,9 +4,12 @@ import type { NextConfig } from "next";
    Content-Security-Policy
    - script/style 'unsafe-inline' : requis par l'hydratation Next +
      framer-motion (styles inline). 'unsafe-eval' garde la compat dev.
-   - connect : Supabase (auth + DB)
-   - img : self + data/blob + miniatures YouTube
+   - connect : Supabase (auth + DB) + Meta (Conversions navigateur)
+   - img : self + data/blob + miniatures YouTube + pixel Meta (noscript)
    - frame : embeds YouTube (VideoLightbox)
+   - facebook : connect.facebook.net (script fbevents.js) et
+     www.facebook.com (envoi des évènements + <noscript> de repli).
+     Sans ces 3 entrées, le Meta Pixel est BLOQUÉ par la CSP.
    - form-action : self + passerelle CMI (redirection paiement)
    - frame-ancestors 'none' : anti-clickjacking
    ------------------------------------------------------------------ */
@@ -17,13 +20,13 @@ const isProd = process.env.NODE_ENV === "production";
 
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isProd ? "" : " 'unsafe-eval'"} https://www.googletagmanager.com https://*.billetteries.ma`,
+  `script-src 'self' 'unsafe-inline'${isProd ? "" : " 'unsafe-eval'"} https://www.googletagmanager.com https://*.billetteries.ma https://connect.facebook.net`,
   "style-src 'self' 'unsafe-inline' https://*.billetteries.ma",
-  "img-src 'self' data: blob: https://img.youtube.com https://*.supabase.co https://www.googletagmanager.com https://*.google-analytics.com https://*.billetteries.ma",
+  "img-src 'self' data: blob: https://img.youtube.com https://*.supabase.co https://www.googletagmanager.com https://*.google-analytics.com https://*.billetteries.ma https://www.facebook.com",
   "font-src 'self' data: https://*.billetteries.ma",
-  "connect-src 'self' https://*.supabase.co https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://*.billetteries.ma",
-  // frame-src : embeds YouTube + widget billetterie (billetteries.ma)
-  "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://*.billetteries.ma",
+  "connect-src 'self' https://*.supabase.co https://www.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com https://*.billetteries.ma https://connect.facebook.net https://www.facebook.com",
+  // frame-src : embeds YouTube + widget billetterie (billetteries.ma) + Meta
+  "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://*.billetteries.ma https://www.facebook.com",
   "form-action 'self' https://*.cmi.co.ma https://*.billetteries.ma",
   "frame-ancestors 'none'",
   "base-uri 'self'",

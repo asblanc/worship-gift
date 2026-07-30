@@ -5,6 +5,7 @@ import Link from "next/link";
 import Eyebrow from "@/components/Eyebrow";
 import { upcomingEvents } from "@/lib/events-config";
 import { billetteriesWidget as ticketing } from "@/lib/ticketing-config";
+import { trackMeta, metaContentParams } from "@/lib/meta-pixel";
 
 /* ================================================================
    Worship Gift — Formules de billets (cartes marketing)
@@ -189,6 +190,18 @@ export default function TicketTiers() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`Payer en ligne la formule ${t.label}`}
+                      onClick={() =>
+                        trackMeta("InitiateCheckout", {
+                          ...metaContentParams({
+                            eventId: event.id,
+                            eventTitle: event.title,
+                            tierId: t.id,
+                            tierLabel: t.label,
+                            unitPriceValue: t.priceValue,
+                          }),
+                          payment_method: "online",
+                        })
+                      }
                       className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#C4161C] text-[12px] font-bold uppercase tracking-[0.08em] text-white transition-all hover:bg-[#e0272d] active:scale-[0.97]"
                     >
                       Paiement en ligne
@@ -197,6 +210,18 @@ export default function TicketTiers() {
                     <Link
                       href={tierHref(t.id)}
                       aria-label={`Commander à la livraison la formule ${t.label}`}
+                      onClick={() =>
+                        trackMeta(
+                          "AddToCart",
+                          metaContentParams({
+                            eventId: event.id,
+                            eventTitle: event.title,
+                            tierId: t.id,
+                            tierLabel: t.label,
+                            unitPriceValue: t.priceValue,
+                          }),
+                        )
+                      }
                       className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#25D366]/40 bg-[#25D366]/5 text-[12px] font-bold uppercase tracking-[0.08em] text-[#25D366] transition-all hover:bg-[#25D366]/15 active:scale-[0.97]"
                     >
                       <svg className="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13" rx="1" /><path d="M16 8h4l3 3v5h-7V8z" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" /></svg>

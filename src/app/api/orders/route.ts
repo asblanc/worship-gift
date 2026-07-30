@@ -29,6 +29,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { upcomingEvents } from "@/lib/events-config";
 import { createPendingOrder } from "@/lib/orders-service.server";
 import { rateLimitAsync } from "@/lib/rate-limit";
+import { sendMetaCapiEvent } from "@/lib/meta-capi.server";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -127,6 +128,38 @@ export async function POST(request: NextRequest) {
       telephone: telephone || undefined,
       paymentMethod,
     });
+
+    /* ── Meta Conversions API ────────────────────────────────────
+       Même évènement que le pixel navigateur, mais envoyé depuis le
+       serveur : il passe les bloqueurs de pub et iOS. `metaEventId`
+       vient du client → Meta déduplique les deux envois.
+       No-op si META_CAPI_ACCESS_TOKEN n'est pas configuré. */
+    const metaEventId =
+      typeof body.metaEventId === "string" ? body.metaEventId.slice(0, 100) : "";
+    if (metaEventId) {
+      await sendMetaCapiEvent(request, {
+        eventName: paymentMethod === "delivery" ? "Lead" : "InitiateCheckout",
+        eventId: metaEventId,
+        eventSourceUrl: request.headers.get("referer") || undefined,
+        userData: {
+          email: customerEmail || undefined,
+          phone: telephone || undefined,
+          fullName: customerName,
+          city: event.location,
+          countryCode: "ma",
+        },
+        customData: {
+          currency: "MAD",
+          value: result.amount / 100,
+          content_type: "product",
+          content_ids: [`${event.id}:${body.ticketTypeId ?? "default"}`],
+          content_name: `${event.title} — ${ticketLabel}`,
+          num_items: quantity,
+          order_id: result.orderId,
+          payment_method: paymentMethod,
+        },
+      });
+    }
 
     return NextResponse.json({
       success: true,
