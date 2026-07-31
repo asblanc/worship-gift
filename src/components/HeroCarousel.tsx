@@ -197,7 +197,7 @@ export default function HeroCarousel() {
             <span className="relative inline-flex h-2 w-2 rounded-full bg-[#C4161C]" />
           </span>
           <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-white sm:text-[11px]">
-            Africa Tour 2026 · Concert Live · 11 Oct · Casablanca
+            Africa Tour 2026 · Concert Live · 11 Oct · Stade RUC, Casablanca
           </span>
         </motion.div>
 
@@ -219,7 +219,7 @@ export default function HeroCarousel() {
           className="mt-6 max-w-2xl t-lead text-gray-200"
         >
           <strong className="font-semibold text-white">Jonathan C. Gambela</strong> en concert
-          live à Casablanca. Vis une expérience unique de Gospel et d&rsquo;adoration.
+          live au Stade RUC de Casablanca. Vis une expérience unique de Gospel et d&rsquo;adoration.
         </motion.p>
 
         <motion.div

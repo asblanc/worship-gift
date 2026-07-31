@@ -145,7 +145,9 @@ export async function POST(request: NextRequest) {
           email: customerEmail || undefined,
           phone: telephone || undefined,
           fullName: customerName,
-          city: event.location,
+          // Ville seule (pas la salle) : Meta hache ce champ pour
+          // l'appariement, "Stade RUC, Casablanca" ne correspondrait à rien.
+          city: event.city ?? "Casablanca",
           countryCode: "ma",
         },
         customData: {

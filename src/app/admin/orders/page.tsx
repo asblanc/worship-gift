@@ -388,7 +388,7 @@ export default function AdminOrdersPage() {
               Worship Gift — Liste des commandes
             </div>
             <div style={{ fontSize: "12px", color: "#444", marginTop: "2px" }}>
-              Concert Live de Jonathan Gambela · 11 octobre 2026 · Casablanca
+              Concert Live de Jonathan Gambela · 11 octobre 2026 · Stade RUC, Casablanca
             </div>
             <div style={{ fontSize: "12px", color: "#444", marginTop: "2px" }}>
               Éditée le {new Date().toLocaleDateString("fr-FR")} · {totals.count} commande(s)

@@ -105,8 +105,8 @@ export default function TicketTiers() {
           <p className="mx-auto mt-4 max-w-xl t-body text-gray-400">
             Concert live de{" "}
             <span className="font-semibold text-[#C9A84C]">Jonathan Gambela</span>{" "}
-            à Casablanca. Places limitées — réservez la vôtre avant qu&rsquo;il ne
-            soit trop tard.
+            au Stade RUC de Casablanca. Places limitées — réservez la vôtre
+            avant qu&rsquo;il ne soit trop tard.
           </p>
         </motion.div>
 

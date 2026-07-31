@@ -55,10 +55,16 @@ export function buildJsonLd() {
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     image: `${siteUrl}${nextEvent.coverImage}`,
     url: `${siteUrl}/billetterie`,
+    // Lieu détaillé : Google exige une salle + une adresse structurée pour
+    // afficher l'événement en résultat enrichi (fiche avec date et lieu).
     location: {
       "@type": "Place",
-      name: nextEvent.location,
-      address: nextEvent.location,
+      name: nextEvent.venue || nextEvent.location,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: nextEvent.city || nextEvent.location,
+        addressCountry: "MA",
+      },
     },
     organizer: {
       "@type": "Organization",

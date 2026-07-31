@@ -41,7 +41,12 @@ export interface EventData {
   time: string;
   /** Date/heure ISO 8601 — utilisée pour les rappels email automatiques. Ex: "2026-08-15T19:00:00" */
   isoDate: string;
+  /** Lieu affiché, salle incluse. Ex: "Stade RUC, Casablanca" */
   location: string;
+  /** 🏟️ Nom de la salle seule. Ex: "Stade RUC" (données structurées SEO). */
+  venue?: string;
+  /** 🏙️ Ville seule. Ex: "Casablanca" (SEO + appariement Meta). */
+  city?: string;
   description: string;
   /** Prix « à partir de » en centimes (généralement = catégorie la moins chère). 0 = gratuit. */
   priceValue: number;
@@ -82,7 +87,9 @@ export const upcomingEvents: EventData[] = [
     date: "11 octobre 2026",
     time: "15h00",
     isoDate: "2026-10-11T15:00:00", // date/heure réelle (pour les rappels)
-    location: "Casablanca",
+    location: "Stade RUC, Casablanca",
+    venue: "Stade RUC",
+    city: "Casablanca",
     description:
       "Un concert live exceptionnel de gospel et d'adoration avec le chantre Jonathan Gambela. Réserve ta place dès maintenant.",
     // « à partir de » = tarif le plus bas ci-dessous
@@ -173,7 +180,9 @@ export const nextEvent = {
   date: new Date("2026-10-11T15:00:00"), // date réelle (compte à rebours)
   dateLabel: "11 octobre 2026",
   time: "15h00",
-  location: "Casablanca",
+  location: "Stade RUC, Casablanca",
+  venue: "Stade RUC",
+  city: "Casablanca",
   description:
     "Viens vivre un concert live unique de Gospel avec le chantre Jonathan Gambela, au cœur du mouvement Worship Gift.",
   // 🖼️ Affiche du prochain concert — même image que ci-dessus idéalement
@@ -183,7 +192,7 @@ export const nextEvent = {
 // 🎟️ Textes du bandeau défilant (Marquee)
 export const marqueeTexts = [
   "CONCERT LIVE · JONATHAN GAMBELA",
-  "11 OCTOBRE 2026 · CASABLANCA",
+  "11 OCTOBRE 2026 · STADE RUC, CASABLANCA",
   "BILLETS EN VENTE",
   "WORSHIP GIFT",
   "GOSPEL EXPÉRIENCE",

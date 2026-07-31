@@ -142,7 +142,7 @@ export default function AdminOrderDetailPage() {
     let intl = digits;
     if (digits.startsWith("0")) intl = "212" + digits.slice(1);
     else if (digits.length === 9) intl = "212" + digits;
-    const msg = `Bonjour ${order.customer_name || ""}, ici l'équipe Worship Gift. Nous avons bien reçu votre commande ${order.id} (${order.quantity ?? 1} billet(s)${order.ticket_type ? " · " + order.ticket_type : ""}) pour le Concert Live de Jonathan Gambela — 11 octobre 2026 à Casablanca. Votre commande est en cours de traitement, nous revenons vers vous très vite. Merci !`;
+    const msg = `Bonjour ${order.customer_name || ""}, ici l'équipe Worship Gift. Nous avons bien reçu votre commande ${order.id} (${order.quantity ?? 1} billet(s)${order.ticket_type ? " · " + order.ticket_type : ""}) pour le Concert Live de Jonathan Gambela — 11 octobre 2026 au Stade RUC, Casablanca. Votre commande est en cours de traitement, nous revenons vers vous très vite. Merci !`;
     return `https://wa.me/${intl}?text=${encodeURIComponent(msg)}`;
   };
 

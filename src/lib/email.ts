@@ -195,7 +195,7 @@ function orderReceivedHtml(opts: {
         <p style="color:#b6b6b6;font-size:14px;line-height:1.6;margin:0 0 14px;">
           Bonjour ${escapeHtml(customerName)},<br/>
           Merci pour votre réservation au <strong style="color:#fff;">Concert Live de Jonathan Gambela</strong>
-          (Africa Tour 2026), le <strong style="color:#fff;">11 octobre 2026 à Casablanca</strong>.
+          (Africa Tour 2026), le <strong style="color:#fff;">11 octobre 2026 au Stade RUC, Casablanca</strong>.
           Votre commande est <strong style="color:#C9A84C;">en cours de traitement</strong> ; notre équipe
           vous recontacte avec la confirmation et les modalités <strong style="color:#fff;">dans les heures qui viennent</strong>.
         </p>
@@ -226,7 +226,7 @@ function orderReceivedHtml(opts: {
         <div style="color:#C9A84C;font-size:14px;font-weight:700;">WORSHIP GIFT</div>
         <div style="color:#7a7a7a;font-size:12px;margin-top:4px;">Mouvement Gospel · Africa Tour 2026</div>
         <div style="color:#5f5f5f;font-size:11px;margin-top:10px;">
-          Concert Live de Jonathan Gambela — 11 octobre 2026 · Casablanca
+          Concert Live de Jonathan Gambela — 11 octobre 2026 · Stade RUC, Casablanca
         </div>
         <div style="color:#4d4d4d;font-size:11px;margin-top:6px;">
           Cet e-mail vous est envoyé suite à votre réservation sur worship-gift.com.

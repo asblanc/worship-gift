@@ -5,7 +5,8 @@ Gestionnaire de publicités. Les champs marqués 🔴 demandent une décision
 de ta part.
 
 **Rappel des données de l'événement**
-Concert Live de Jonathan Gambela · 11 octobre 2026, 15h00 · Casablanca
+Concert Live de Jonathan Gambela · 11 octobre 2026, 15h00
+**Stade RUC, Casablanca**
 Standard 200 · VIP 500 · Duo VIP 800 · Gold 1000 · Duo Gold 1600 MAD
 WhatsApp : +212 605 426 406 · Site : www.worship-gift.com
 
@@ -17,13 +18,9 @@ WhatsApp : +212 605 426 406 · Site : www.worship-gift.com
 |---|---|---|
 | 1 | Mail au prestataire billetteries.ma (suivi des ventes) | 🔴 toi |
 | 2 | Token Conversions API + vérification du domaine sur Vercel | 🔴 toi (je redéploie) |
-| 3 | 🔴 **Préciser la salle du concert** — le site n'indique que « Casablanca ». Les gens ne réservent pas sans savoir où | toi |
+| 3 | ~~Préciser la salle du concert~~ ✅ **Stade RUC, Casablanca** — en ligne | fait |
 | 4 | 4-5 vidéos verticales 9:16 | 🔴 toi |
 | 5 | Compte Instagram professionnel relié à la Page Facebook | toi |
-
-Le point 3 est sous-estimé : une pub d'événement sans lieu précis perd
-une part importante de ses conversions. À corriger dans
-`src/lib/events-config.ts` (champ `location`) — dis-le-moi, c'est 1 minute.
 
 ---
 
@@ -45,7 +42,7 @@ Trois campagnes, créées dans cet ordre.
 | Langue | Français |
 | Ciblage détaillé | **Aucun au départ** — audience large, laisse l'algorithme |
 | Placements | Advantage+ (automatiques) |
-| Message pré-rempli | `Bonjour, je souhaite des informations sur le concert de Jonathan Gambela du 11 octobre à Casablanca.` |
+| Message pré-rempli | `Bonjour, je souhaite des informations sur le concert de Jonathan Gambela du 11 octobre au Stade RUC de Casablanca.` |
 
 C'est la campagne qui produira des ventes en premier : le paiement à la
 livraison via WhatsApp correspond à la façon dont on achète au Maroc, et
@@ -91,14 +88,15 @@ jours.
 
 ### Angle 1 — Ferveur / émotion
 > **Texte principal**
-> Le 11 octobre, Casablanca va vibrer. 🔥
+> Le 11 octobre, le Stade RUC va vibrer. 🔥
 >
 > Jonathan Gambela sur scène, en live, pour une soirée d'adoration comme tu n'en as jamais vécu.
-> Des voix, une louange, une salle entière debout.
+> Des voix, une louange, un stade entier debout.
 >
+> 📍 Stade RUC, Casablanca · 15h00
 > Places à partir de 200 MAD — paiement à la livraison possible.
 >
-> **Titre** : Jonathan Gambela en concert à Casablanca
+> **Titre** : Jonathan Gambela au Stade RUC de Casablanca
 > **Description** : 11 octobre 2026 · Places limitées
 > **CTA** : Réserver
 
@@ -108,9 +106,9 @@ jours.
 > Le 11 octobre, tu vas le vivre en vrai. 🎤
 >
 > Un concert live de gospel et d'adoration, au cœur du mouvement Worship Gift.
-> Casablanca · 11 octobre 2026 · 15h00
+> 📍 Stade RUC, Casablanca · 11 octobre 2026 · 15h00
 >
-> **Titre** : Jonathan Gambela — Live à Casablanca
+> **Titre** : Jonathan Gambela — Live au Stade RUC
 > **Description** : À partir de 200 MAD
 > **CTA** : En savoir plus
 
@@ -120,7 +118,7 @@ jours.
 >
 > La formule Gold, c'est le premier rang face à la scène, une collation premium, un Meet & Greet et une photo souvenir avec lui.
 >
-> Elles partent vite. 11 octobre, Casablanca.
+> Elles partent vite. 11 octobre, Stade RUC de Casablanca.
 >
 > **Titre** : Formule Gold — Meet & Greet inclus
 > **Description** : Places VVIP en nombre très limité
@@ -132,7 +130,7 @@ jours.
 >
 > Réserve ta place pour le concert de Jonathan Gambela et paie **en espèces à la livraison**. Un agent passe encaisser, tu reçois ton billet numérique.
 >
-> Simple, sans risque. 11 octobre, Casablanca.
+> Simple, sans risque. 11 octobre, Stade RUC de Casablanca.
 >
 > **Titre** : Réserve maintenant, paie à la livraison
 > **Description** : Billet numérique avec QR code
@@ -145,7 +143,7 @@ jours.
 > Les formules VIP et Gold sont presque parties. Ne reste pas dehors le 11 octobre.
 >
 > **Titre** : Dernières places disponibles
-> **Description** : Concert du 11 octobre · Casablanca
+> **Description** : 11 octobre · Stade RUC, Casablanca
 > **CTA** : Réserver
 
 **Règle sur l'urgence** : n'écris « dernières places » que si c'est vrai.
