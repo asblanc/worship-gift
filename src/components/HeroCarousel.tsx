@@ -3,8 +3,35 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { CONCERT_PROMO_DEADLINE } from "@/lib/concert-promo";
+
+const HERO_SLIDES = [
+  {
+    src: "/img_worship-gift/affiche-africa-tour.webp",
+    alt: "Affiche Africa Tour de Jonathan C. Gambela à Casablanca",
+  },
+  {
+    src: "/img_worship-gift/hero-0.jpeg",
+    alt: "Jonathan C. Gambela chantant sur scène",
+  },
+  {
+    src: "/img_worship-gift/hero-1.jpg",
+    alt: "Vue d'une salle de concert",
+  },
+  {
+    src: "/img_worship-gift/hero-2.jpeg",
+    alt: "Public levant les mains pendant un concert Gospel",
+  },
+  {
+    src: "/img_worship-gift/hero-3.jpeg",
+    alt: "Public en adoration pendant un concert Gospel",
+  },
+  {
+    src: "/img_worship-gift/hero-4.jpeg",
+    alt: "Salle prête à accueillir un concert",
+  },
+];
 
 type TimeLeft = {
   days: number;
@@ -74,6 +101,20 @@ function HeroCountdown() {
 }
 
 export default function HeroCarousel() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (paused || shouldReduceMotion) return;
+
+    const timer = window.setInterval(() => {
+      setCurrentSlide((current) => (current + 1) % HERO_SLIDES.length);
+    }, 6_000);
+
+    return () => window.clearInterval(timer);
+  }, [paused, shouldReduceMotion]);
+
   return (
     <section
       aria-labelledby="hero-concert-title"
@@ -96,16 +137,62 @@ export default function HeroCarousel() {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="order-1 flex justify-center md:order-2 md:justify-end"
         >
-          <div className="relative h-[166px] w-[133px] overflow-hidden rounded-xl border border-[#C9A84C]/40 bg-black shadow-[0_16px_42px_rgba(0,0,0,0.55)] ring-1 ring-white/10 sm:h-[208px] sm:w-[166px] md:h-auto md:w-full md:max-w-[400px] md:aspect-[4/5]">
-            <Image
-              src="/img_worship-gift/affiche-africa-tour.webp"
-              alt="Affiche Africa Tour de Jonathan C. Gambela à Casablanca"
-              fill
-              priority
-              quality={80}
-              sizes="(max-width: 767px) 166px, (max-width: 1024px) 36vw, 400px"
-              className="object-cover"
-            />
+          <div
+            className="relative h-[166px] w-[133px] overflow-hidden rounded-xl border border-[#C9A84C]/40 bg-black shadow-[0_16px_42px_rgba(0,0,0,0.55)] ring-1 ring-white/10 sm:h-[208px] sm:w-[166px] md:h-auto md:w-full md:max-w-[400px] md:aspect-[4/5]"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+            onFocus={() => setPaused(true)}
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget)) {
+                setPaused(false);
+              }
+            }}
+            role="region"
+            aria-roledescription="carrousel"
+            aria-label="Images du concert de Jonathan C. Gambela"
+          >
+            <AnimatePresence initial={false}>
+              <motion.div
+                key={currentSlide}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.7 }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={HERO_SLIDES[currentSlide].src}
+                  alt={HERO_SLIDES[currentSlide].alt}
+                  fill
+                  priority={currentSlide === 0}
+                  quality={80}
+                  sizes="(max-width: 767px) 166px, (max-width: 1024px) 36vw, 400px"
+                  className="object-cover"
+                />
+              </motion.div>
+            </AnimatePresence>
+            <div
+              className="absolute inset-x-0 bottom-0 z-10 flex justify-center gap-0.5 bg-gradient-to-t from-black/70 to-transparent pb-1.5 pt-5"
+              role="group"
+              aria-label="Choisir une image"
+            >
+              {HERO_SLIDES.map((slide, index) => (
+                <button
+                  key={slide.src}
+                  type="button"
+                  onClick={() => setCurrentSlide(index)}
+                  className="flex h-4 w-4 items-center justify-center rounded-full focus-ring"
+                  aria-label={`Afficher l’image ${index + 1} sur ${HERO_SLIDES.length}`}
+                  aria-pressed={currentSlide === index}
+                >
+                  <span
+                    className={`h-1.5 rounded-full transition-all ${
+                      currentSlide === index ? "w-3 bg-[#C9A84C]" : "w-1.5 bg-white/70"
+                    }`}
+                  />
+                </button>
+              ))}
+            </div>
           </div>
         </motion.div>
 
