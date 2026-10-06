@@ -1,297 +1,190 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import { CONCERT_PROMO_DEADLINE } from "@/lib/concert-promo";
 
-const slides = [
-  {
-    src: "/img_worship-gift/hero-0.jpeg",
-    alt: "Worship Gift – Gospel Expérience",
-    position: "center",
-  },
-  {
-    src: "/img_worship-gift/hero-1.jpg",
-    alt: "Concert Live de Jonathan Gambela — Worship Gift",
-    position: "center",
-  },
-  {
-    src: "/img_worship-gift/hero-2.jpeg",
-    alt: "Gospel Worship Gift",
-    position: "center 30%",
-  },
-  {
-    src: "/img_worship-gift/hero-3.jpeg",
-    alt: "Mouvement Gospel Worship Gift",
-    position: "center 40%",
-  },
-  {
-    src: "/img_worship-gift/hero-4.jpeg",
-    alt: "Worship Gift – Nuit de Gospel",
-    position: "center 25%",
-  },
+type TimeLeft = {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+};
+
+const EMPTY_TIME: TimeLeft = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+
+function getTimeLeft(now = Date.now()): TimeLeft {
+  const difference = Math.max(0, CONCERT_PROMO_DEADLINE - now);
+
+  return {
+    days: Math.floor(difference / 86_400_000),
+    hours: Math.floor((difference / 3_600_000) % 24),
+    minutes: Math.floor((difference / 60_000) % 60),
+    seconds: Math.floor((difference / 1_000) % 60),
+  };
+}
+
+const COUNTDOWN_UNITS: Array<{ key: keyof TimeLeft; label: string }> = [
+  { key: "days", label: "Jours" },
+  { key: "hours", label: "Heures" },
+  { key: "minutes", label: "Minutes" },
+  { key: "seconds", label: "Secondes" },
 ];
 
-export default function HeroCarousel() {
-  const [current, setCurrent] = useState(0);
-  const [prevSlide, setPrevSlide] = useState<number | null>(null);
-  const [hideIndicator, setHideIndicator] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  // Accessibilité (WCAG 2.2.2) : le défilement auto se met en pause au
-  // survol ou à la prise de focus (clavier/lecteur d'écran).
-  const [paused, setPaused] = useState(false);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+const REASSURANCE_POINTS = [
+  "Paiement sécurisé",
+  "E-billet immédiat",
+  "Paiement à la livraison possible",
+];
 
-  const goTo = useCallback(
-    (index: number) => {
-      setPrevSlide(current);
-      setCurrent(index);
-    },
-    [current],
-  );
-
-  const next = useCallback(() => {
-    goTo((current + 1) % slides.length);
-  }, [current, goTo]);
+function HeroCountdown() {
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>(EMPTY_TIME);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
-    updatePreference();
-    mediaQuery.addEventListener("change", updatePreference);
-    return () => mediaQuery.removeEventListener("change", updatePreference);
+    const update = () => setTimeLeft(getTimeLeft());
+    setMounted(true);
+    update();
+    const timer = window.setInterval(update, 1_000);
+    return () => window.clearInterval(timer);
   }, []);
 
-  // Auto-play (suspendu quand paused = true ou si le visiteur préfère moins de mouvement)
-  useEffect(() => {
-    if (paused || prefersReducedMotion) return;
-    intervalRef.current = setInterval(next, 6000);
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [next, paused, prefersReducedMotion]);
+  return (
+    <div
+      className="grid grid-cols-4 gap-1.5 sm:gap-2"
+      aria-label={mounted ? "Compte à rebours avant le concert" : "Chargement du compte à rebours"}
+    >
+      {COUNTDOWN_UNITS.map((unit) => (
+        <div
+          key={unit.key}
+          className="rounded-lg border border-[#C9A84C]/25 bg-black/50 px-1.5 py-2 text-center backdrop-blur-sm sm:px-3 sm:py-2.5"
+        >
+          <span className="block font-heading text-xl font-bold leading-none tabular-nums text-white sm:text-2xl">
+            {mounted ? String(timeLeft[unit.key]).padStart(2, "0") : "--"}
+          </span>
+          <span className="mt-1 block text-[8px] font-semibold uppercase tracking-[0.1em] text-[#C9A84C] sm:text-[9px]">
+            {unit.label}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
 
-  // Swipe mobile
-  const touchStart = useRef(0);
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStart.current = e.touches[0].clientX;
-  };
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    const dx = e.changedTouches[0].clientX - touchStart.current;
-    if (Math.abs(dx) > 60) {
-      if (dx < 0) goTo((current + 1) % slides.length);
-      else goTo((current - 1 + slides.length) % slides.length);
-    }
-  };
-
-  // Cacher l'indicateur au scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 80 && !hideIndicator) {
-        setHideIndicator(true);
-      } else if (window.scrollY <= 80 && hideIndicator) {
-        setHideIndicator(false);
-      }
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [hideIndicator]);
-
-  // Reset prevSlide after transition
-  useEffect(() => {
-    if (prevSlide !== null) {
-      const timeout = setTimeout(() => setPrevSlide(null), 1200);
-      return () => clearTimeout(timeout);
-    }
-  }, [prevSlide]);
-
+export default function HeroCarousel() {
   return (
     <section
-      className="relative h-[80vh] min-h-[500px] w-full overflow-hidden bg-black"
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
-      role="region"
-      aria-roledescription="carrousel"
-      aria-label="Présentation Worship Gift"
+      aria-labelledby="hero-concert-title"
+      className="relative overflow-hidden bg-[#080808]"
     >
-      {/* Couche d'images en crossfade */}
-      <div className="absolute inset-0">
-        {/* Image précédente — disparaît */}
-        <AnimatePresence>
-          {prevSlide !== null && (
-            <motion.div
-              key={`prev-${prevSlide}`}
-              initial={{ opacity: 1 }}
-              animate={{ opacity: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 1.2, ease: "easeInOut" }}
-              className="absolute inset-0"
-            >
-              <Image
-                src={slides[prevSlide].src}
-                alt={slides[prevSlide].alt}
-                fill
-                className="object-cover"
-                style={{ objectPosition: slides[prevSlide].position }}
-                sizes="100vw"
-                priority={false}
-                quality={85}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-80"
+        style={{
+          background:
+            "radial-gradient(60% 55% at 88% 22%, rgba(196,22,28,0.2), transparent 70%), radial-gradient(52% 52% at 10% 85%, rgba(201,168,76,0.1), transparent 72%)",
+        }}
+      />
 
-        {/* Image courante — apparaît */}
-        <AnimatePresence>
-          <motion.div
-            key={`current-${current}`}
-            initial={{ opacity: prevSlide === null ? 1 : 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.2, ease: "easeInOut" }}
-            className="absolute inset-0"
-          >
-            <Image
-              src={slides[current].src}
-              alt={slides[current].alt}
-              fill
-              className="object-cover"
-              style={{ objectPosition: slides[current].position }}
-              sizes="(max-width: 768px) 100vw, 100vw"
-              priority={current === 0}
-              quality={85}
-            />
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Zoom subtil sur l'image courante */}
+      <div className="relative mx-auto grid min-h-[700px] max-w-7xl grid-cols-1 items-center gap-4 px-5 pb-8 pt-32 sm:min-h-[720px] sm:px-8 md:min-h-[680px] md:grid-cols-[minmax(0,1.08fr)_minmax(300px,0.92fr)] md:gap-10 md:px-10 md:pb-14 md:pt-32 lg:gap-16 lg:px-12">
+        {/* L'affiche passe avant le texte sur mobile pour présenter immédiatement l'événement. */}
         <motion.div
-          key={`zoom-${current}`}
-          initial={{ scale: 1.02 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: prefersReducedMotion ? 0 : 6, ease: "easeOut" }}
-          className="absolute inset-0 pointer-events-none"
-        />
-      </div>
-
-      {/* Overlay dégradé */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/35 to-black/90 pointer-events-none" />
-
-      {/* Contenu centré */}
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 pt-16 text-center md:pt-20">
-        {/* Annonce de l'événement */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/50 px-4 py-1.5 backdrop-blur-sm"
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="order-1 flex justify-center md:order-2 md:justify-end"
         >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#C4161C] opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#C4161C]" />
-          </span>
-          <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-white sm:text-[11px]">
-            Africa Tour 2026 · Concert Live · 11 Oct · Stade RUC, Casablanca
-          </span>
+          <div className="relative h-[166px] w-[133px] overflow-hidden rounded-xl border border-[#C9A84C]/40 bg-black shadow-[0_16px_42px_rgba(0,0,0,0.55)] ring-1 ring-white/10 sm:h-[208px] sm:w-[166px] md:h-auto md:w-full md:max-w-[400px] md:aspect-[4/5]">
+            <Image
+              src="/img_worship-gift/affiche-africa-tour.webp"
+              alt="Affiche Africa Tour de Jonathan C. Gambela à Casablanca"
+              fill
+              priority
+              quality={80}
+              sizes="(max-width: 767px) 166px, (max-width: 1024px) 36vw, 400px"
+              className="object-cover"
+            />
+          </div>
         </motion.div>
 
-        <motion.h1
-          key={`title-${current}`}
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="t-hero text-[#C9A84C]"
-        >
-          Worship Gift
-        </motion.h1>
-
-        <motion.p
-          key={`sub-${current}`}
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.35 }}
-          className="mt-6 max-w-2xl t-lead text-gray-200"
-        >
-          <strong className="font-semibold text-white">Jonathan C. Gambela</strong> en concert
-          live au Stade RUC de Casablanca. Vis une expérience unique de Gospel et d&rsquo;adoration.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.5 }}
-          className="mt-10 flex flex-wrap justify-center gap-4"
-        >
-          <Link
-            href="/billetterie"
-            className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-[#C4161C] px-8 text-sm font-bold text-white shadow-lg shadow-[#C4161C]/30 transition-all hover:bg-[#e0272d] active:scale-[0.98]"
+        <div className="order-2 text-center md:order-1 md:text-left">
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.08 }}
+            className="inline-flex rounded-full border border-[#C4161C]/60 bg-[#C4161C]/15 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.1em] text-white sm:text-[10px] md:text-left"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" /><path d="M13 5v14" /></svg>
-            Réserver mes billets
-          </Link>
+            DIM. 11 OCTOBRE 2026 · 15H00 · STADE RUC, CASABLANCA
+          </motion.p>
+
+          <motion.h1
+            id="hero-concert-title"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.14 }}
+            className="mt-3 font-heading text-[1.75rem] font-bold leading-[1.08] tracking-[-0.025em] text-white sm:mt-4 sm:text-[2.15rem] md:max-w-2xl md:text-[clamp(2.4rem,4.1vw,4rem)]"
+          >
+            Jonathan C. Gambela en concert live à Casablanca
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-gray-300 sm:text-base md:mx-0 md:mt-4 md:text-lg"
+          >
+            Il reste peu de temps. Sécurise ta place avant qu&apos;il ne soit trop tard.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.26 }}
+            className="mx-auto mt-4 max-w-sm md:mx-0 md:mt-6"
+          >
+            <HeroCountdown />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.32 }}
+            className="mx-auto mt-4 flex max-w-md flex-row gap-2.5 sm:mt-5 md:mx-0"
+          >
+            <Link
+              href="/billetterie"
+              className="inline-flex min-h-12 flex-1 items-center justify-center rounded-full bg-[#C4161C] px-3 text-center text-xs font-bold text-white shadow-lg shadow-[#C4161C]/35 transition-all hover:bg-[#e0272d] hover:shadow-[#C4161C]/50 active:scale-[0.98] focus-ring sm:px-5 sm:text-sm"
+            >
+              Prendre mon billet — dès 200 MAD
+            </Link>
+            <Link
+              href="/billetterie/concert-gospel-2026/reserver"
+              className="inline-flex min-h-12 flex-1 items-center justify-center rounded-full border border-[#25D366]/65 bg-[#25D366]/10 px-3 text-center text-xs font-semibold text-white transition-colors hover:bg-[#25D366]/20 active:scale-[0.98] focus-ring sm:px-5 sm:text-sm"
+            >
+              Payer à la livraison
+            </Link>
+          </motion.div>
+
+          <ul className="mx-auto mt-4 flex max-w-md flex-wrap justify-center gap-1.5 text-[9px] font-medium text-gray-300 md:mx-0 md:justify-start sm:text-[10px]" aria-label="Garanties de réservation">
+            {REASSURANCE_POINTS.map((point) => (
+              <li key={point} className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.045] px-2 py-1.5">
+                <svg aria-hidden="true" className="h-3 w-3 shrink-0 text-[#C9A84C]" viewBox="0 0 16 16" fill="none">
+                  <path d="m3.25 8.25 2.7 2.7 6.8-6.3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                {point}
+              </li>
+            ))}
+          </ul>
+
           <Link
             href="/a-propos"
-            className="inline-flex h-12 items-center justify-center rounded-md border border-white/20 px-8 text-sm font-medium text-white transition-colors hover:bg-white/10"
+            className="mt-3 inline-flex text-xs text-gray-400 underline decoration-gray-600 underline-offset-4 transition-colors hover:text-[#C9A84C] focus-ring"
           >
             Découvrir le mouvement
           </Link>
-        </motion.div>
-      </div>
-
-      {/* Indicateur de scroll */}
-      <motion.div
-        initial={{ opacity: 1 }}
-        animate={{ opacity: hideIndicator ? 0 : 1 }}
-        transition={{ duration: 0.5 }}
-        className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-2"
-      >
-        <button
-          onClick={() => {
-            const nextSection = document.querySelector("section:not(.h-dvh)");
-            if (!nextSection) {
-              window.scrollBy({ top: window.innerHeight, behavior: "smooth" });
-              return;
-            }
-            (nextSection as HTMLElement).scrollIntoView({ behavior: "smooth" });
-          }}
-          type="button"
-          className="flex flex-col items-center gap-2 rounded-full p-2 text-[#C9A84C] transition-colors hover:text-[#F0CB6A] focus-ring"
-          aria-label="Découvrir le contenu"
-        >
-          <motion.span
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
-          </motion.span>
-          <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-[#C9A84C]/80">
-            Découvrir
-          </span>
-        </button>
-      </motion.div>
-
-      {/* Indicateurs dots */}
-      <div className="absolute bottom-8 right-8 z-20 flex gap-2" role="group" aria-label="Choix du slide">
-        {slides.map((_, i) => (
-          <button
-            key={i}
-            type="button"
-            onClick={() => goTo(i)}
-            className={`h-1.5 rounded-full transition-all duration-300 focus-ring ${
-              i === current
-                ? "w-8 bg-[#C9A84C]"
-                : "w-1.5 bg-white/40 hover:bg-white/60"
-            }`}
-            aria-label={`Aller au slide ${i + 1} sur ${slides.length}`}
-            aria-current={i === current ? "true" : undefined}
-          />
-        ))}
+        </div>
       </div>
     </section>
   );

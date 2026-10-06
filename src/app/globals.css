@@ -185,6 +185,23 @@
   }
 }
 
+/* CTA billetterie : présence discrète mais continue, désactivée pour les
+   visiteurs qui préfèrent réduire les mouvements. */
+@keyframes wg-ticket-pulse {
+  0%, 100% { box-shadow: 0 8px 20px rgb(196 22 28 / 0.35); }
+  50% { box-shadow: 0 8px 28px rgb(196 22 28 / 0.65), 0 0 0 5px rgb(196 22 28 / 0.12); }
+}
+
+.wg-ticket-cta {
+  animation: wg-ticket-pulse 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wg-ticket-cta {
+    animation: none;
+  }
+}
+
 /* ================================================================
    SYSTÈME TYPOGRAPHIQUE — source de vérité unique
    Rôles sémantiques (taille/graisse/police/interligne uniquement ;

@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteUrl}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },
     { url: `${siteUrl}/a-propos`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${siteUrl}/billetterie`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${siteUrl}/boutique`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${siteUrl}/galerie`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${siteUrl}/youtube`, lastModified: now, changeFrequency: "weekly", priority: 0.6 },
     { url: `${siteUrl}/contact`, lastModified: now, changeFrequency: "yearly", priority: 0.5 },

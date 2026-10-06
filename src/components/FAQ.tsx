@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -8,7 +8,23 @@ import { motion, AnimatePresence } from "framer-motion";
    CONFIGURATION — modifiez les questions/réponses ici
    ═══════════════════════════════════════════════════════════ */
 
-const FAQ_ITEMS = [
+const FAQ_ITEMS: Array<{ question: string; answer: ReactNode }> = [
+  {
+    question: "Où se trouve le Stade RUC ?",
+    answer: "Le concert a lieu au Stade RUC, à Casablanca.",
+  },
+  {
+    question: "Comment venir de Rabat, Fès ou Marrakech ?",
+    answer: <Link href="/#transport" className="font-semibold text-[#C9A84C] underline underline-offset-4">Consultez la section Venez en bus.</Link>,
+  },
+  {
+    question: "Y a-t-il du merchandising ?",
+    answer: <Link href="/boutique" className="font-semibold text-[#C9A84C] underline underline-offset-4">Découvrez la boutique.</Link>,
+  },
+  {
+    question: "Puis-je acheter sur place ?",
+    answer: "Nous recommandons de réserver à l'avance, les places sont limitées.",
+  },
   {
     question: "Comment commander mes billets ?",
     answer:
@@ -151,9 +167,9 @@ export default function FAQ() {
                       transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="overflow-hidden"
                     >
-                      <p className="pb-5 pl-[3.25rem] pr-5 pt-1 text-sm leading-relaxed text-gray-300">
+                      <div className="pb-5 pl-[3.25rem] pr-5 pt-1 text-sm leading-relaxed text-gray-300">
                         {item.answer}
-                      </p>
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>

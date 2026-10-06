@@ -1,10 +1,14 @@
 import Navbar from "@/components/Navbar";
 import Marquee from "@/components/Marquee";
 import EventCard from "@/components/EventCard";
-import Countdown from "@/components/Countdown";
 import EventsList from "@/components/EventsList";
 import HeroCarousel from "@/components/HeroCarousel";
 import TicketTiers from "@/components/TicketTiers";
+import WorshipGiftProxy from "@/components/WorshipGiftProxy";
+import BusTransport from "@/components/BusTransport";
+import MerchCollection from "@/components/MerchCollection";
+import ConcertTeaser from "@/components/ConcertTeaser";
+import FinalConcertCTA from "@/components/FinalConcertCTA";
 import HomeTicketing from "@/components/HomeTicketing";
 import FAQ from "@/components/FAQ";
 import { buildJsonLd } from "@/lib/seo";
@@ -24,12 +28,16 @@ export default function Home() {
       <HeroCarousel />
       <Marquee />
       <EventCard />
-      <Countdown />
       <TicketTiers />
+      <WorshipGiftProxy />
+      <BusTransport />
       <HomeTicketing />
       <EventsList />
+      <MerchCollection />
+      <ConcertTeaser />
       {/* FAQ — déplacer cette ligne si vous voulez la FAQ sur une autre page */}
       <FAQ />
+      <FinalConcertCTA />
     </>
   );
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Eyebrow from "@/components/Eyebrow";
@@ -90,13 +89,10 @@ export default function HomeTicketing() {
             {/* Affiche officielle du concert (contient déjà toutes les infos) */}
             <div className="overflow-hidden rounded-2xl border border-[#C4161C]/30 bg-black shadow-[0_16px_50px_rgba(0,0,0,0.55)] ring-1 ring-white/5">
               <div className="relative aspect-[4/5] w-full">
-                <Image
+                <img
                   src={event.coverImage}
                   alt={`Affiche officielle — ${title}`}
-                  fill
-                  priority
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 480px"
+                  className="h-full w-full object-cover"
                 />
               </div>
             </div>

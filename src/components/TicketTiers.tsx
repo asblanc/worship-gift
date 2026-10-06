@@ -35,7 +35,8 @@ const THEMES: Record<string, Theme> = {
     bg: "from-[#0c2015] to-[#111]",
     price: "text-[#3ad674]",
     check: "text-[#3ad674]",
-    badge: { label: "Populaire", cls: "bg-[#0F7A3D]/25 text-[#5be08d] ring-1 ring-[#0F7A3D]/40" },
+    badge: { label: "Le plus choisi", cls: "bg-[#0F7A3D]/25 text-[#5be08d] ring-1 ring-[#0F7A3D]/40" },
+    featured: true,
   },
   "vip-duo": {
     border: "border-emerald-400/45 hover:border-emerald-300/75",
@@ -48,8 +49,6 @@ const THEMES: Record<string, Theme> = {
     bg: "from-[#241d0e] to-[#141414]",
     price: "text-[#C9A84C]",
     check: "text-[#C9A84C]",
-    badge: { label: "Premium", cls: "bg-[#C9A84C] text-black" },
-    featured: true,
   },
   "gold-duo": {
     border: "border-[#C4161C]/55 hover:border-[#C4161C]/90",
@@ -110,7 +109,7 @@ export default function TicketTiers() {
           </p>
         </motion.div>
 
-        {/* Accroche marketing */}
+        {/* Accroche d'urgence, juste avant les formules */}
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -119,7 +118,7 @@ export default function TicketTiers() {
           className="mx-auto mb-10 flex max-w-fit items-center gap-2 rounded-full border border-[#C9A84C]/25 bg-[#C9A84C]/10 px-4 py-1.5 text-xs font-medium text-[#E7C86A]"
         >
           <span aria-hidden>🔥</span>
-          Formules Gold : Meet &amp; Greet + photo souvenir avec Jonathan Gambela
+          Dernière ligne droite : les places partent vite.
         </motion.p>
 
         <div className="flex flex-wrap justify-center gap-6">
@@ -228,6 +227,9 @@ export default function TicketTiers() {
                       À la livraison
                     </Link>
                   </div>
+                  <p className="mt-3 text-center text-xs font-semibold text-[#E7C86A]">
+                    Places limitées
+                  </p>
                 </div>
               </motion.div>
             );

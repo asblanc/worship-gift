@@ -47,10 +47,10 @@ export function buildJsonLd() {
 
   const musicEvent = {
     "@context": "https://schema.org",
-    "@type": "MusicEvent",
-    name: nextEvent.title,
+    "@type": "Event",
+    name: "Concert Jonathan Gambela 11 octobre 2026 Casablanca – Billets",
     description: nextEvent.description,
-    startDate: nextEvent.date.toISOString(),
+    startDate: "2026-10-11T15:00:00+01:00",
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     image: `${siteUrl}${nextEvent.coverImage}`,
@@ -85,11 +85,11 @@ export function buildJsonLd() {
 export const defaultMetadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Worship Gift | Concerts & Billetterie Gospel au Maroc",
+    default: "Concert Jonathan Gambela 11 octobre 2026 Casablanca – Billets",
     template: "%s | Worship Gift",
   },
   description:
-    "Worship Gift, mouvement gospel au Maroc. Vivez des concerts et sessions d'adoration uniques à Casablanca, Rabat et Marrakech. Réservez vos billets en ligne pour la musique gospel en direct.",
+    "Concert Jonathan Gambela le 11 octobre 2026 au Stade RUC de Casablanca. Billets de 200 à 1600 MAD pour l'Africa Tour Worship Gift.",
   keywords: [
     "Worship Gift",
     "gospel Maroc",
@@ -111,18 +111,25 @@ export const defaultMetadata: Metadata = {
     type: "website",
     locale: "fr_FR",
     siteName: "Worship Gift",
-    title: "Worship Gift | Concerts & Billetterie Gospel au Maroc",
+    title: "Concert Jonathan Gambela 11 octobre 2026 Casablanca – Billets",
     description:
-      "Mouvement gospel au Maroc : concerts, événements et sessions d'adoration à Casablanca, Rabat et Marrakech. Réservez vos billets en ligne.",
+      "Concert Jonathan Gambela le 11 octobre 2026 au Stade RUC de Casablanca. Réservez vos billets pour l'Africa Tour.",
     url: siteUrl,
-    // L'image OG est fournie par app/opengraph-image.tsx (1200x630)
+    images: [
+      {
+        url: "/img_worship-gift/affiche-africa-tour.webp",
+        width: 768,
+        height: 960,
+        alt: "Affiche Africa Tour — Jonathan Gambela à Casablanca",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Worship Gift | Concerts & Billetterie Gospel au Maroc",
+    title: "Concert Jonathan Gambela 11 octobre 2026 Casablanca – Billets",
     description:
-      "Mouvement gospel au Maroc : concerts, événements et sessions d'adoration. Réservez vos billets en ligne.",
-    // L'image Twitter est fournie par app/opengraph-image.tsx
+      "Concert Jonathan Gambela le 11 octobre 2026 au Stade RUC de Casablanca. Réservez vos billets pour l'Africa Tour.",
+    images: ["/img_worship-gift/affiche-africa-tour.webp"],
   },
   robots: {
     index: true,

@@ -77,7 +77,7 @@ const nextConfig: NextConfig = {
     deviceSizes: [320, 375, 414, 480, 640, 750, 828, 1080, 1200, 1920],
     // imageSizes pour les images avec layout="fixed" ou width/height explicites
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    qualities: [75, 85],
+    qualities: [75, 80, 85],
     remotePatterns: [
       {
         protocol: "https",

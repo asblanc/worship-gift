@@ -24,9 +24,15 @@ const cardVariants = {
 };
 
 // Affiche réelle — utilise la photo de l'événement
-function EventPoster({ event }: { event: (typeof upcomingEvents)[0] }) {
+function EventPoster({
+  event,
+  horizontal = false,
+}: {
+  event: (typeof upcomingEvents)[0];
+  horizontal?: boolean;
+}) {
   return (
-    <div className="relative aspect-[2/3] overflow-hidden">
+    <div className={`relative aspect-[2/3] overflow-hidden ${horizontal ? "md:w-[42%] md:shrink-0" : ""}`}>
       <Image
         src={event.coverImage}
         alt={event.title}
@@ -59,6 +65,8 @@ function EventPoster({ event }: { event: (typeof upcomingEvents)[0] }) {
 }
 
 export default function EventsList() {
+  const isSingleEvent = upcomingEvents.length === 1;
+
   return (
     <section className="bg-[#0D0D0D] px-6 py-16 md:py-20">
       <div className="mx-auto max-w-5xl">
@@ -84,7 +92,7 @@ export default function EventsList() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
-          className="grid gap-6 sm:grid-cols-2"
+          className={isSingleEvent ? "grid gap-6" : "grid gap-6 sm:grid-cols-2"}
         >
           {upcomingEvents.map((event) => (
             <motion.div
@@ -92,9 +100,9 @@ export default function EventsList() {
               variants={cardVariants}
               whileHover={{ y: -6 }}
               transition={{ type: "spring", stiffness: 300, damping: 22 }}
-              className="group flex flex-col overflow-hidden rounded-lg border border-white/10 bg-white/[0.03] transition-colors hover:border-[#C9A84C]/50 hover:shadow-lg hover:shadow-[#C9A84C]/10"
+              className={`group flex flex-col overflow-hidden rounded-lg border border-white/10 bg-white/[0.03] transition-colors hover:border-[#C9A84C]/50 hover:shadow-lg hover:shadow-[#C9A84C]/10 ${isSingleEvent ? "md:flex-row" : ""}`}
             >
-              <EventPoster event={event} />
+              <EventPoster event={event} horizontal={isSingleEvent} />
 
               <div className="flex flex-1 flex-col gap-3 p-5">
                 <h3 className="font-heading text-lg font-semibold text-white">

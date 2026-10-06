@@ -12,6 +12,7 @@ const navLinks = [
   { label: "À propos", href: "/a-propos" },
   { label: "Galerie", href: "/galerie" },
   { label: "Médias", href: "/youtube" },
+  { label: "Boutique", href: "/boutique" },
   { label: "Billetterie", href: "/billetterie" },
   { label: "Contact", href: "/contact" },
 ];
@@ -39,7 +40,10 @@ export default function Navbar() {
   }, [mobileOpen]);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50">
+    <header
+      className="fixed left-0 right-0 z-50 transition-[top] duration-200"
+      style={{ top: "var(--announcement-bar-height, 0px)" }}
+    >
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 md:px-8">
         <div className="absolute inset-0 -z-10 border-b border-white/10 bg-black/60 backdrop-blur-md" />
 
@@ -58,7 +62,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-8 lg:flex">
           <ul className="flex items-center gap-8">
             {navLinks.map((link) => (
               <li key={link.label}>
@@ -85,10 +89,10 @@ export default function Navbar() {
           {/* CTA billets — couleurs de l'événement */}
           <Link
             href="/billetterie"
-            className="inline-flex items-center gap-1.5 rounded-full bg-[#C4161C] px-4 py-2 text-sm font-bold text-white shadow-sm shadow-[#C4161C]/30 transition-all hover:bg-[#e0272d] active:scale-[0.97]"
+            className="wg-ticket-cta inline-flex items-center gap-1.5 rounded-full bg-[#C4161C] px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-[#C4161C]/40 transition-all hover:bg-[#e0272d] active:scale-[0.97]"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" /><path d="M13 5v14" /></svg>
-            Billets
+            Prendre mon billet
           </Link>
 
           {/* Auth sur desktop */}
@@ -119,7 +123,7 @@ export default function Navbar() {
           ref={toggleButtonRef}
           type="button"
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="relative z-10 flex touch-target flex-col items-center justify-center gap-1.5 rounded-md p-2 focus-ring md:hidden"
+          className="relative z-10 flex touch-target flex-col items-center justify-center gap-1.5 rounded-md p-2 focus-ring lg:hidden"
           aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
           aria-expanded={mobileOpen}
           aria-controls="menu-mobile"
@@ -149,7 +153,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="border-b border-white/10 bg-black/95 backdrop-blur-lg md:hidden"
+            className="border-b border-white/10 bg-black/95 backdrop-blur-lg lg:hidden"
           >
             <ul className="flex flex-col gap-2 px-4 pb-6 pt-2" aria-label="Navigation principale">
               <li>
@@ -159,7 +163,7 @@ export default function Navbar() {
                   className="flex min-h-11 items-center justify-center gap-2 rounded-md bg-[#C4161C] px-4 py-3 text-center text-base font-bold text-white transition-all hover:bg-[#e0272d] focus-ring"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z" /><path d="M13 5v14" /></svg>
-                  Billets — Concert Live
+                  Prendre mon billet
                 </Link>
               </li>
               {navLinks.map((link) => (

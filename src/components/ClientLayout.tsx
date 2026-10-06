@@ -4,6 +4,9 @@ import { useEffect, type ReactNode } from "react";
 import PageTransition from "@/components/PageTransition";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import ConcertAnnouncement from "@/components/ConcertAnnouncement";
+import MobileReservationBar from "@/components/MobileReservationBar";
+import MetaClickTracking from "@/components/MetaClickTracking";
 import { AuthProvider } from "@/lib/supabase/auth-context";
 
 export default function ClientLayout({ children }: { children: ReactNode }) {
@@ -15,11 +18,14 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
 
   return (
     <AuthProvider>
+      <MetaClickTracking />
+      <ConcertAnnouncement />
       <PageTransition>
         {children}
       </PageTransition>
       <Footer />
-      {/* Bouton WhatsApp flottant — supprimer cette ligne pour le désactiver */}
+      <MobileReservationBar />
+      {/* Bouton WhatsApp desktop — le CTA mobile est géré séparément. */}
       <WhatsAppFloat />
     </AuthProvider>
   );
