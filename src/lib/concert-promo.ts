@@ -11,6 +11,35 @@ export function isConcertPromoOver(now = Date.now()) {
   return now >= CONCERT_PROMO_DEADLINE;
 }
 
+function moroccoCalendarDay(timestamp: number) {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Africa/Casablanca",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date(timestamp));
+
+  const values = Object.fromEntries(
+    parts
+      .filter(({ type }) => type !== "literal")
+      .map(({ type, value }) => [type, value]),
+  );
+
+  return Date.UTC(
+    Number(values.year),
+    Number(values.month) - 1,
+    Number(values.day),
+  );
+}
+
 export function remainingConcertDays(now = Date.now()) {
-  return Math.max(0, Math.ceil((CONCERT_PROMO_DEADLINE - now) / 86_400_000));
+  // Le bandeau communique un nombre de jours calendaires, et non des tranches
+  // de 24 h restantes : le 7 octobre doit donc afficher 4 jours avant le 11.
+  return Math.max(
+    0,
+    Math.round(
+      (moroccoCalendarDay(CONCERT_PROMO_DEADLINE) - moroccoCalendarDay(now)) /
+        86_400_000,
+    ),
+  );
 }
